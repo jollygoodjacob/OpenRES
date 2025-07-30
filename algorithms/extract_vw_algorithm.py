@@ -75,9 +75,14 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         def create_output_layer(name):
             fields = QgsFields()
             fields.append(QgsField("side", QVariant.String))
-            fields.append(QgsField("t_id", QVariant.Int))
+            fields.append(QgsField("t_id", QVariant.Int))     # Field needed downstream
             fields.append(QgsField("distance", QVariant.Double))
-            return QgsVectorLayer(f"Point?crs={crs}", name, "memory"), fields
+            
+            layer = QgsVectorLayer(f"Point?crs={crs}", name, "memory")
+            layer.dataProvider().addAttributes(fields)
+            layer.updateFields()
+    
+            return layer, fields
 
         # Create memory layers
         left_vfw, left_fields = create_output_layer("Left_VFW")
