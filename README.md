@@ -4,7 +4,7 @@
 ### A Python based [QGIS](https://qgis.org/en/site/index.html) plugin 
 [![status]()]()
 [![Documentation Status]()]()
-[![License: GPL 2.0](https://img.shields.io/badge/License-GPL_2.0-green.svg)](https://opensource.org/licenses/gpl-license)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/gpl-license)
 [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![DOI]()]()
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
