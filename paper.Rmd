@@ -1,0 +1,52 @@
+---
+title: 'OpenRES: A QGIS plugin for automated extraction of hydrogeomorphic features  to support functional process zone classification of river networks'
+tags:
+  - QGIS
+  - PyQGIS
+  - riverine ecosystem synthesis
+  - functional process zones
+  - hydrogeomorphic
+authors:
+  - name: Jacob Nesslage
+    orcid: 0000-0000-0000-0000
+    affiliation: 1 
+  - name: Erin L. Hestir
+    affiliation: 1
+
+affiliations:
+ - name: Department of Civil and Environmental Engineering, University of California, Merced, Merced, CA, USA
+   index: 1
+
+date: 15 May 2025
+bibliography: paper.bib
+---
+
+# Statement of need
+
+Accurate delineation and classification of river valley features are critical for geomorphic, ecological, and hydrological studies. However, existing tools for such analysis often rely on closed-source software, require high levels of manual input, or are embedded in complex workflows that limit reproducibility. `OpenRES` fills this gap by providing an open-source, modular, and GUI-accessible solution that integrates seamlessly with QGIS.
+
+# Background
+
+Riverine ecosystems can be conceptually understood as hydrogeomorphic patches that occur at nested, hierarchical spatiotemporal scales. At the scale of river valleys (often many km long),
+
+# OpenRES Audience
+
+`OpenRES` is intended for students, researchers, and practitioners in river science, fluvial geomorphology, and watershed management who seek to extract hydrogeomorphic features from river corridors across user-defined spatial scales. While the tools were designed to extract features for classifying stream segments into Functional Process Zones to support testing of Riverine Ecosystem Synthesis hypotheses and tenets (see Thorp et al. 2023), the modular components may be valuable for a wider range of applications.
+
+# OpenRES Functionality
+
+`OpenRES` consists of five modules, each of which is intended to be used sequentially to automate the extraction of nine hydrogeomorphic features:
+
+-   **Generate Transects**:
+
+-   **Extract ELE, PRE, and GEO**:
+
+-   **Extract VW and VFW**:
+
+-   **Extract LVS and RVS**:
+
+-   **Extract DVS and SIN**:
+
+# Acknowledgements
+
+# References
