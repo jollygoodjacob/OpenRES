@@ -73,6 +73,8 @@ the watershed of interest.
 
 ### OpenRES application
 
+Once a user has installed OpenRES and generated all required layers, they can begin using the OpenRES application through the Processing Toolbar in QGIS.
+
 #### Step 6: Generate transects
 
 > **__Note:__** After transect generation, users should validate that each transect intersects valley bottoms and valleys properly. Due to geometry issues, it is possible that unexpected intersections can occur.
