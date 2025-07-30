@@ -25,10 +25,10 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
     OUTPUT = 'OUTPUT'
 
     def initAlgorithm(self, config=None):
-        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Center Points (with t_id)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_SEGMENTS, "Stream Segments (with t_id)", [QgsProcessing.TypeVectorLine]))
-        self.addParameter(QgsProcessingParameterRasterLayer(self.ELEVATION, "Elevation Raster"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "Output Points with DVS and SIN"))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_SEGMENTS, "River Network Layer", [QgsProcessing.TypeVectorLine]))
+        self.addParameter(QgsProcessingParameterRasterLayer(self.ELEVATION, "Elevation Raster Layer"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[5] OpenRES Extraction Output"))
 
     def name(self):
         return "extract_dvs_sinuosity"
