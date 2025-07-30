@@ -37,16 +37,16 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
     CENTER_OUT = 'CENTER_OUT'
 
     def initAlgorithm(self, config=None):
-        self.addParameter(QgsProcessingParameterFeatureSource(self.TRANSECTS, "Transect lines", [QgsProcessing.TypeVectorLine]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Transect center points", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.VALLEY_LINES, "Valley edge lines", [QgsProcessing.TypeVectorLine]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "Stream network (with t_ID)", [QgsProcessing.TypeVectorLine]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.TRANSECTS, "Transects Layer", [QgsProcessing.TypeVectorLine]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.VALLEY_LINES, "Valley Lines Layer", [QgsProcessing.TypeVectorLine]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "River Network Layer)", [QgsProcessing.TypeVectorLine]))
 
-        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VFW, "Output Left VFW points"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VFW, "Output Right VFW points"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VW, "Output Left VW points"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VW, "Output Right VW points"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.CENTER_OUT, "Updated Center Points"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VFW, "Left VFW Reference"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VFW, "Right VFW Reference"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VW, "Left VW Reference"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VW, "Right VW Reference"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.CENTER_OUT, "[3] Segment Centers"))
 
     def name(self):
         return "extract_valley_width"

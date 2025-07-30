@@ -29,12 +29,12 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
     OUTPUT = 'OUTPUT'
 
     def initAlgorithm(self, config=None):
-        self.addParameter(QgsProcessingParameterFeatureSource(self.POINTS, "Input Point Layer", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER1, "Elevation Raster (for 'ELE')"))
-        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER2, "Precipitation Raster (for 'PRE')"))
-        self.addParameter(QgsProcessingParameterVectorLayer(self.POLYGONS, "Geology Polygon Layer", [QgsProcessing.TypeVectorPolygon]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.POINTS, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER1, "Elevation Raster Layer (for 'ELE')"))
+        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER2, "Precipitation Raster Layer (for 'PRE')"))
+        self.addParameter(QgsProcessingParameterVectorLayer(self.POLYGONS, "Geology Polygon Layer (for 'GEO')", [QgsProcessing.TypeVectorPolygon]))
         self.addParameter(QgsProcessingParameterField(self.POLY_FIELD, "Geology Attribute Field", parentLayerParameterName=self.POLYGONS))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "Output Points with Attributes"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[2] Segment Centers"))
 
     def name(self):
         return "extract_point_attributes"

@@ -28,13 +28,13 @@ class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
     OUTPUT = 'OUTPUT'
 
     def initAlgorithm(self, config=None):
-        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER, "Center Points (with t_id)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.LEFT_VW, "Left Valley Wall (VW)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.LEFT_VFW, "Left Valley Floor Wall (VFW)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VW, "Right Valley Wall (VW)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VFW, "Right Valley Floor Wall (VFW)", [QgsProcessing.TypeVectorPoint]))
-        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Elevation Raster"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "Center Points with LSS and RSS"))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.LEFT_VW, "Left Valley Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.LEFT_VFW, "Left Valley Floor Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VW, "Right Valley Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VFW, "Right Valley Floor Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
+        self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Elevation Raster Layer"))
+        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[4] Segment Centers"))
 
     def name(self):
         return "extract_side_slopes"

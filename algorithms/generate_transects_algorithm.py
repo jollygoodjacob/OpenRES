@@ -31,12 +31,12 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
     CENTER_POINTS = 'CENTER_POINTS'
 
     def initAlgorithm(self, config=None):
-        self.addParameter(QgsProcessingParameterFeatureSource(self.RIVER_LAYER, "Input River Layer"))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.LINE_LAYER, "Intersecting Lines Layer"))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.RIVER_LAYER, "River Network Layer"))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.LINE_LAYER, "Valley Lines Layer"))
         self.addParameter(QgsProcessingParameterNumber(self.EXTENSION_INCREMENT, "Extension Increment (m)", defaultValue=250))
         self.addParameter(QgsProcessingParameterNumber(self.MAX_LENGTH, "Max Length (m)", defaultValue=50000))
-        self.addParameter(QgsProcessingParameterFeatureSink(self.TRANSECTS, "Transects Output"))
-        self.addParameter(QgsProcessingParameterFeatureSink(self.CENTER_POINTS, "Center Points Output"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.TRANSECTS, "Transects"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.CENTER_POINTS, "[1] Segment Centers"))
 
     def name(self):
         return "generate_transects"
