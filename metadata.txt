@@ -1,0 +1,10 @@
+[general]
+name=OpenRES
+description=A QGIS plugin for hydrogeomorphic river classification
+version=1.0
+qgisMinimumVersion=3.16
+author=Jacob Nesslage
+email=jnesslage@ucmerced.edu
+category=Analysis
+icon=icon.png
+hasProcessingProvider=yes
