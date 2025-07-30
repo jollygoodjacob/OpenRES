@@ -79,7 +79,7 @@ def calculate_side_slopes_from_pairs(center_points_layer,
     Calculates LSS and RSS using paired intersection points and elevation sampled from raster.
 
     Parameters:
-        center_points_layer (QgsVectorLayer): Centerline points where LSS and RSS will be written.
+        center_points_layer (QgsVectorLayer): Centerline points where LVS and RVS will be written.
         left_vw_layer (QgsVectorLayer): Left side valley wall points.
         left_vfw_layer (QgsVectorLayer): Left side valley floor wall points.
         right_vw_layer (QgsVectorLayer): Right side valley wall points.
@@ -88,7 +88,7 @@ def calculate_side_slopes_from_pairs(center_points_layer,
         id_field (str): Field to join all layers (e.g., 't_id').
     """
     # Add LSS and RSS fields if missing
-    for field_name in ["LSS", "RSS"]:
+    for field_name in ["LVS", "RVS"]:
         if center_points_layer.fields().indexFromName(field_name) == -1:
             center_points_layer.dataProvider().addAttributes([QgsField(field_name, QVariant.Double)])
     center_points_layer.updateFields()
@@ -107,22 +107,22 @@ def calculate_side_slopes_from_pairs(center_points_layer,
             l = left_slopes[t_id]
             elev_diff = abs(l["elev1"] - l["elev2"])
             slope = (elev_diff / l["dist"]) * 100 if l["dist"] > 0 else None
-            feature["LSS"] = slope
+            feature["LVS"] = slope
         else:
-            feature["LSS"] = None
+            feature["LVS"] = None
 
         # Right Side Slope
         if t_id in right_slopes:
             r = right_slopes[t_id]
             elev_diff = abs(r["elev1"] - r["elev2"])
             slope = (elev_diff / r["dist"]) * 100 if r["dist"] > 0 else None
-            feature["RSS"] = slope
+            feature["RVS"] = slope
         else:
-            feature["RSS"] = None
+            feature["RVS"] = None
 
         center_points_layer.updateFeature(feature)
 
     if center_points_layer.commitChanges():
-        print("✅ LSS and RSS calculated using elevation raster.")
+        print("✅ LVS and RVS calculated using elevation raster.")
     else:
-        print("❌ Failed to commit LSS and RSS.")
+        print("❌ Failed to commit LVS and RVS.")
