@@ -40,7 +40,7 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSource(self.TRANSECTS, "Transects Layer", [QgsProcessing.TypeVectorLine]))
         self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
         self.addParameter(QgsProcessingParameterFeatureSource(self.VALLEY_LINES, "Valley Lines Layer", [QgsProcessing.TypeVectorLine]))
-        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "River Network Layer)", [QgsProcessing.TypeVectorLine]))
+        self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "River Network Layer", [QgsProcessing.TypeVectorLine]))
 
         self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VFW, "Left VFW Reference"))
         self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VFW, "Right VFW Reference"))
@@ -75,7 +75,7 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         def create_output_layer(name):
             fields = QgsFields()
             fields.append(QgsField("side", QVariant.String))
-            fields.append(QgsField("t_id", QVariant.Int))     # Field needed downstream
+            fields.append(QgsField("t_ID", QVariant.Int))     # Field needed downstream
             fields.append(QgsField("distance", QVariant.Double))
             
             layer = QgsVectorLayer(f"Point?crs={crs}", name, "memory")
@@ -106,12 +106,12 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         self.save_output_layer(right_vw, parameters, self.RIGHT_VW, context)
         
 
+        # Compute valley widths and get updated layer
+        center_updated1 = compute_valley_width(center, left1, right1, out_field="VFW")
+        center_updated2 = compute_valley_width(center_updated1, left2, right2, out_field="VW")
 
-        # Update the center points layer with VW and VFW
-        compute_valley_width(center, left1, right1, out_field="VFW")
-        compute_valley_width(center, left2, right2, out_field="VW")
+        self.save_output_layer(center_updated2, parameters, self.CENTER_OUT, context)
 
-        self.save_output_layer(center, parameters, self.CENTER_OUT, context)
 
         return {
             self.LEFT_VFW: parameters[self.LEFT_VFW],

@@ -175,26 +175,34 @@ def find_two_intersections_by_side(transect_layer, other_layer, split_layer, tol
     return left_first, left_second, right_first, right_second
 
 # --- Compute valley width by summing left and right distances ---
+from qgis.core import (
+    QgsVectorLayer, QgsFeature, QgsField, QgsFeatureRequest,
+    QgsWkbTypes, QgsProject, QgsGeometry, QgsPointXY, QgsFields
+)
+from PyQt5.QtCore import QVariant
+
 def compute_valley_width(center_layer, left_points, right_points, out_field="VW"):
     """
     Calculates total valley width by summing distances from center point
     to the nearest left and right intersections.
 
-    Parameters:
-        center_layer (QgsVectorLayer): Layer with transect center points and 't_id'
-        left_points (list): List of tuples (point, t_id, distance)
-        right_points (list): List of tuples (point, t_id, distance)
-        out_field (str): Field to store the computed valley width
+    Returns a new QgsVectorLayer with the calculated values.
     """
+    # Clone layer
+    provider = center_layer.dataProvider()
+    fields = center_layer.fields()
+    crs = center_layer.sourceCrs()
+    cloned_layer = QgsVectorLayer(f"Point?crs={crs.authid()}", "updated_centers", "memory")
+    cloned_layer_data = cloned_layer.dataProvider()
+    cloned_layer_data.addAttributes(fields)
+    cloned_layer.updateFields()
 
     # Add output field if missing
-    if center_layer.fields().indexFromName(out_field) == -1:
-        center_layer.dataProvider().addAttributes([QgsField(out_field, QVariant.Double)])
-        center_layer.updateFields()
+    if cloned_layer.fields().indexFromName(out_field) == -1:
+        cloned_layer_data.addAttributes([QgsField(out_field, QVariant.Double)])
+        cloned_layer.updateFields()
 
-    center_layer.startEditing()
-
-    # Build lookup dictionaries
+    # Build distance dictionaries
     def build_distance_dict(points):
         distance_dict = {}
         for point, tid, distance in points:
@@ -204,11 +212,28 @@ def compute_valley_width(center_layer, left_points, right_points, out_field="VW"
     left_distances = build_distance_dict(left_points)
     right_distances = build_distance_dict(right_points)
 
-    for f in center_layer.getFeatures():
-        tid = f["t_id"]
-        left = left_distances.get(tid, 0)
-        right = right_distances.get(tid, 0)
-        f[out_field] = left + right
-        center_layer.updateFeature(f)
+    features = []
+    for feat in center_layer.getFeatures():
+        new_feat = QgsFeature(cloned_layer.fields())
+        new_feat.setGeometry(feat.geometry())
+        new_feat.setAttributes(feat.attributes())
 
-    return center_layer.commitChanges()
+        tid = feat["t_ID"]
+        lw = left_distances.get(tid, 0)
+        rw = right_distances.get(tid, 0)
+
+        new_attrs = new_feat.attributes()
+        if out_field in center_layer.fields().names():
+            new_attrs[cloned_layer.fields().indexFromName(out_field)] = lw + rw
+        else:
+            new_attrs.append(lw + rw)
+        new_feat.setAttributes(new_attrs)
+
+        features.append(new_feat)
+
+    cloned_layer.startEditing()
+    cloned_layer.addFeatures(features)
+    cloned_layer.commitChanges()
+
+    return cloned_layer
+
