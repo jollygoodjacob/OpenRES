@@ -9,7 +9,7 @@
 [![DOI]()]()
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
 [![GitHub release]()]()
-[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES)](https://GitHub.com/jollygoodjacob/OpenRES/commit/)
+[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES)](https://GitHub.com/jollygoodjacob/OpenRES/commit)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
 
 ## Citation
