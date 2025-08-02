@@ -1,6 +1,6 @@
 [general]
-name=OpenRES
-description=A QGIS plugin for hydrogeomorphic river classification
+name=OpenRES: Open Riverine Ecosystem Synthesis
+description=A QGIS plugin for supporting hydrogeomorphic feature extraction to delineate functional process zones across river networks.
 version=1.0
 qgisMinimumVersion=3.16
 author=Jacob Nesslage
@@ -8,3 +8,6 @@ email=jnesslage@ucmerced.edu
 category=Analysis
 icon=icon.png
 hasProcessingProvider=yes
+homepage=https://github.com/jollygoodjacob/OpenRES
+repository=https://github.com/jollygoodjacob/OpenRES
+tracker=https://github.com/jollygoodjacob/OpenRES/issues
