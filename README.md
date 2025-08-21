@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # Open Riverine Ecosystem Synthesis (OpenRES):
 
 ## A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
