@@ -19,7 +19,7 @@ If you use this plugin in your work, please cite it as:
 -------------------
 This plugin enables extraction of nine key hydrogeomorphic features along user-defined segments of river networks for the purpose of functional process zone classification. 
 
-There are five required datasets needed for hydrogeomorphic extraction of features along a user's watershed of interest:
+There are five required datasets needed for  extraction of hydrogeomorphic features along a user's watershed of interest:
 
 1. A geomorphically corrected stream network (.shp)  
 2. A line layer denoting the boundaries of the valley floor and the valleys (.shp)  
@@ -64,7 +64,7 @@ the watershed of interest.
 - In the U.S., this data can be obtained from PRISM (800m).
 - In South Africa, 
 - Global datasets include WorldClim (4km), TerraClimate (4km)
-- 
+
 #### Step 3: Acquire, clip, and simplify geology layer for watershed of interest
 
 #### Step 4: Create a geomorphically corrected stream network
