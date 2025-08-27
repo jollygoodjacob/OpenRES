@@ -1,23 +1,14 @@
----
-editor_options: 
-  markdown: 
-    wrap: 72
----
-
 # Open Riverine Ecosystem Synthesis (OpenRES):
 
 ## A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
 
-### A Python based [QGIS](https://qgis.org/en/site/index.html) plugin
-
-[![status]()]() [![Documentation Status]()]() [![License: GPL
-2.0](https://img.shields.io/badge/License-GPL_2.0-green.svg)](https://opensource.org/licenses/gpl-license)
-[![Open Source Love
-svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![DOI]()]()
+### A Python based [QGIS](https://qgis.org/en/site/index.html) plugin 
+[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
-[![GitHub release]()]() [![GitHub
-commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES)](https://GitHub.com/jollygoodjacob/OpenRES/commit/)
+[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![DOI]()]()
+[![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases)
+[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.0.0)](https://github.com/jollygoodjacob/OpenRES/commits)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
 
 ## Citation
@@ -187,7 +178,9 @@ the best single location to obtain each of these required data sets.
 
 ### OpenRES application
 
+
 #### Step 8: Generate transects
+Once a user has installed OpenRES and generated all required layers, they can begin using the OpenRES application through the Processing Toolbar in QGIS.
 
 > **Note:** After transect generation, users should validate that each
 > transect intersects valley bottoms and valleys properly. Due to
