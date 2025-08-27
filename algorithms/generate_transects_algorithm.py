@@ -72,10 +72,19 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
 
     def processAlgorithm(self, parameters, context: QgsProcessingContext, feedback: QgsProcessingFeedback):
         river_layer = self.parameterAsSource(parameters, self.RIVER_LAYER, context)
+        river_vector_layer = self.parameterAsVectorLayer(parameters, self.RIVER_LAYER, context)
         lines_layer = self.parameterAsSource(parameters, self.LINE_LAYER, context)
         extension_increment = self.parameterAsInt(parameters, self.EXTENSION_INCREMENT, context)
         max_length = self.parameterAsInt(parameters, self.MAX_LENGTH, context)
 
+        # Add t_ID field to river layer
+        if river_vector_layer is not None:
+            if not river_vector_layer.fields().indexFromName("t_ID") >= 0:
+                river_vector_layer.startEditing()
+                river_vector_layer.dataProvider().addAttributes([QgsField("t_ID", QVariant.Int)])
+                river_vector_layer.updateFields()
+
+        # Output fields
         river_fields = QgsFields()
         river_fields.append(QgsField("t_ID", QVariant.Int))
         river_fields.append(QgsField("left_n", QVariant.Int))
@@ -84,16 +93,24 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         center_fields = QgsFields()
         center_fields.append(QgsField("t_ID", QVariant.Int))
 
-        (transect_sink, transect_dest_id) = self.parameterAsSink(parameters, self.TRANSECTS, context, river_fields, QgsWkbTypes.MultiLineString, river_layer.sourceCrs())
-        (center_sink, center_dest_id) = self.parameterAsSink(parameters, self.CENTER_POINTS, context, center_fields, QgsWkbTypes.Point, river_layer.sourceCrs())
+        (transect_sink, transect_dest_id) = self.parameterAsSink(
+            parameters, self.TRANSECTS, context,
+            river_fields, QgsWkbTypes.MultiLineString, river_layer.sourceCrs()
+        )
+        (center_sink, center_dest_id) = self.parameterAsSink(
+            parameters, self.CENTER_POINTS, context,
+            center_fields, QgsWkbTypes.Point, river_layer.sourceCrs()
+        )
 
         lines_index = QgsSpatialIndex(lines_layer.getFeatures())
+        feature_count = river_layer.featureCount()
 
         for i, river_feature in enumerate(river_layer.getFeatures()):
             if feedback.isCanceled():
                 break
 
-            feedback.setProgress(int(i / river_layer.featureCount() * 100))
+            if feature_count > 0:
+                feedback.setProgress(int(i / feature_count * 100))
 
             river_geom = river_feature.geometry()
             if river_geom is None or river_geom.isNull():
@@ -107,26 +124,50 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             perpendicular_angle = self.calculate_perpendicular_angle(pt_before, pt_after)
 
             # LEFT
-            left_geom, left_intersections = self.extend_until_intersections(midpoint, perpendicular_angle, lines_layer, lines_index, -1, extension_increment, max_length)
+            left_geom, left_intersections = self.extend_until_intersections(
+                midpoint, perpendicular_angle, lines_layer, lines_index, -1, extension_increment, max_length
+            )
             # RIGHT
-            right_geom, right_intersections = self.extend_until_intersections(midpoint, perpendicular_angle, lines_layer, lines_index, 1, extension_increment, max_length)
+            right_geom, right_intersections = self.extend_until_intersections(
+                midpoint, perpendicular_angle, lines_layer, lines_index, 1, extension_increment, max_length
+            )
 
             if len(left_intersections) >= 2 and len(right_intersections) >= 2:
-                full_transect = QgsGeometry.fromPolylineXY(left_geom.asPolyline() + right_geom.asPolyline()[1:])
+                full_transect = QgsGeometry.fromPolylineXY(
+                    left_geom.asPolyline() + right_geom.asPolyline()[1:]
+                )
+
+                t_id = i  # ✅ Assign unique ID
+
+                # Create transect feature
                 t_feat = QgsFeature()
                 t_feat.setGeometry(full_transect)
-                t_feat.setAttributes([river_feature["t_ID"], len(left_intersections), len(right_intersections)])
+                t_feat.setAttributes([t_id, len(left_intersections), len(right_intersections)])
                 transect_sink.addFeature(t_feat, QgsFeatureSink.FastInsert)
 
+                # Create center point feature
                 c_feat = QgsFeature()
                 c_feat.setGeometry(QgsGeometry.fromPointXY(midpoint))
-                c_feat.setAttributes([river_feature["t_ID"]])
+                c_feat.setAttributes([t_id])
                 center_sink.addFeature(c_feat, QgsFeatureSink.FastInsert)
+
+                # ✅ Update river feature with t_ID
+                if river_vector_layer is not None:
+                    river_fid = river_feature.id()
+                    field_index = river_vector_layer.fields().indexFromName("t_ID")
+                    if field_index != -1:
+                        river_vector_layer.changeAttributeValue(river_fid, field_index, t_id)
+
+        # ✅ Commit river layer edits
+        if river_vector_layer is not None and river_vector_layer.isEditable():
+            river_vector_layer.commitChanges()
 
         return {
             self.TRANSECTS: transect_dest_id,
             self.CENTER_POINTS: center_dest_id
         }
+
+
 
     def calculate_perpendicular_angle(self, line_start, line_end):
         dx = line_end.x() - line_start.x()
