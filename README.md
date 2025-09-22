@@ -197,14 +197,8 @@ Once a user has installed OpenRES and generated all required layers, they can be
 Description and the details of all the core functions of this plugin are available here: [Functions_description](help/Functions_description.md)
 
 ## Contributions
-1) Contribute to the software
-   
-    [Contribution guidelines for this project](help/CONTRIBUTING.md)
+1) Contribute to the software: [Contribution guidelines for this project](help/CONTRIBUTING.md)
 
-2) Report issues or problems with the software
-	
-	Please raise your issues here : <https://github.com/jollygoodjacob/OpenRES/issues>
+2) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
 
-3) Seek support
-
-	Please write to us: <jnesslage@ucmerced.edu> 
+3) Feel free to contact us: <jnesslage@ucmerced.edu> 
