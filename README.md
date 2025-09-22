@@ -204,7 +204,7 @@ Once a user has installed OpenRES and generated all required layers, they can be
 
 ## Functions description
 
-Description and the details of all the core functions of this plugin are available here: [Functions_description](help/Functions_description.md)
+Description and the details of all the core functions of this plugin are available here: [Description of Functions](help/Functions_description.md)
 
 ## Contributions
 1) Contribute to the software: [Contribution guidelines for this project](help/CONTRIBUTING.md)
