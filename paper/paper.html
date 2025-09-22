@@ -376,9 +376,9 @@ scale of river valleys (often many km long),</p>
 <div id="openres-audience" class="section level1">
 <h1>OpenRES Audience</h1>
 <p><code>OpenRES</code> is intended for students, researchers, and
-practitioners in river science, fluvial geomorphology, and watershed
-management who seek to extract hydrogeomorphic features from river
-corridors across user-defined spatial scales. While the tools were
+practitioners who seek to extract hydrogeomorphic features along river
+corridors at user-defined spatial scales to inform river science,
+fluvial geomorphology, and watershed management. While the tools were
 designed to extract features for classifying stream segments into
 Functional Process Zones to support testing of Riverine Ecosystem
 Synthesis hypotheses and tenets (see Thorp et al. 2023), the modular
@@ -386,12 +386,29 @@ components may be valuable for a wider range of applications.</p>
 </div>
 <div id="openres-functionality" class="section level1">
 <h1>OpenRES Functionality</h1>
-<p><code>OpenRES</code> consists of five modules, each of which is
-intended to be used sequentially to automate the extraction of nine
-hydrogeomorphic features:</p>
+<p>Prior to the use of the <code>OpenRES</code> plugin, users must
+acquire five geospatial layers for their watershed of interest - 1.) The
+core functionality of <code>OpenRES</code> is contained in five data
+extraction tools, each of which is intended to be used sequentially to
+automate the extraction of the nine hydrogeomorphic features for
+functional process zone classification of river networks:</p>
 <ul>
-<li><p><strong>Generate Transects</strong>:</p></li>
-<li><p><strong>Extract ELE, PRE, and GEO</strong>:</p></li>
+<li><p><strong>Generate Transects</strong>: The Generate Transects tool
+projects a perpendicular transect from the center of each user defined
+stream segment in a river network to the top of the river valley, as
+defined by the valley line layer. Transect generation is an iterative
+process where the tool extends a transect by a user defined amount per
+iteration per side, counts the number of intersections with the valley
+line layer, and does not stop generating until at least two
+intersections are found on both the left and right side of the river
+network layer. This tool takes as input a river network layer and a line
+layer that denotes the boundaries of the valley bottom and adjacent
+valleys, as well as several numerical inputs to define the distance the
+transects should extend by per iteration and the maximum distance to
+extend to (to prevent runaway calculations).</p></li>
+<li><p><strong>Extract ELE, PRE, and GEO</strong>: This tool takes as
+input a river network layer and a line layer that denotes the boundaries
+of the valley bottom and adjacent valleys.</p></li>
 <li><p><strong>Extract VW and VFW</strong>:</p></li>
 <li><p><strong>Extract LVS and RVS</strong>:</p></li>
 <li><p><strong>Extract DVS and SIN</strong>:</p></li>
