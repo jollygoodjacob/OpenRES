@@ -1,0 +1,54 @@
+---
+title: 'OpenRES: A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks'
+tags:
+  - QGIS
+  - PyQGIS
+  - riverine ecosystem synthesis
+  - functional process zones
+  - hydrogeomorphic
+authors:
+  - name: Jacob Nesslage
+    orcid: 0000-0000-0000-0000
+    affiliation: 1 
+  - name: Erin L. Hestir
+    orcid: 0000-0000-0000-0000
+    affiliation: 1
+
+affiliations:
+ - name: Department of Civil and Environmental Engineering, University of California, Merced, Merced, CA, USA
+   index: 1
+
+date: 15 May 2025
+bibliography: paper.bib
+---
+
+# Statement of need
+
+Accurate delineation and classification of river valley features are critical for geomorphic, ecological, and hydrological studies. However, existing tools for such analysis often rely on closed-source software, require high levels of manual input, or are embedded in complex workflows that limit reproducibility. `OpenRES` fills this gap by providing an open-source, modular, and GUI-accessible solution that integrates seamlessly with QGIS.
+
+# Background
+
+Riverine ecosystems can be conceptually understood as hydrogeomorphic patches that occur at nested, hierarchical spatiotemporal scales. At the scale of river valleys (often many km long),
+
+# OpenRES Audience
+
+`OpenRES` is intended for students, researchers, and practitioners who seek to extract hydrogeomorphic features along river corridors at user-defined spatial scales to inform river science, fluvial geomorphology, and watershed management. While the tools were designed to extract features for classifying stream segments into Functional Process Zones to support testing of Riverine Ecosystem Synthesis hypotheses and tenets (see Thorp et al. 2023), the modular components may be valuable for a wider range of applications.
+
+# OpenRES Functionality
+
+Prior to the use of the `OpenRES` plugin, users must acquire five geospatial layers for their watershed of interest - 1.) 
+The core functionality of `OpenRES` is contained in five data extraction tools, each of which is intended to be used sequentially to automate the extraction of the nine hydrogeomorphic features for functional process zone classification of river networks:
+
+-   **Generate Transects**: The Generate Transects tool projects a perpendicular transect from the center of each user defined stream segment in a river network to the top of the river valley, as defined by the valley line layer. Transect generation is an iterative process where the tool extends a transect by a user defined amount per iteration per side, counts the number of intersections with the valley line layer, and does not stop generating until at least two intersections are found on both the left and right side of the river network layer. This tool takes as input a river network layer and a line layer that denotes the boundaries of the valley bottom and adjacent valleys, as well as several numerical inputs to define the distance the transects should extend by per iteration and the maximum distance to extend to (to prevent runaway calculations).
+
+-   **Extract ELE, PRE, and GEO**: This tool takes as input a river network layer and a line layer that denotes the boundaries of the valley bottom and adjacent valleys. 
+
+-   **Extract VW and VFW**:
+
+-   **Extract LVS and RVS**:
+
+-   **Extract DVS and SIN**:
+
+# Acknowledgements
+
+# References
