@@ -19,7 +19,17 @@ If you use this plugin in your work, please cite it as:
 
 This plugin enables extraction of nine key hydrogeomorphic features
 along user-defined segments of river networks for the purpose of
-functional process zone classification.
+functional process zone classification. These features are:
+
+1. Elevation (ELE)
+2. Mean Annual Precipitation (PRE)
+3. Geology (GEO)
+4. Valley Floor Width (VFW)
+5. Valley Width (VW)
+6. Right Valley Slope (RVS)
+7. Left Valley Slope (LVS)
+8. Down Valley Slope (DVS)
+9. Sinuosity (SIN)
 
 There are five required datasets needed for extraction of
 hydrogeomorphic features along a user's watershed of interest:
