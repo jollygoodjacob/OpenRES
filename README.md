@@ -202,7 +202,7 @@ Once a user has installed OpenRES and generated all required layers, they can be
 
 ### After OpenRES: Hierarchical Classification into FPZs
 
-## Functions description
+## Functions Description
 
 Description and the details of all the core functions of this plugin are available here: [Description of Functions](help/Functions_description.md)
 
