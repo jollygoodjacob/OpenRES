@@ -35,12 +35,7 @@ hydrogeomorphic features along a user's watershed of interest:
 
 > **Note:** OpenRES requires QGIS version \>=3.28.
 
-**Official QGIS Plugin Installation** :
-
-Open QGIS -\> Plugins -\> Manage and Install Plugins... -\> select All
-tab -\> search for OpenRES --\> select and install plugin
-
-**Alternative way (offline installation)** :
+**Offline installation from .zip file** :
 
 Go to releases of this repository -\> select desired version -\>
 download the .zip file. Open QGIS -\> Plugins -\> Manage and Install
