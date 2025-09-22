@@ -35,12 +35,7 @@ hydrogeomorphic features along a user's watershed of interest:
 
 > **Note:** OpenRES requires QGIS version \>=3.28.
 
-**Official QGIS Plugin Installation** :
-
-Open QGIS -\> Plugins -\> Manage and Install Plugins... -\> select All
-tab -\> search for OpenRES --\> select and install plugin
-
-**Alternative way (offline installation)** :
+**Offline installation from .zip file** :
 
 Go to releases of this repository -\> select desired version -\>
 download the .zip file. Open QGIS -\> Plugins -\> Manage and Install
@@ -196,3 +191,14 @@ Once a user has installed OpenRES and generated all required layers, they can be
 #### Step 12: Extract SIN and DVS
 
 ### After OpenRES: Hierarchical Classification into FPZs
+
+## Functions description
+
+Description and the details of all the core functions of this plugin are available here: [Functions_description](help/Functions_description.md)
+
+## Contributions
+1) Contribute to the software: [Contribution guidelines for this project](help/CONTRIBUTING.md)
+
+2) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
+
+3) Feel free to contact us: <jnesslage@ucmerced.edu> 
