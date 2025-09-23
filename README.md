@@ -48,7 +48,7 @@ These nine features can then be used to classify stream networks using hierarchi
 To extract these features using `OpenRES` in QGIS, there are five required datasets needed prior to the extraction of
 hydrogeomorphic features along a user's watershed of interest:
 
-**1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest.    
+**1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest. The stream network should be a MultiLineString object and the river segments should be segmented to a user-defined length (usually 5km-10km for FPZs) prior to use in OpenRES.   
 
 **2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include 1.) delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2, Sechu et al 2021), 2.) manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, 3.) generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and 4.) various vector opertations (intersection, difference, polygon to line) to obtain a line layer that contains both the valley floor boundaries and the boundaries of intersecting microsheds that overlap with the valley floor boundaries. Thus, this layer approximates the boundaries of the valley floor and the tops of the valley that confines the river network.
 
@@ -65,8 +65,10 @@ hydrogeomorphic features along a user's watershed of interest:
 
 **Offline installation from .zip file** :
 
-Go to releases of this repository -\> select desired version -\>
-download the .zip file. Open QGIS -\> Plugins -\> Manage and Install
+-  Go to releases of this repository -\> select desired version -\>
+download the .zip file. 
+
+-   Open QGIS -\> Plugins -\> Manage and Install
 Plugins... -\> install from ZIP tab --\> select the downloaded zip --\>
 install plugin (ignore warnings, if any).
 
@@ -91,7 +93,7 @@ Once setup is complete, users can follow the steps below to generate transects a
 
 #### Step 1: Generate transects
 
-
+Begin by generating cross-valley transects for each stream segment using the "Generate Transects" tool in the Processing Toolbar.
 
 > **Note:** After transect generation, users should validate that each
 > transect intersects valley bottoms and valleys properly. Due to
