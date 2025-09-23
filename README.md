@@ -108,7 +108,7 @@ Description and the details of all the core functions of this plugin are availab
 
 2) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
 
-3) Feel free to contact us: <jnesslage@ucmerced.edu>
+3) For questions about the OpenRES plugin, contact: <jnesslage@ucmerced.edu>
 
 ## References
 
