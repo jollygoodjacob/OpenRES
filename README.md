@@ -46,15 +46,14 @@ hydrogeomorphic features along a user's watershed of interest:
 
 **1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest.    
 
-**2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2,, manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and vector opertations (intersection, differemce, polygon to line) to obtain a line layer that 
+**2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include 1.) delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2, Sechu et al 2021), 2.) manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, 3.) generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and 4.) various vector opertations (intersection, differemce, polygon to line) to obtain a line layer that contains both the valley floor boundaries and the boundaries of intersecting microsheds that overlap with the valley floor boundaries. This layer approxiamtes the boundaries of the valley floor and the tops of the valley that confines the river network.
 
-**3.  A mean annual precipitation layer (.geotiff)**
+**3.  A mean annual precipitation layer (.geotiff)**:
 
-**4.  A Digital Elevation Model (DEM) (.geotiff)**
+**4.  A Digital Elevation Model (DEM) (.geotiff)**: This is a digital elevation model of the watershed of interest, often obtained from remote sensing platforms. Common datasets include 30m SRTM (global) DEMs or the 10m 3DEP (U.S.) DEMs.
 
-**5.  A geology layer (.shp)**
+**5.  A geology layer (.shp)**: This is a geology polygon layer that contains geologic classification of surficial or underlying geology. Often, this layer is a simplified version of the source geology layer that is classified into bedrock, mixed, or alluvial classes. In the U.S., these can be obtained from USGS; internationally, most governments can provide a publically accessible vector dataset for this analysis.
 
-`OpenRES`  
 
 ## Installation
 
