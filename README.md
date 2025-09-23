@@ -97,7 +97,7 @@ Once a user has installed OpenRES and generated all required layers, they can be
 
 ### After OpenRES: Hierarchical Classification into FPZs
 
-## Functions Description
+## Description of Functions
 
 Description and the details of all the core functions of this plugin are available here: [Description of Functions](help/Functions_description.md)
 
@@ -106,4 +106,8 @@ Description and the details of all the core functions of this plugin are availab
 
 2) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
 
-3) Feel free to contact us: <jnesslage@ucmerced.edu> 
+3) Feel free to contact us: <jnesslage@ucmerced.edu>
+
+## References
+
+
