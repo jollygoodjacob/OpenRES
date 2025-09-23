@@ -11,3 +11,4 @@ hasProcessingProvider=yes
 homepage=https://github.com/jollygoodjacob/OpenRES
 repository=https://github.com/jollygoodjacob/OpenRES
 tracker=https://github.com/jollygoodjacob/OpenRES/issues
+tags=hydrology,geomorphology,river,watershed,restoration,FPZ,hydrogeomorphic,OpenRES
