@@ -17,7 +17,7 @@ If you use this plugin in your work, please cite it as:
 
 ## General Information
 
-`OpenRES` enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support Functional Process Zone (FPZ) classification. Functional Process Zone (FPZ) classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuum, FPZ classification recognizes that rivers are composed of a diverse set of reaches, each shaped by different landscape and hydrologic processes. These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports.
+**OpenRES** enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support **Functional Process Zone (FPZ)** classification. **Functional Process Zone (FPZ)** classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuum, FPZ classification recognizes that rivers are composed of a diverse set of reaches, each shaped by different landscape and hydrologic processes. These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports.
 
 The nine features historically used to define Functional Process Zones are:
 
@@ -39,7 +39,7 @@ The nine features historically used to define Functional Process Zones are:
   
   **9.  Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
 
-By integrating hydrology, topography, geology, and climate, FPZs support more informed decisions in watershed management, restoration planning, and ecological conservation.
+By integrating hydrology, topography, geology, and climate, FPZs can inform decisions in watershed management, restoration planning, and ecological conservation.
 
 ## Data Prerequisites
 
