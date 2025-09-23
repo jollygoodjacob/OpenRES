@@ -21,7 +21,7 @@ If you use this plugin in your work, please cite it as:
 
 **Functional Process Zone (FPZ)** classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuum, FPZ classification recognizes that rivers are composed of a diverse set of reaches, each shaped by different landscape and hydrologic processes. These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports.
 
-The nine features historically used to define Functional Process Zones are:
+The nine features historically used to define Functional Process Zones, which are captured in the core functionality of OpenRES, are:
 
   **1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
   
@@ -52,7 +52,7 @@ hydrogeomorphic features along a user's watershed of interest:
 
 **2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include 1.) delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2, Sechu et al 2021), 2.) manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, 3.) generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and 4.) various vector opertations (intersection, differemce, polygon to line) to obtain a line layer that contains both the valley floor boundaries and the boundaries of intersecting microsheds that overlap with the valley floor boundaries. This layer approxiamtes the boundaries of the valley floor and the tops of the valley that confines the river network.
 
-**3.  A mean annual precipitation layer (.geotiff)**:
+**3.  A mean annual precipitation layer (.geotiff)**: This is a rasterized mean annual precipitation layer. Examples include but are not limited to the PRISM dataset (800m) in the U.S. or WorldClim (5km) for global studies.
 
 **4.  A Digital Elevation Model (DEM) (.geotiff)**: This is a digital elevation model of the watershed of interest, often obtained from remote sensing platforms. Common datasets include 30m SRTM (global) DEMs or the 10m 3DEP (U.S.) DEMs.
 
@@ -80,9 +80,18 @@ install plugin (ignore warnings, if any).
 
 ### OpenRES Application
 
+The OpenRES plugin guides users through a step-by-step workflow to extract hydrogeomorphic features from river networks.
+
+Before starting, ensure that:
+- All required input layers (e.g., stream network, valley lines, DEM, geology, and precipitation data) are correctly prepared.
+- The OpenRES plugin is installed and enabled in QGIS.
+- The Processing Toolbox is open.
+
+Once setup is complete, users can follow the steps below to generate transects and extract the nine key hydrogeomorphic features.
 
 #### Step 1: Generate transects
-Once a user has installed OpenRES and generated all required layers, they can begin using the OpenRES application through the Processing Toolbar in QGIS.
+
+
 
 > **Note:** After transect generation, users should validate that each
 > transect intersects valley bottoms and valleys properly. Due to
