@@ -17,29 +17,30 @@ If you use this plugin in your work, please cite it as:
 
 ## General Information
 
-This plugin enables extraction of nine key hydrogeomorphic features
-along user-defined segments of river networks for the purpose of
+`OpenRES` enables extraction of nine required hydrogeomorphic features
+along user-defined segments of river networks (typically 5km - 10km) for the purpose of
 functional process zone classification. These features are:
 
-1. Elevation (ELE)
-2. Mean Annual Precipitation (PRE)
-3. Geology (GEO)
-4. Valley Floor Width (VFW)
-5. Valley Width (VW)
-6. Right Valley Slope (RVS)
-7. Left Valley Slope (LVS)
-8. Down Valley Slope (DVS)
-9. Sinuosity (SIN)
+**1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
+**2.  Mean Annual Precipitation (PRE)**: Mean annual precipitation value (often in mm), extracted from the center of each stream segment.           
+**3.  Geology (GEO)**: Geology field value, extracted from the center of each stream segment.      
+**4.  Valley Floor Width (VFW)**: Width (in meters) between the first intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the first intersection of the valley line layer should correspond with the boundaries of the valley floor.        
+**5.  Valley Width (VW)**: Width (in meters) between the second intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the second intersection of the valley line layer should correspond with tops of hydrologically connected basins that intersect the valley floor, which approximates the tops of valleys.           
+**6.  Right Valley Slope (RVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the right side of the river, as defined from a downstream direction. This essentially is the slope between the tops of the valley and the valley bottom on the right side of the river.
+**7.  Left Valley Slope (LVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the left side of the river, as defined looking downstream. This essentially is the slope between the tops of the valley and the valley bottom on the left side of the river. 
+**8.  Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
+**9.  Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
 
-There are five required datasets needed for extraction of
+To extract these features using `OpenRES` in QGIS, there are five required datasets needed prior to the extraction of
 hydrogeomorphic features along a user's watershed of interest:
 
-1.  A geomorphically corrected stream network (.shp)
-2.  A line layer denoting the boundaries of the valley floor and the
-    valleys (.shp)
-3.  A mean annual precipitation layer (.geotiff)
-4.  A Digital Elevation Model (DEM) (.geotiff)
-5.  A geology layer (.shp)
+**1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest.    
+**2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2,, manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and vector opertations (intersection, differemce, polygon to line) to obtain a line layer that 
+**3.  A mean annual precipitation layer (.geotiff)**
+**4.  A Digital Elevation Model (DEM) (.geotiff)**
+**5.  A geology layer (.shp)**
+
+`OpenRES`  
 
 ## Installation
 
@@ -58,133 +59,12 @@ install plugin (ignore warnings, if any).
 > sequential manner. Sample data for hydrogeomorphic feature extraction
 > is provided in [sample_data](/sample_data/) folder.
 
-### General data preparation steps
-
-Install the latest version of QGIS (with access to Processing Toolbox).
-Also, install the WhiteboxTools plugin for QGIS or install WhiteboxTools
-standalone via GitHub.
-
-Download and prepare the relevant datasets from the [NRCS Geospatial
-Data Gateway](https://gdg.sc.egov.usda.gov/). In my experience, this is
-the best single location to obtain each of these required data sets.
-
-1.  Go to <https://datagateway.nrcs.usda.gov/>
-2.  Click **"Get Data"**
-3.  Under **Search Criteria**, select your area of interest using:
-    -   **By State**
-    -   **By County**
-    -   **By HUC (Hydrologic Unit Code)** --- ✅ *Recommended for
-        watershed work*
-    -   **By Custom Shapefile** --- upload your own AOI
-4.  Click **Continue (Step 2: Select Data Sets)**
-5.  Check the boxes for relevant datasets (see below)
-6.  Click **Continue**, provide your email address, and submit
-7.  You'll receive a download link via email
-
-#### Step 0: Identify watershed of interest and acquire watershed boundary layers
-
-**Goal:** Get HUC8 watershed shapefile.
-
-**In QGIS:**
-
-1.  Load the **HUC8 shapefile** (`.shp`) via
-    `Layer > Add Layer > Add Vector Layer`.
-2.  Use the **Select Features** tool to select your watershed of
-    interest.
-3.  Right-click the layer \> `Export > Save Selected Features As...` to
-    create a new layer.
-
-#### Step 1: Acquire, mosaic, and clip elevation layer to watershed of interest
-
-**Goal:** Prepare DEM from NED/3DEP.
-
-**In QGIS:**
-
-1.  **Mosaic DEM tiles:**
-    -   `Raster > Miscellaneous > Merge`
-    -   Input: All DEM `.tif` files
-2.  **Clip to watershed:**
-    -   `Raster > Extraction > Clip Raster by Mask Layer`
-    -   Input layer: Merged DEM
-    -   Mask layer: Watershed shapefile
-
-#### Step 2: Acquire, mosaic, and clip precipitation layer to watershed of interest
-
-**In QGIS:**
-
-1.  **Mosaic PRISM rasters:**
-    -   `Raster > Miscellaneous > Merge`
-    -   Input: PRISM `.bil`, `.tif`, or `.asc` files
-2.  **Clip to watershed:**
-    -   Same as DEM: `Raster > Extraction > Clip Raster by Mask Layer`
-
-#### Step 3: Acquire, clip, and simplify geology layer for watershed of interest
-
-**In QGIS:**
-
-1.  Load **USGS geology shapefile**.
-2.  Clip to watershed:
-    -   `Vector > Geoprocessing Tools > Clip`
-3.  Simplify geometry (optional):
-    -   `Vector > Geometry Tools > Simplify Geometry`
-    -   Choose a tolerance (e.g., 50--100 meters depending on scale)
-
-#### Step 4: Create a geomorphically corrected stream network
-
-**In QGIS using the WhiteboxTools plugin:**
-
-1.  **Fill Depressions:**
-    -   `WhiteboxTools > Hydrological Tools > Fill Depressions (Wang & Liu)`
-2.  **Generate Flow Direction:**
-    -   `WhiteboxTools > Flow Pointer > D8 Flow Pointer`
-3.  **Generate Flow Accumulation:**
-    -   `WhiteboxTools > Flow Accumulation > D8 Flow Accumulation`
-4.  **Extract Streams:**
-    -   `WhiteboxTools > Stream Network Analysis > Extract Streams`
-    -   Set appropriate threshold (e.g., 50,000-100,000 cells for a 10m
-        DEM works well to capture major named rivers, in my experience)
-5.  **Convert Raster to Vector Streams:**
-    -   `WhiteboxTools > Stream Network Analysis > Raster Streams to Vector`
-
-#### Step 5: Create a valley floor layer
-
-**Option 1: Manual Digitization**
-
-1.  Load a **hillshade** layer for visual reference.
-2.  Use `Add Line Layer` to draw boundaries of the valley floor.
-3.  Save as a new shapefile.
-
-**Option 2: Semi-Automated via Cost Accumulation using Slope ()**
-
-1.  **Calculate Slope:**
-
-    -   `Raster > Terrain Analysis > Slope`
-
-2.  **Extract low-slope areas:**
-
-    -   `Raster Calculator`: e.g. `slope@1 < 5`
-
-3.  **Convert to polygon:**
-
-    -   `Raster > Conversion > Polygonize`
-
-4.  **Buffer stream layer** (optional):
-    `Vector > Geoprocessing > Buffer`
-
-5.  **Extract features within buffer** to isolate valley floor areas.
-
-6.  **Convert polygons to lines** (for valley edges):
-
-    -   `Vector > Geometry Tools > Polygon to Lines`
-
-#### Step 6: Create microsheds / isobasins layer
-
-#### Step 7: Create line layer denoting valley bottom and valley boundaries
-
-### OpenRES application
 
 
-#### Step 8: Generate transects
+### OpenRES Application
+
+
+#### Step 1: Generate transects
 Once a user has installed OpenRES and generated all required layers, they can begin using the OpenRES application through the Processing Toolbar in QGIS.
 
 > **Note:** After transect generation, users should validate that each
@@ -192,13 +72,13 @@ Once a user has installed OpenRES and generated all required layers, they can be
 > geometry issues, it is possible that unexpected intersections can
 > occur.
 
-#### Step 9: Extract ELE, PRE, and GEO
+#### Step 2: Extract ELE, PRE, and GEO
 
-#### Step 10: Extract VFW and VW
+#### Step 3: Extract VFW and VW
 
-#### Step 11: Extract LVS and RVS
+#### Step 4: Extract LVS and RVS
 
-#### Step 12: Extract SIN and DVS
+#### Step 5: Extract SIN and DVS
 
 ### After OpenRES: Hierarchical Classification into FPZs
 
