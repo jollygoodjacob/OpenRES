@@ -17,27 +17,41 @@ If you use this plugin in your work, please cite it as:
 
 ## General Information
 
-`OpenRES` enables extraction of nine required hydrogeomorphic features
-along user-defined segments of river networks (typically 5km - 10km) for the purpose of
-functional process zone classification. These features are:
+`OpenRES` enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support Functional Process Zone (FPZ) classification. FPZ classification groups parts of a river that share similar physical and hydrological characteristics. This helps scientists and managers better understand river behavior, plan restoration efforts, and support ecological assessments.
 
-**1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
-**2.  Mean Annual Precipitation (PRE)**: Mean annual precipitation value (often in mm), extracted from the center of each stream segment.           
-**3.  Geology (GEO)**: Geology field value, extracted from the center of each stream segment.      
-**4.  Valley Floor Width (VFW)**: Width (in meters) between the first intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the first intersection of the valley line layer should correspond with the boundaries of the valley floor.        
-**5.  Valley Width (VW)**: Width (in meters) between the second intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the second intersection of the valley line layer should correspond with tops of hydrologically connected basins that intersect the valley floor, which approximates the tops of valleys.           
-**6.  Right Valley Slope (RVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the right side of the river, as defined from a downstream direction. This essentially is the slope between the tops of the valley and the valley bottom on the right side of the river.
-**7.  Left Valley Slope (LVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the left side of the river, as defined looking downstream. This essentially is the slope between the tops of the valley and the valley bottom on the left side of the river. 
-**8.  Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
-**9.  Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
+These nine features are:
+
+  **1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
+  
+  **2.  Mean Annual Precipitation (PRE)**: Mean annual precipitation value (often in mm), extracted from the center of each stream segment.    
+  
+  **3.  Geology (GEO)**: Geology field value, extracted from the center of each stream segment.      
+  
+  **4.  Valley Floor Width (VFW)**: Width (in meters) between the first intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the first intersection of the valley line layer should correspond with the boundaries of the valley floor.      
+  
+  **5.  Valley Width (VW)**: Width (in meters) between the second intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the second intersection of the valley line layer should correspond with tops of hydrologically connected basins that intersect the valley floor, which approximates the tops of valleys. 
+  
+  **6.  Right Valley Slope (RVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the right side of the river, as defined from a downstream direction. This essentially is the slope between the tops of the valley and the valley bottom on the right side of the river.
+  
+  **7.  Left Valley Slope (LVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the left side of the river, as defined looking downstream. This essentially is the slope between the tops of the valley and the valley bottom on the left side of the river. 
+  
+  **8.  Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
+  
+  **9.  Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
+
+## Data Prerequisites
 
 To extract these features using `OpenRES` in QGIS, there are five required datasets needed prior to the extraction of
 hydrogeomorphic features along a user's watershed of interest:
 
 **1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest.    
+
 **2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2,, manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and vector opertations (intersection, differemce, polygon to line) to obtain a line layer that 
+
 **3.  A mean annual precipitation layer (.geotiff)**
+
 **4.  A Digital Elevation Model (DEM) (.geotiff)**
+
 **5.  A geology layer (.shp)**
 
 `OpenRES`  
