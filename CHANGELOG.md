@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 - Support for QGIS 3.28 only
 - Core functionality enables automated extraction of nine features for each stream segment in a river network: 
 elevation, precipitation, geology, valley width, valley floor width, left valley slope, right valley slope,
-down valley slope, and sinuosity.
+down valley slope, and sinuosity. See OpenRES/help/Functions_description.md for full description of each function.
 
 
 ### Known Issues
