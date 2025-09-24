@@ -66,41 +66,169 @@ install plugin (ignore warnings, if any).
 > sequential manner. Sample data for hydrogeomorphic feature extraction
 > is provided in [sample_data](/sample_data/) folder.
 
-### OpenRES Application
 
-The OpenRES plugin guides users through a step-by-step workflow to extract hydrogeomorphic features from river networks.
+---
 
-Before starting, ensure that:
-- All required input layers (e.g., stream network, valley lines, DEM, geology, and precipitation data) are correctly prepared.
-- The OpenRES plugin is installed and enabled in QGIS.
-- The Processing Toolbox is open.
+### Prerequisites
 
-Once setup is complete, users can follow the steps below to generate transects and extract the nine key hydrogeomorphic features.
+Before starting the OpenRES workflow:
 
-#### Step 1: Generate transects
+-  Ensure all input data are properly prepared:
+  - Stream network (polyline)
+  - Valley boundaries (lines)
+  - Elevation raster (DEM)
+  - Precipitation raster
+  - Geology polygons with a classification field (e.g., `LITH`, `TYPE`, or `GEO`)
+-  The **OpenRES** plugin is installed and enabled in QGIS.
+-  The **Processing Toolbox** is open (via `Processing > Toolbox`).
 
-Begin by generating cross-valley transects for each stream segment using the **"[1] Generate Transects"** tool under **Processing Toolbar > OpenRES > Data Extraction**.
+---
 
--   Search for: "[1] Generate Transects".
--   Double-click to open the tool.
--   Fill out the input fields:
--   Select the river network layer.
--   Select the valley lines layer.
--   Optionally adjust Extension Increment and Max Length.
--   Choose where to save the Transects and Center Points outputs.
+### Overview of Extracted Features
 
-> **Note:** After transect generation, users should validate that each
-> transect intersects valley bottoms and valleys properly. Due to
-> geometry issues between the valley lines layer and the transects, it is possible that unexpected intersections can
-> occur.
+The following 9 features will be extracted through 5 tools:
 
-#### Step 2: Extract ELE, PRE, and GEO
+| Step | Feature                | Attribute Code |
+|------|------------------------|----------------|
+| 1    | Transects & segment centers | `t_ID`         |
+| 2    | Elevation              | `ELE`          |
+| 2    | Precipitation          | `PRE`          |
+| 2    | Geology class          | `GEO`          |
+| 3    | Valley Floor Width     | `VFW`          |
+| 3    | Valley Width           | `VW`           |
+| 4    | Left/Right Side Slope  | `LVS`, `RVS`   |
+| 5    | Down-Valley Slope      | `DVS`          |
+| 5    | Sinuosity              | `SIN`          |
 
-#### Step 3: Extract VFW and VW
+---
 
-#### Step 4: Extract LVS and RVS
+### Step 1: Generate Transects
 
-#### Step 5: Extract SIN and DVS
+Use: `"[1] Generate Transects"`  
+Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+####  Inputs
+- **River Network Layer** (polyline)
+- **Valley Lines Layer** (line)
+- **Extension Increment** (optional, default = 5m)
+- **Max Length** (optional, default = 200m)
+
+####  Outputs
+- **Transects** – Multiline layer across the valley
+- **Segment Centers** – Points at the center of each transect
+
+####  Notes
+- Each river segment gets a unique `t_ID`.
+- Transects are generated perpendicular to the river segment direction.
+- **Verify** that transects intersect both valley lines properly; occasional mismatches may occur due to geometry errors.
+- Stream network will also be updated to include the `t_ID` field.
+
+---
+
+### Step 2: Extract Elevation, Precipitation, and Geology
+
+Use: `"[2] Extract Point Data"`  
+Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+####  Inputs
+- **Segment Centers Layer** (from Step 1)
+- **Elevation Raster**
+- **Precipitation Raster**
+- **Geology Polygon Layer**
+- **Geology Field** (attribute from polygon layer, e.g., `GEO` or `LITH`)
+
+####  Output
+- **Segment Centers with ELE, PRE, GEO** – Updated point layer
+
+####  Notes
+- Elevation and precipitation are sampled directly from rasters.
+- Geology is assigned from intersecting polygon based on the selected field.
+- Missing data (e.g., no polygon overlap or invalid raster) will be filled with fallback values (e.g., -9999 or "No Data").
+
+---
+
+###  Step 3: Extract Valley Width (VW) and Valley Floor Width (VFW)
+
+Use: `"[3] Extract VW and VFW"`  
+Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+####  Inputs
+- **Transects Layer** (from Step 1)
+- **Segment Centers Layer** (from Step 2)
+- **Valley Lines Layer** (same as Step 1)
+- **Stream Network Layer** (same as Step 1)
+
+####  Outputs
+- **Left/Right VFW Reference Points**
+- **Left/Right VW Reference Points**
+- **Updated Segment Centers** with:
+  - `VFW` – Valley floor width
+  - `VW` – Valley width
+
+####  Notes
+- Uses intersection logic to find points where transects intersect valley floor and valley edge.
+- Then calculates distance between these intersections to compute `VFW` and `VW`.
+- Reference points (left/right) are saved as point layers for inspection or QA/QC.
+
+---
+
+###  Step 4: Extract Side Slopes (LVS and RVS)
+
+Use: `"[4] Extract LVS and RVS"`  
+Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+####  Inputs
+- **Segment Centers Layer** (from Step 3)
+- **Left VW / VFW Reference Points**
+- **Right VW / VFW Reference Points**
+- **Elevation Raster**
+
+####  Output
+- **Segment Centers** updated with:
+  - `LVS` – Left valley side slope (%)
+  - `RVS` – Right valley side slope (%)
+
+####  Notes
+- Slopes are computed as the elevation difference between VFW and VW reference points on each side divided by the horizontal distance.
+- All calculations are in percent slope (`rise/run * 100`).
+- Output replaces the segment center layer with updated slope fields.
+
+---
+
+###  Step 5: Extract Down-Valley Slope and Sinuosity (DVS and SIN)
+
+Use: `"[5] Extract DVS and SIN"`  
+Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+####  Inputs
+- **Segment Centers Layer** (from Step 4)
+- **Stream Network Layer** (with `t_ID`)
+- **Elevation Raster**
+
+####  Output
+- **Final OpenRES Segment Centers** with:
+  - `DVS` – Down-valley slope (%)
+  - `SIN` – Sinuosity (unitless)
+
+####  Notes
+- For each stream segment:
+  - Elevation is sampled at start and end points.
+  - `DVS` is calculated as `(start - end) / length * 100`.
+  - `SIN` is the ratio of actual segment length to straight-line distance.
+- Features with insufficient geometry or elevation data are skipped.
+
+---
+
+###  Completion
+
+At the end of Step 5, your segment center point layer will contain **all 9 hydrogeomorphic attributes**:
+
+- `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `LVS`, `RVS`, `DVS`, `SIN`
+
+These outputs can now be used for classification, regionalization, ecological modeling, or mapping hydrogeomorphic units.
+
+---
+
 
 ### After OpenRES: Hierarchical Classification into FPZs
 
@@ -110,6 +238,8 @@ Begin by generating cross-valley transects for each stream segment using the **"
 1) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
 
 2) For questions about the OpenRES plugin, contact: <jnesslage@ucmerced.edu>
+
+© 2025 Jacob Nesslage | OpenRES is licensed under the GPL v3  
 
 ## References
 
