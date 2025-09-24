@@ -271,4 +271,17 @@ At the end of Step 5, your segment center point layer will contain **all 9 hydro
 
 ## References
 
+Elgueta, Anaysa, Martin C Thoms, Konrad Górski, Gustavo Díaz, and Evelyn M Habit. 2019. “Functional Process Zones and Their Fish Communities in Temperate Andean River Networks.” River Research and Applications 35 (10): 1702–11.
+
+Hestir, Erin L. 2007. “Functional Process Zones and the River Continuum Concept.” Center for Watershed Sciences, University of California, Davis, Los Angeles, USA.
+
+Maasri, Alain, James H Thorp, Jon K Gelhaus, Flavia Tromboni, Sudeep Chandra, and Scott J Kenner. 2019. “Communities Associated with the Functional Process Zone Scale: A Case Study of Stream Macroinvertebrates in Endorheic Drainages.” Science of the Total Environment 677: 184–93.
+
+Thorp, James H, Martin C Thoms, and Michael D Delong. 2006. “The Riverine Ecosystem Synthesis: Biocomplexity in River Networks across Space and Time.” River Research and Applications 22 (2): 123–47.
+
+Thorp, James H, Martin C Thoms, and Michael D Delong. 2010. The Riverine Ecosystem Synthesis: Toward Conceptual Cohesiveness in River Science. Elsevier.
+
+Thorp, James H, Martin C Thoms, Michael D Delong, and Alain Maasri. 2023. “The Ecological Nature of Whole River Macrosystems: New Perspectives from the Riverine Ecosystem Synthesis.” Frontiers in Ecology and Evolution 11: 1184433.
+
+Williams, Bradley S, Ellen D’Amico, Jude H Kastens, James H Thorp, Joseph E Flotemersch, and Martin C Thoms. 2013. “Automated Riverine Landscape Characterization: GIS-Based Tools for Watershed-Scale Research, Assessment, and Management.” Environmental Monitoring and Assessment 185: 7485–99.
 
