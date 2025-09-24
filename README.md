@@ -1,8 +1,6 @@
 # Open Riverine Ecosystem Synthesis (OpenRES):
 
-## A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
-
-### A Python based [QGIS](https://qgis.org/en/site/index.html) plugin 
+## A [QGIS](https://qgis.org/en/site/index.html) plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
 [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
 [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
@@ -17,11 +15,11 @@ If you use this plugin in your work, please cite it as:
 
 ## General Information
 
-**OpenRES** enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support **Functional Process Zone (FPZ)** classification. 
+**OpenRES** enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support classification of river networks into **Functional Process Zones (FPZs)**.  
 
-**Functional Process Zone (FPZ)** classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuum, FPZ classification recognizes that rivers are composed of a diverse set of reaches, each shaped by different landscape and hydrologic processes. These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports.
+**Functional Process Zone (FPZ)** classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuous longitudinal gradient of changing physical conditions, FPZ classification recognizes that rivers are composed of a discontinuous set of hydrogeomorphic patches, each shaped by different landscape and hydrologic processes ([Hestir 2007](https://www.researchgate.net/profile/Erin-Hestir/publication/265026989_Functional_Process_Zones_and_the_River_Continuum_Concept/links/546248c00cf2c0c6aec1ade8/Functional-Process-Zones-and-the-River-Continuum-Concept.pdf)). These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports. After classifying a river network in FPZs, research questions posed by the tenets of the Riverine Ecosystem Synthesis hypothesis ([Thorp et al. 2006](https://onlinelibrary.wiley.com/doi/abs/10.1002/rra.901), [Thorp et al. 2023](https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2023.1184433/full)) can be explored.
 
-The nine features historically used to define Functional Process Zones, which are captured in the core functionality of OpenRES, are:
+The nine required features historically used to define Functional Process Zones (see [Williams et al. 2013](https://link.springer.com/article/10.1007/s10661-013-3114-6)), which are captured in the core functionality of OpenRES, are:
 
   **1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
   
@@ -97,7 +95,7 @@ Begin by generating cross-valley transects for each stream segment using the "Ge
 
 > **Note:** After transect generation, users should validate that each
 > transect intersects valley bottoms and valleys properly. Due to
-> geometry issues, it is possible that unexpected intersections can
+> geometry issues between the valley lines layer and the transects, it is possible that unexpected intersections can
 > occur.
 
 #### Step 2: Extract ELE, PRE, and GEO
