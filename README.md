@@ -63,9 +63,16 @@ install plugin (ignore warnings, if any).
 ## Example usage: Eerste River catchment, South Africa
 
 > **Note:** All the following processing steps should be done in a
-> sequential manner. Sample data for hydrogeomorphic feature extraction
+> sequential manner, following the instructions below. Sample data for hydrogeomorphic feature extraction
 > is provided in [sample_data](/sample_data/) folder.
 
+To demonstrate the use of OpenRES, we have provided a dataset from the Eerste River catchment, a small watershed located in the Greater Cape Floristic Region of South Africa. 
+
+<div style="text-align: center;">
+  <img src="imgs/Eerste_watershed.png" alt="Eerste River catchment, South Africa" width="600"/>
+</div>
+
+The Eerste River originates in the Jonkershoek Mountains, part of the Hottentots-Holland mountain range, and flows westward through the Stellenbosch area before reaching the False Bay coast near Strand. It drains a catchment area of approximately 390 km². Dominated by fynbos vegetation, the area hosts numerous endemic plant species and is under increasing pressure from urban development, invasive species, and agricultural runoff.
 
 ---
 
@@ -86,7 +93,7 @@ Before starting the OpenRES workflow:
 
 ### Overview of Extracted Features
 
-The following 9 features will be extracted through 5 tools:
+The following nine features will be extracted across the Eerste River catchment using OpenRES tools:
 
 | Step | Feature                | Attribute Code |
 |------|------------------------|----------------|
@@ -106,6 +113,10 @@ The following 9 features will be extracted through 5 tools:
 
 Use: `"[1] Generate Transects"`  
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+<div style="text-align: center;">
+  <img src="imgs/generate_transects_window.png" alt="" width="600"/>
+</div>
 
 ####  Inputs
 - **River Network Layer** (polyline)
@@ -130,6 +141,10 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[2] Extract Point Data"`  
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
+<div style="text-align: center;">
+  <img src="imgs/extract_point_window.png" alt="" width="600"/>
+</div>
+
 ####  Inputs
 - **Segment Centers Layer** (from Step 1)
 - **Elevation Raster**
@@ -151,6 +166,10 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 Use: `"[3] Extract VW and VFW"`  
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+<div style="text-align: center;">
+  <img src="imgs/extract_vw_window.png" alt="" width="600"/>
+</div>
 
 ####  Inputs
 - **Transects Layer** (from Step 1)
@@ -177,6 +196,10 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[4] Extract LVS and RVS"`  
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
+<div style="text-align: center;">
+  <img src="imgs/lvs_rvs_window.png" alt="" width="600"/>
+</div>
+
 ####  Inputs
 - **Segment Centers Layer** (from Step 3)
 - **Left VW / VFW Reference Points**
@@ -199,6 +222,10 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 Use: `"[5] Extract DVS and SIN"`  
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
+
+<div style="text-align: center;">
+  <img src="imgs/dvs_sin_window.png" alt="" width="600"/>
+</div>
 
 ####  Inputs
 - **Segment Centers Layer** (from Step 4)
@@ -224,6 +251,10 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 At the end of Step 5, your segment center point layer will contain **all 9 hydrogeomorphic attributes**:
 
 - `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `LVS`, `RVS`, `DVS`, `SIN`
+
+<div style="text-align: center;">
+  <img src="imgs/openres_output_table.png" alt="" width="600"/>
+</div>
 
 These outputs can now be used for classification, regionalization, ecological modeling, or mapping hydrogeomorphic units.
 
