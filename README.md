@@ -3,7 +3,7 @@
 ## A [QGIS](https://qgis.org/en/site/index.html) plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
 [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
-[![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-3.0.html)
 [![DOI]()]()
 [![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases)
 [![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.0.0)](https://github.com/jollygoodjacob/OpenRES/commits)
@@ -17,45 +17,35 @@ If you use this plugin in your work, please cite it as:
 
 **OpenRES** enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support classification of river networks into **Functional Process Zones (FPZs)**.  
 
-**Functional Process Zone (FPZ)** classification is a method used to divide a river network into segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuous longitudinal gradient of changing physical conditions, FPZ classification recognizes that rivers are composed of a discontinuous set of hydrogeomorphic patches, each shaped by different landscape and hydrologic processes ([Hestir 2007](https://www.researchgate.net/profile/Erin-Hestir/publication/265026989_Functional_Process_Zones_and_the_River_Continuum_Concept/links/546248c00cf2c0c6aec1ade8/Functional-Process-Zones-and-the-River-Continuum-Concept.pdf)). These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports. After classifying a river network in FPZs, research questions posed by the tenets of the Riverine Ecosystem Synthesis hypothesis ([Thorp et al. 2006](https://onlinelibrary.wiley.com/doi/abs/10.1002/rra.901), [Thorp et al. 2023](https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2023.1184433/full)) can be explored.
-
-The nine required features historically used to define Functional Process Zones (see [Williams et al. 2013](https://link.springer.com/article/10.1007/s10661-013-3114-6)), which are captured in the core functionality of OpenRES, are:
-
-  **1.  Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.    
-  
-  **2.  Mean Annual Precipitation (PRE)**: Mean annual precipitation value (often in mm), extracted from the center of each stream segment.    
-  
-  **3.  Geology (GEO)**: Geology field value, extracted from the center of each stream segment.      
-  
-  **4.  Valley Floor Width (VFW)**: Width (in meters) between the first intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the first intersection of the valley line layer should correspond with the boundaries of the valley floor.      
-  
-  **5.  Valley Width (VW)**: Width (in meters) between the second intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the second intersection of the valley line layer should correspond with tops of hydrologically connected basins that intersect the valley floor, which approximates the tops of valleys. 
-  
-  **6.  Right Valley Slope (RVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the right side of the river, as defined from a downstream direction. This essentially is the slope between the tops of the valley and the valley bottom on the right side of the river.
-  
-  **7.  Left Valley Slope (LVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the left side of the river, as defined looking downstream. This essentially is the slope between the tops of the valley and the valley bottom on the left side of the river. 
-  
-  **8.  Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
-  
-  **9.  Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
-
-These nine features can then be used to classify stream networks using hierarchical classification methods (see examples in Maasri et al 2021). These classes define stream segments that share similar physical, hydrological, and geomorphic characteristics. By integrating hydrology, topography, geology, and climate, FPZs can inform decisions in watershed management, restoration planning, and ecological conservation.
+**Functional Process Zone (FPZ)** classification is a method used to divide a river network into river valley scale (5-10 km) segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuous longitudinal gradient of changing physical conditions, FPZ classification recognizes that rivers are composed of a discontinuous set of hydrogeomorphic patches, each shaped by different landscape and hydrologic processes ([Hestir 2007](https://www.researchgate.net/profile/Erin-Hestir/publication/265026989_Functional_Process_Zones_and_the_River_Continuum_Concept/links/546248c00cf2c0c6aec1ade8/Functional-Process-Zones-and-the-River-Continuum-Concept.pdf)). These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports. After classifying a river network in FPZs, research questions posed by the tenets of the Riverine Ecosystem Synthesis hypothesis ([Thorp et al. 2006](https://onlinelibrary.wiley.com/doi/abs/10.1002/rra.901), [Thorp et al. 2023](https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2023.1184433/full)) can be explored.
 
 ## Data Prerequisites
 
-To extract these features using `OpenRES` in QGIS, there are five required datasets needed prior to the extraction of
-hydrogeomorphic features along a user's watershed of interest:
+There are five required datasets needed prior to the extraction of hydrogeomorphic features along a user's watershed of interest using **OpenRES** in QGIS:
 
-**1.  A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest. The stream network should be a MultiLineString object and the river segments should be segmented to a user-defined length (usually 5km-10km for FPZs) prior to use in OpenRES.   
+- **A geomorphically corrected stream network (.shp)**: This is a stream network generated using Whitebox Tools or another hydrological toolbox in QGIS from a DEM, which is then manually corrected to ensure that the stream network follows the course of the river as observed from imagery during the time period of interest. The stream network should be a MultiLineString object, the river segments should be segmented to a user-defined length (usually 5km-10km for FPZs), and it is recommended that the user smooth the final river network to reduce the likelihood of erroneous transect generation prior to use in OpenRES.
+- **A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described fully in [Williams et al. 2013](https://link.springer.com/article/10.1007/s10661-013-3114-6); however, the steps include 1.) delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2, Sechu et al. 2021), 2.) manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, 3.) generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and 4.) various vector opertations (intersection, difference, polygon to line) to obtain a line layer that contains both the valley floor boundaries and the boundaries of intersecting microsheds that overlap with the valley floor boundaries. Thus, this layer approximates the boundaries of the valley floor and the tops of the valley that confines the river network.
+- **A mean annual precipitation layer (.geotiff)**: This is a rasterized mean annual precipitation layer. Examples include but are not limited to the PRISM dataset (800m) in the U.S. or WorldClim (5km) for global studies.
+- **A Digital Elevation Model (DEM) (.geotiff)**: This is a digital elevation model of the watershed of interest, often obtained from remote sensing platforms. Common datasets include 30m SRTM (global) DEMs or the 10m 3DEP (U.S.) DEMs.
+- **A geology layer (.shp)**: This is a geology polygon layer that contains geologic classification of surficial or underlying geology. Often, this layer is a simplified version of the source geology layer that is classified into bedrock, mixed, or alluvial classes. In the U.S., these can be obtained from USGS; internationally, most governments can provide a publically accessible vector dataset for this analysis.
 
-**2.  A line layer denoting the boundaries of the valley floor and the valleys (.shp)**: This layer is a line layer that contains the boundaries of both the valley bottom and the microsheds/isobasins that intersect with the valley bottom. The general procedure for producing this layer is described in Williams et al. 2013; however, the general steps include 1.) delineating the valley bottom using a flooding algorithm (MRVBF, FLDPLN) or slope thresholding algorithm (VBET-2, Sechu et al 2021), 2.) manual interpretation and edits to the valley bottom output to fix holes and ensure that the valley bottoms conform to expectations, 3.) generation of 1 km2 - 2 km2 "microsheds" or "isobasins" across your DEM, and 4.) various vector opertations (intersection, difference, polygon to line) to obtain a line layer that contains both the valley floor boundaries and the boundaries of intersecting microsheds that overlap with the valley floor boundaries. Thus, this layer approximates the boundaries of the valley floor and the tops of the valley that confines the river network.
+## Core Functionality 
 
-**3.  A mean annual precipitation layer (.geotiff)**: This is a rasterized mean annual precipitation layer. Examples include but are not limited to the PRISM dataset (800m) in the U.S. or WorldClim (5km) for global studies.
+As of this version of the plugin, the core function of OpenRES is to provide the minimal number of required features necessary to delineate FPZs from river networks. The nine required features historically used to define Functional Process Zones along river segments (see [Williams et al. 2013](https://link.springer.com/article/10.1007/s10661-013-3114-6)) are:
 
-**4.  A Digital Elevation Model (DEM) (.geotiff)**: This is a digital elevation model of the watershed of interest, often obtained from remote sensing platforms. Common datasets include 30m SRTM (global) DEMs or the 10m 3DEP (U.S.) DEMs.
+-   **Elevation (ELE)**: Elevation value (often in meters), extracted from the center of each stream segment.
+-   **Mean Annual Precipitation (PRE)**: Mean annual precipitation value (often in mm), extracted from the center of each stream segment.
+-   **Geology (GEO)**: Geology field value, extracted from the center of each stream segment.
+-   **Valley Floor Width (VFW)**: Width (in meters) between the first intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the first intersection of the valley line layer should correspond with the boundaries of the valley floor.      
+-   **Valley Width (VW)**: Width (in meters) between the second intersections of the transects for each stream segment on the left and right sides of the stream and the valley line layer. When correctly generated, the second intersection of the valley line layer should correspond with tops of hydrologically connected basins that intersect the valley floor, which approximates the tops of valleys. 
+-   **Right Valley Slope (RVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the right side of the river, as defined from a downstream direction. This essentially is the slope between the tops of the valley and the valley bottom on the right side of the river.
+-   **Left Valley Slope (LVS)**: Slope (in degrees) between the first and second intersection of a transect with the valley line layer on the left side of the river, as defined looking downstream. This essentially is the slope between the tops of the valley and the valley bottom on the left side of the river.
+-   **Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
+-   **Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
 
-**5.  A geology layer (.shp)**: This is a geology polygon layer that contains geologic classification of surficial or underlying geology. Often, this layer is a simplified version of the source geology layer that is classified into bedrock, mixed, or alluvial classes. In the U.S., these can be obtained from USGS; internationally, most governments can provide a publically accessible vector dataset for this analysis.
+These nine features can then be used to classify stream networks using hierarchical classification methods (see examples in Maasri et al 2021). These classes define stream segments that share similar physical, hydrological, and geomorphic characteristics. 
 
+Future versions of **OpenRES** will likely extend the number of features to include optional features, such as the ratio of valley width to valley floor width (RAT), channel belt sinuosity (CBD), the valley confinement index (VCI), and other miscellaneous tools to aid users in producing the required datasets.
 
 ## Installation
 
@@ -76,8 +66,6 @@ install plugin (ignore warnings, if any).
 > sequential manner. Sample data for hydrogeomorphic feature extraction
 > is provided in [sample_data](/sample_data/) folder.
 
-
-
 ### OpenRES Application
 
 The OpenRES plugin guides users through a step-by-step workflow to extract hydrogeomorphic features from river networks.
@@ -91,7 +79,15 @@ Once setup is complete, users can follow the steps below to generate transects a
 
 #### Step 1: Generate transects
 
-Begin by generating cross-valley transects for each stream segment using the "Generate Transects" tool in the Processing Toolbar.
+Begin by generating cross-valley transects for each stream segment using the **"[1] Generate Transects"** tool under **Processing Toolbar > OpenRES > Data Extraction**.
+
+-   Search for: "[1] Generate Transects".
+-   Double-click to open the tool.
+-   Fill out the input fields:
+-   Select the river network layer.
+-   Select the valley lines layer.
+-   Optionally adjust Extension Increment and Max Length.
+-   Choose where to save the Transects and Center Points outputs.
 
 > **Note:** After transect generation, users should validate that each
 > transect intersects valley bottoms and valleys properly. Due to
