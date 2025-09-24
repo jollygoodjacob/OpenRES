@@ -256,12 +256,9 @@ At the end of Step 5, your segment center point layer will contain **all 9 hydro
   <img src="imgs/openres_output_table.png" alt="" width="800"/>
 </div>
 
-These outputs can now be used for classification, regionalization, ecological modeling, or mapping hydrogeomorphic units.
+
 
 ---
-
-
-### After OpenRES: Hierarchical Classification into FPZs
 
 
 ## Issues
