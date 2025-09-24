@@ -43,7 +43,7 @@ As of this version of the plugin, the core function of OpenRES is to provide the
 -   **Down Valley Slope (DVS)**: The slope (in degrees) between the starting point and endpoint of a given stream segment.
 -   **Sinuosity (SIN)**: The ratio of the true stream distance and the straight line distance between the starting point and endpoint of a given stream segment.
 
-These nine features can then be used to classify stream networks using hierarchical classification methods (see examples in Maasri et al 2021). These classes define stream segments that share similar physical, hydrological, and geomorphic characteristics. 
+These nine features can then be used to classify stream networks using unsupervised hierarchical classification methods (see examples in [Thorp et al. 2010](https://books.google.com/books?hl=en&lr=&id=9N9rz8YH_u0C&oi=fnd&pg=PP1&dq=thorp+et+al+2010&ots=eBk_vZsNWA&sig=1XQ2cIyXRnD_t4t1MOtwe6xpQDQ#v=onepage&q=thorp%20et%20al%202010&f=false), [Elgueta et al. 2019](https://onlinelibrary.wiley.com/doi/full/10.1002/rra.3557), [Maasri et al. 2021](https://onlinelibrary.wiley.com/doi/full/10.1002/rra.3784)). The classes obtained using these methods define stream segments that share similar physical, hydrological, and geomorphic characteristics. 
 
 Future versions of **OpenRES** will likely extend the number of features to include optional features, such as the ratio of valley width to valley floor width (RAT), channel belt sinuosity (CBD), the valley confinement index (VCI), and other miscellaneous tools to aid users in producing the required datasets.
 
@@ -104,16 +104,12 @@ Begin by generating cross-valley transects for each stream segment using the **"
 
 ### After OpenRES: Hierarchical Classification into FPZs
 
-## Description of Functions
 
-Description and the details of all the core functions of this plugin are available here: [Description of Functions](help/Functions_description.md)
+## Issues
 
-## Contributions
-1) Contribute to the software: [Contribution guidelines for this project](help/CONTRIBUTING.md)
+1) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
 
-2) Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
-
-3) For questions about the OpenRES plugin, contact: <jnesslage@ucmerced.edu>
+2) For questions about the OpenRES plugin, contact: <jnesslage@ucmerced.edu>
 
 ## References
 
