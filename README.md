@@ -115,7 +115,7 @@ Use: `"[1] Generate Transects"`
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 <div style="text-align: center;">
-  <img src="imgs/generate_transects_window.png" alt="" width="600"/>
+  <img src="imgs/generate_transects_window.png" alt="" width="800"/>
 </div>
 
 ####  Inputs
@@ -142,7 +142,7 @@ Use: `"[2] Extract Point Data"`
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 <div style="text-align: center;">
-  <img src="imgs/extract_point_window.png" alt="" width="600"/>
+  <img src="imgs/extract_point_window.png" alt="" width="800"/>
 </div>
 
 ####  Inputs
@@ -168,7 +168,7 @@ Use: `"[3] Extract VW and VFW"`
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 <div style="text-align: center;">
-  <img src="imgs/extract_vw_window.png" alt="" width="600"/>
+  <img src="imgs/extract_vw_window.png" alt="" width="800"/>
 </div>
 
 ####  Inputs
@@ -197,7 +197,7 @@ Use: `"[4] Extract LVS and RVS"`
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 <div style="text-align: center;">
-  <img src="imgs/lvs_rvs_window.png" alt="" width="600"/>
+  <img src="imgs/lvs_rvs_window.png" alt="" width="800"/>
 </div>
 
 ####  Inputs
@@ -224,7 +224,7 @@ Use: `"[5] Extract DVS and SIN"`
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 <div style="text-align: center;">
-  <img src="imgs/dvs_sin_window.png" alt="" width="600"/>
+  <img src="imgs/dvs_sin_window.png" alt="" width="800"/>
 </div>
 
 ####  Inputs
@@ -253,7 +253,7 @@ At the end of Step 5, your segment center point layer will contain **all 9 hydro
 - `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `LVS`, `RVS`, `DVS`, `SIN`
 
 <div style="text-align: center;">
-  <img src="imgs/openres_output_table.png" alt="" width="600"/>
+  <img src="imgs/openres_output_table.png" alt="" width="800"/>
 </div>
 
 These outputs can now be used for classification, regionalization, ecological modeling, or mapping hydrogeomorphic units.
