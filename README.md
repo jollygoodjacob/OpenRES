@@ -60,7 +60,7 @@ download the .zip file.
 Plugins... -\> install from ZIP tab --\> select the downloaded zip --\>
 install plugin (ignore warnings, if any).
 
-## Example usage
+## Example usage: Eerste River catchment, South Africa
 
 > **Note:** All the following processing steps should be done in a
 > sequential manner. Sample data for hydrogeomorphic feature extraction
