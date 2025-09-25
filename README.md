@@ -13,6 +13,27 @@
 
 If you use this plugin in your work, please cite it as:
 
+> **Cite:**  Nesslage J, Hestir E. OpenRES (Open Riverine Ecosystem Synthesis): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks. Zenodo; 2025.
+
+
+```bibtex
+@software{nesslage2025OpenRES,
+  author       = {Nesslage, Jacob and
+                  Hestir, Erin},
+  title        = {OpenRES (Open Riverine Ecosystem Synthesis): A
+                   QGIS plugin for automated extraction of
+                   hydrogeomorphic features to support functional
+                   process zone classification of river networks
+                  },
+  month        = sep,
+  year         = 2025,
+  publisher    = {Zenodo},
+  version      = {v1.0.0},
+  doi          = {10.5281/zenodo.17196891},
+  url          = {https://doi.org/10.5281/zenodo.17196891}
+                
+}
+```
 ## General Information
 
 **OpenRES** enables QGIS users to extract nine required physical and environmental features along river segments (typically 5–10 km) to support classification of river networks into **Functional Process Zones (FPZs)**.  
