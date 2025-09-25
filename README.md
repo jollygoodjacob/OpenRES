@@ -256,10 +256,7 @@ At the end of Step 5, your segment center point layer will contain **all 9 hydro
   <img src="imgs/openres_output_table.png" alt="" width="800"/>
 </div>
 
-
-
 ---
-
 
 ## Issues
 
@@ -267,7 +264,6 @@ At the end of Step 5, your segment center point layer will contain **all 9 hydro
 
 2) For questions about the OpenRES plugin, contact: <jnesslage@ucmerced.edu>
 
-© 2025 Jacob Nesslage | OpenRES is licensed under the GPL v3  
 
 ## References
 
