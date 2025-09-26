@@ -43,9 +43,9 @@ class OpenRESProvider(QgsProcessingProvider):
     def icon(self):
         plugin_dir = os.path.dirname(os.path.dirname(__file__))  # Go up to plugin root
         icon_path = os.path.join(plugin_dir,'OpenRES', 'icons', 'openres_provider.png')
-        print(f"[OpenRES] ✅ Looking for icon at: {icon_path}")
+        print(f"[OpenRES] Looking for icon at: {icon_path}")
         if not os.path.exists(icon_path):
-            print("[OpenRES] ❌ Icon file not found!")
+            print("[OpenRES] Icon file not found!")
         return QIcon(icon_path)
 
 
