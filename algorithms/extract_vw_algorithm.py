@@ -86,7 +86,8 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         valley_lines = self.parameterAsVectorLayer(parameters, self.VALLEY_LINES, context)
         stream_network = self.parameterAsVectorLayer(parameters, self.STREAM_NETWORK, context)
 
-        crs = transects.sourceCrs().authid()
+        centers_crs = center.sourceCrs()
+        crs = centers_crs.authid()
 
         def create_output_layer(name):
             fields = QgsFields()
@@ -125,6 +126,9 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         # Compute valley widths and get updated layer
         center_updated1 = compute_valley_width(center, left1, right1, out_field="VFW")
         center_updated2 = compute_valley_width(center_updated1, left2, right2, out_field="VW")
+
+        if center_updated2.isValid():
+            center_updated2.setCrs(centers_crs)
 
         self.save_output_layer(center_updated2, parameters, self.CENTER_OUT, context)
 
