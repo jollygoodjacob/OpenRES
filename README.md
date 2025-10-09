@@ -102,11 +102,11 @@ The Eerste River originates in the Jonkershoek Mountains, part of the Hottentots
 Before starting the OpenRES workflow:
 
 -  Ensure all input data are properly prepared:
-  - Stream network (polyline)
-  - Valley boundaries (lines)
-  - Elevation raster (DEM)
-  - Precipitation raster
-  - Geology polygons with a classification field (e.g., `LITH`, `TYPE`, or `GEO`)
+   - Stream network (.shp)
+   - Valley boundaries (.shp)
+   - Elevation raster (.tif)
+   - Precipitation raster (.tif)
+   - Geology polygons with a classification field (e.g., `LITH`, `TYPE`, or `GEO`) (.shp)
 -  The **OpenRES** plugin is installed and enabled in QGIS.
 -  The **Processing Toolbox** is open (via `Processing > Toolbox`).
 
@@ -114,7 +114,8 @@ Before starting the OpenRES workflow:
 
 ### Overview of Extracted Features
 
-The following nine features will be extracted across the Eerste River catchment using OpenRES tools:
+The following table summarizes the nine geomorphic and environmental features that will be automatically derived across the Eerste River catchment using the OpenRES tool suite. Each transect, generated perpendicular to the stream network, will be assigned a unique identifier `t_ID`, and the attributes listed below will be extracted or calculated at the transect or segment level. Transects, segment centers, and the river network segments are all linked together by the `t_ID` field, enabling subsequent FPZ classification methods to link using joins and relates to the stream network, river segment centers, or transects as desired for visualization purposes. 
+
 
 | Step | Feature                | Attribute Code |
 |------|------------------------|----------------|
@@ -127,6 +128,7 @@ The following nine features will be extracted across the Eerste River catchment 
 | 4    | Left/Right Side Slope  | `LVS`, `RVS`   |
 | 5    | Down-Valley Slope      | `DVS`          |
 | 5    | Sinuosity              | `SIN`          |
+
 
 ---
 
