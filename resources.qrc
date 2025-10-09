@@ -1,0 +1,5 @@
+<RCC>
+  <qresource prefix="/openres/icons">
+    <file>icons/openres_provider.png</file>
+  </qresource>
+</RCC>
