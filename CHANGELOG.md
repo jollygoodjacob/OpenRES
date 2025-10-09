@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com),
 and this project adheres to [Semantic Versioning](https://semver.org).
 
 ---
-## [1.0.1] - 2025-10-07
+## [1.0.1] - 2025-10-08
 ### Added
 - Fixed an issue with the Extract VW and VFW algorithm where CRS information was not properly attributed to the vector outputs.
 - Tested plugin across various computer systems. The plugin works on Windows and Mac operating systems using versions QGIS 3.28-3.34.
@@ -22,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org).
 - Core functionality enables automated extraction of nine features for each stream segment in a river network: 
 elevation, precipitation, geology, valley width, valley floor width, left valley slope, right valley slope,
 down valley slope, and sinuosity. See OpenRES/help/Functions_description.md for full description of each function.
-
 
 ### Known Issues
 - No testing on QGIS versions > 3.28
