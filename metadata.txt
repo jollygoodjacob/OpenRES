@@ -1,8 +1,8 @@
 [general]
 name=OpenRES: Open Riverine Ecosystem Synthesis
 description=A QGIS plugin for supporting hydrogeomorphic feature extraction to delineate functional process zones across river networks.
-version=1.0
-qgisMinimumVersion=3.16
+version=1.0.1
+qgisMinimumVersion=3.28
 author=Jacob Nesslage
 email=jnesslage@ucmerced.edu
 category=Analysis
