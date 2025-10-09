@@ -33,7 +33,7 @@ If you use this plugin in your work, please cite it as:
   url          = {https://doi.org/10.5281/zenodo.17307006}
 }
                 
-}
+
 ```
 ## General Information
 
