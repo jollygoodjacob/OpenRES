@@ -17,7 +17,7 @@ If you use this plugin in your work, please cite it as:
 
 
 ```bibtex
-@software{nesslage2025OpenRES,
+@software{nesslage_2025_17307006,
   author       = {Nesslage, Jacob and
                   Hestir, Erin},
   title        = {OpenRES (Open Riverine Ecosystem Synthesis): A
@@ -25,12 +25,13 @@ If you use this plugin in your work, please cite it as:
                    hydrogeomorphic features to support functional
                    process zone classification of river networks
                   },
-  month        = sep,
+  month        = oct,
   year         = 2025,
   publisher    = {Zenodo},
-  version      = {v1.0.0},
-  doi          = {10.5281/zenodo.17196891},
-  url          = {https://doi.org/10.5281/zenodo.17196891}
+  version      = {v1.0.1},
+  doi          = {10.5281/zenodo.17307006},
+  url          = {https://doi.org/10.5281/zenodo.17307006}
+}
                 
 }
 ```
