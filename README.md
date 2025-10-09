@@ -4,9 +4,9 @@
 [![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-3.0.html)
-[![DOI](https://zenodo.org/badge/1029300298.svg)](https://doi.org/10.5281/zenodo.17196890)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17307006.svg)](https://doi.org/10.5281/zenodo.17307006)
 [![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases)
-[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.0.0)](https://github.com/jollygoodjacob/OpenRES/commits)
+[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.0.1)](https://github.com/jollygoodjacob/OpenRES/commits)
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
 
 ## Citation
@@ -17,7 +17,7 @@ If you use this plugin in your work, please cite it as:
 
 
 ```bibtex
-@software{nesslage_2025_17307006,
+@software{nesslage2025OpenRES,
   author       = {Nesslage, Jacob and
                   Hestir, Erin},
   title        = {OpenRES (Open Riverine Ecosystem Synthesis): A
