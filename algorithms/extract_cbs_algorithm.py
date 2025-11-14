@@ -74,7 +74,7 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterVectorLayer(
                 self.CHANNEL_BELT,
-                self.tr("Channel Belt Layer (lines with t_ID and side {LEFT|RIGHT})"),
+                self.tr("Channel Belt Layer"),
                 [QgsProcessing.TypeVectorLine],
             )
         )
