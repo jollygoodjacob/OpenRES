@@ -142,6 +142,66 @@ Before starting the OpenRES workflow:
 -   The **OpenRES** plugin is installed and enabled in QGIS.
 -   The **Processing Toolbox** is open (via `Processing > Toolbox`).
 
+<div align="center">
+  <img src="/imgs/OpenRES_processing_toolbox.png" width="300" alt="The OpenRES Processing Toolbox"><br>
+  <sub><b> The OpenRES Processing Toolbox</b></sub>
+</div>
+
+------------------------------------------------------------------------
+
+### Using the Geomorphology Tool to Prepare Input Data
+
+#### Generate Channel Belt Layer
+
+Use `"Generate Channel Belt"`\
+
+Location: `Processing Toolbox > OpenRES > Geomorphology`
+
+::: {style="text-align: center;"}
+<img src="imgs/generate_channel_belt_window.png" width="800"/>
+:::
+
+##### Inputs
+
+-   **River Network Layer** (polyline)
+
+##### Outputs
+
+-   **Channel Belt Layer**
+
+##### Notes
+
+-   Offsets each input stream segment to LEFT (+) and RIGHT (-) by the given distance.
+-   Offsets use layers CRS; use a projected CRS (e.g., meters).
+-   LEFT/RIGHT are relative to the digitized direction of each line
+-   Use `Round` join style for smooth banks; `Miter` for sharp corners (user will have to tune miter limit).
+-   Copies `t_ID` from input if present, otherwise creates sequential `t_ID`.
+-   Adds fields `t_ID` (int), `side` {'LEFT'|'RIGHT'}, `offset` (double).
+
+#### Delineate Valley Floor 
+
+Use `"Valley Floor Delineation - Sechu"`
+
+Location: `Processing Toolbox > OpenRES > Geomorphology`
+
+::: {style="text-align: center;"}
+<img src="imgs/valley_floor_delin.png" width="800"/>
+:::
+
+##### Inputs
+
+-   **River Network Layer** (polyline)
+-   **Elevation Raster** 
+
+##### Outputs
+
+-   **Valley Floor Layer** (MultiPolygon)
+
+##### Notes
+
+-   Delineates valley bottom by building slope from DEM, using slope as cost surface in GRASS r.cost from a stream network, taking an initial (max) cost threshold, computing mean cost inside that belt, re-thresholding with that mean, and cleaning, smoothing and filling skinny gaps.
+-   Initial cost distance threshold: `[500*(resolution/10m)]` is a good starting point 
+
 ------------------------------------------------------------------------
 
 ### Overview of Extracted Features
@@ -349,9 +409,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 ------------------------------------------------------------------------
 
-### Step 7: Extract Channel Belt Width (CBW)
+### Step 7: Extract Left, Right and Center Channel Sinuosity 
 
-Use: `"[7] Extract LCS"`\
+Use: `"[7] Extract LCS, RCS, and CBS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 ::: {style="text-align: center;"}
@@ -362,14 +422,14 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 -   **Transects Layer** 
 -   **Segment Centers Layer** (from Step 5)
--   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`
+-   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`)
 -   **River Network Layer**
 
 #### Output
 
--   **Left Channel Sinuoisty**
--   **Right Channel Sinuosity**
--   **Channel Belt Sinuosity**
+-   **Left Channel Sinuoisty** (LCS)
+-   **Right Channel Sinuosity** (RCS)
+-   **Channel Belt Sinuosity** (CBS)
 -   **Segment Centers** updated with:
     -   Left channel sinuoisty
     -   Right channel sinuoisty
@@ -379,7 +439,7 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
 ### Completion
 
-At the end of Step 5, your segment center point layer will contain **all 15 hydrogeomorphic attributes**:
+At the end of Step 7, your segment center point layer will contain **all 15 hydrogeomorphic attributes**:
 
 -   `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `RAT`,`LVS`, `RVS`,`MVS`, `DVS`, `SIN`, `CBW`, `LCS`, `RCS`, `CBS`
 
