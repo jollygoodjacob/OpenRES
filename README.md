@@ -157,9 +157,9 @@ Use `"Generate Channel Belt"`\
 
 Location: `Processing Toolbox > OpenRES > Geomorphology`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/generate_channel_belt_window.png" width="800"/>
-:::
+</div>
 
 ##### Inputs
 
@@ -184,9 +184,9 @@ Use `"Valley Floor Delineation - Sechu"`
 
 Location: `Processing Toolbox > OpenRES > Geomorphology`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/valley_floor_delin.png" width="800"/>
-:::
+</div>
 
 ##### Inputs
 
@@ -232,9 +232,9 @@ The following table summarizes the nine geomorphic and environmental features th
 Use: `"[1] Generate Transects"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/generate_transects_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -262,9 +262,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[2] Extract Point Data"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/extract_point_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -291,9 +291,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[3] Extract VW, VFW", and RAT`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/extract_vw_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -323,9 +323,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[4] Extract LVS, RVS, and MVS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/lvs_rvs_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -353,9 +353,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[5] Extract DVS and SIN"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/dvs_sin_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -383,9 +383,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[6] Extract CBW"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/extract_cbw_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -414,9 +414,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[7] Extract LCS, RCS, and CBS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/extract_cbw_window.png" width="800"/>
-:::
+</div>
 
 #### Inputs
 
@@ -443,9 +443,9 @@ At the end of Step 7, your segment center point layer will contain **all 15 hydr
 
 -   `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `RAT`,`LVS`, `RVS`,`MVS`, `DVS`, `SIN`, `CBW`, `LCS`, `RCS`, `CBS`
 
-::: {style="text-align: center;"}
+<div align="center">
 <img src="imgs/openres_output_table.png" width="800"/>
-:::
+</div>
 
 ------------------------------------------------------------------------
 
