@@ -185,7 +185,7 @@ Use `"Valley Floor Delineation - Sechu"`
 Location: `Processing Toolbox > OpenRES > Geomorphology`
 
 <div align="center">
-<img src="imgs/valley_floor_delin.png" width="800"/>
+<img src="imgs/valley_floor_delin_window.png" width="800"/>
 </div>
 
 ##### Inputs
