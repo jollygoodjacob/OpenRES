@@ -1,20 +1,14 @@
 # Open Riverine Ecosystem Synthesis (OpenRES):
 
 ## A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks
-[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
-[![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)]([https://www.gnu.org/licenses/old-licenses/gpl-3.0.html](https://www.gnu.org/licenses/gpl-3.0.html#license-text))
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17307006.svg)](https://doi.org/10.5281/zenodo.17307006)
-[![OpenRES](https://img.shields.io/badge/QGIS%20Repo-OpenRES-589632)](https://plugins.qgis.org/plugins/OpenRES)
-[![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases)
-[![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.0.1)](https://github.com/jollygoodjacob/OpenRES/commits)
-[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
+
+[![Open Source Love svg1](https://badges.frapsoft.com/os/v1/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/) [![made-with-python](https://img.shields.io/badge/Made%20with-Python-ffd040.svg)](https://www.python.org/) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](%5Bhttps://www.gnu.org/licenses/old-licenses/gpl-3.0.html%5D(https://www.gnu.org/licenses/gpl-3.0.html#license-text)) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17641964.svg)](https://doi.org/10.5281/zenodo.17641964) [![OpenRES](https://img.shields.io/badge/QGIS%20Repo-OpenRES-589632)](https://plugins.qgis.org/plugins/OpenRES) [![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases) [![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.1.0)](https://github.com/jollygoodjacob/OpenRES/commits) [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
 
 ## Citation
 
 If you use this plugin in your work, please cite it as:
 
-> **Cite:** Nesslage, J., & Hestir, E. (2025). OpenRES (Open Riverine Ecosystem Synthesis): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks (Version 1.0.1) [Software]. Zenodo. <https://doi.org/10.5281/zenodo.17307006>
+> **Cite:** Nesslage, J., & Hestir, E. (2025). OpenRES (Open Riverine Ecosystem Synthesis): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks (Version 1.1.0) [Software]. Zenodo. <https://doi.org/10.5281/zenodo.17641964>
 
 ``` bibtex
 @software{nesslage2025OpenRES,
@@ -25,15 +19,14 @@ If you use this plugin in your work, please cite it as:
                    hydrogeomorphic features to support functional
                    process zone classification of river networks
                   },
-  month        = oct,
+  month        = nov,
   year         = 2025,
   publisher    = {Zenodo},
-  version      = {v1.0.1},
-  doi          = {10.5281/zenodo.17307006},
-  url          = {https://doi.org/10.5281/zenodo.17307006}
+  version      = {v1.1.0},
+  doi          = {10.5281/zenodo.17641964},
+  url          = {https://doi.org/10.5281/zenodo.17641964}
 }
                 
-
 ```
 
 ## General Information
@@ -52,7 +45,7 @@ After classifying a river network in FPZs, research questions posed by the tenet
 
 **Installation from QGIS:**
 
-- Open QGIS -> Plugins -> Manage and Install Plugins... -> select All tab -> search for OpenRES --> select and install plugin
+-   Open QGIS -\> Plugins -\> Manage and Install Plugins... -\> select All tab -\> search for OpenRES --\> select and install plugin
 
 **Offline installation from .zip file** :
 
@@ -66,22 +59,22 @@ After classifying a river network in FPZs, research questions posed by the tenet
 
 Users should prepare the following **six datasets** for your watershed of interest. Use consistent CRS and units (projected meters recommended, e.g., UTM) for all layers.
 
-| Dataset                                           | Format | Description                                                                                                                                                                                                                                                                                                                                                                   |
-|---------------------------|-------------------|---------------------------|
-| **Mean Annual Precipitation Layer**               | `.tif` | Raster of mean annual precipitation for the watershed.                                                                                                                                                                                                                                                                                                                        |
-| **Digital Elevation Model (DEM) Layer**           | `.tif` | Elevation raster used for slopes, valley floors, and longitudinal gradients.                                                                                                                                                                                                                                                                                                  |
-| **Simplified Geology Layer**                      | `.shp` | Polygon layer with generalized classes (e.g., alluvial, mixed, bedrock). Typically a simplified version of a detailed map.                                                                                                                                                                                                                                                    |
-| **Geomorphically Corrected Stream Network Layer** | `.shp` | Stream lines generated from the DEM and manually corrected to follow observed channel positions in imagery for the analysis period (Whitebox Workflows recommended here).                                                                                                                                                                                                     |
+| Dataset                                           | Format | Description                                                                                                                                                                                                                                                                                                                                                                  |
+|---------------------------------------------------|--------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Mean Annual Precipitation Layer**               | `.tif` | Raster of mean annual precipitation for the watershed.                                                                                                                                                                                                                                                                                                                       |
+| **Digital Elevation Model (DEM) Layer**           | `.tif` | Elevation raster used for slopes, valley floors, and longitudinal gradients.                                                                                                                                                                                                                                                                                                 |
+| **Simplified Geology Layer**                      | `.shp` | Polygon layer with generalized classes (e.g., alluvial, mixed, bedrock). Typically a simplified version of a detailed map.                                                                                                                                                                                                                                                   |
+| **Geomorphically Corrected Stream Network Layer** | `.shp` | Stream lines generated from the DEM and manually corrected to follow observed channel positions in imagery for the analysis period (Whitebox Workflows recommended here).                                                                                                                                                                                                    |
 | **Valley-Boundary Line Layer**                    | `.shp` | Lines delineating both the valley floor boundary and valley-edge boundary. Suggested workflow: (1) delineate valley floor, (2) edit to remove holes and unrealistic extents, (3) derive 1-2 km² microsheds/isobasins from the DEM (Whitebox Workflows recommended here), (4) apply intersection/difference/polygon-to-line to extract combined boundaries as a line feature. |
-| **Channel Belt Layer**                            | `.shp` | Lines delineating the channel belt (active/recent fluvial influence, including channel and depositional features). Suggested workflow: (1) OpenRES → Geomorphology Tools → Generate Channel Belt, (2) manual refinement to match meanders and depositional forms visible in imagery.                                                                                                                |
+| **Channel Belt Layer**                            | `.shp` | Lines delineating the channel belt (active/recent fluvial influence, including channel and depositional features). Suggested workflow: (1) OpenRES → Geomorphology Tools → Generate Channel Belt, (2) manual refinement to match meanders and depositional forms visible in imagery.                                                                                         |
 
 Some of these layers may not be very common for most river systems (especially the **Valley-Boundary Line Layer** and **Channel Belt Layer**). For these less common datasets, `OpenRES` provides several geomorphology utility tools to allow users to create these datasets for their watershed of interest.
 
-**Data quality tips** 
+**Data quality tips**
 
-- Ensure all inputs share the same projected CRS and unit (meters) 
+-   Ensure all inputs share the same projected CRS and unit (meters)
 
-- Snap and clean linework to avoid sliver gaps that can break intersections
+-   Snap and clean linework to avoid sliver gaps that can break intersections
 
 ------------------------------------------------------------------------
 
@@ -102,7 +95,7 @@ Use these tools to produce your **Valley-Boundary Line Layer** and **Channel Bel
 Run these tools in order. Together, they generate all attributes required for FPZ classification.
 
 | Step                          | What it does                                                                                                                                                                                          | Key outputs                        |
-|-------------------|----------------------------|-------------------------|
+|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------|
 | **[1] Generate Transects**    | Creates perpendicular transects from each stream segment to the valley edges. Iteratively extends per side until two intersections per side are found, ensuring complete valley cross-sections.       | `t_ID`, transects, segment centers |
 | **[2] Extract ELE, PRE, GEO** | Samples elevation (DEM), precipitation (climate raster), and geology (polygon) at segment centers to capture environmental gradients.                                                                 | `ELE`, `PRE`, `GEO`                |
 | **[3] Extract VW, VFW, RAT**  | Measures **Valley Floor Width (VFW)** and **Valley Width (VW)** using first and second intersections of transects with valley boundaries. Computes **RAT = VW / VFW** to quantify valley confinement. | `VFW`, `VW`, `RAT`                 |
@@ -119,10 +112,9 @@ Run these tools in order. Together, they generate all attributes required for FP
 
 To demonstrate the use of OpenRES, we have provided a dataset from the Eerste River catchment, a small watershed located in the Greater Cape Floristic Region of South Africa.
 
-<div align="center">
-  <img src="/imgs/Eerste_watershed.png" width="600" alt="Eerste River catchment, South Africa"><br>
-  <sub><b> Eerste River catchment, South Africa</b></sub>
-</div>
+::: {align="center"}
+<img src="/imgs/Eerste_watershed.png" alt="Eerste River catchment, South Africa" width="600"/><br> <sub><b> Eerste River catchment, South Africa</b></sub>
+:::
 
 The Eerste River originates in the Jonkershoek Mountains, part of the Hottentots-Holland mountain range, and flows westward through the Stellenbosch area before reaching the False Bay coast near Strand. It drains a catchment area of approximately 390 km². Dominated by fynbos vegetation, the area hosts numerous endemic plant species and is under increasing pressure from urban development, invasive species, and agricultural runoff.
 
@@ -142,10 +134,9 @@ Before starting the OpenRES workflow:
 -   The **OpenRES** plugin is installed and enabled in QGIS.
 -   The **Processing Toolbox** is open (via `Processing > Toolbox`).
 
-<div align="center">
-  <img src="/imgs/OpenRES_processing_toolbox.png" width="300" alt="The OpenRES Processing Toolbox"><br>
-  <sub><b> The OpenRES Processing Toolbox</b></sub>
-</div>
+::: {align="center"}
+<img src="/imgs/OpenRES_processing_toolbox.png" alt="The OpenRES Processing Toolbox" width="300"/><br> <sub><b> The OpenRES Processing Toolbox</b></sub>
+:::
 
 ------------------------------------------------------------------------
 
@@ -157,9 +148,9 @@ Use `"Generate Channel Belt"`\
 
 Location: `Processing Toolbox > OpenRES > Geomorphology`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/generate_channel_belt_window.png" width="800"/>
-</div>
+:::
 
 ##### Inputs
 
@@ -176,22 +167,22 @@ Location: `Processing Toolbox > OpenRES > Geomorphology`
 -   LEFT/RIGHT are relative to the digitized direction of each line
 -   Use `Round` join style for smooth banks; `Miter` for sharp corners (user will have to tune miter limit).
 -   Copies `t_ID` from input if present, otherwise creates sequential `t_ID`.
--   Adds fields `t_ID` (int), `side` {'LEFT'|'RIGHT'}, `offset` (double).
+-   Adds fields `t_ID` (int), `side` {'LEFT'\|'RIGHT'}, `offset` (double).
 
-#### Delineate Valley Floor 
+#### Delineate Valley Floor
 
 Use `"Valley Floor Delineation - Sechu"`
 
 Location: `Processing Toolbox > OpenRES > Geomorphology`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/valley_floor_delin_window.png" width="800"/>
-</div>
+:::
 
 ##### Inputs
 
 -   **River Network Layer** (polyline)
--   **Elevation Raster** 
+-   **Elevation Raster**
 
 ##### Outputs
 
@@ -200,7 +191,7 @@ Location: `Processing Toolbox > OpenRES > Geomorphology`
 ##### Notes
 
 -   Delineates valley bottom by building slope from DEM, using slope as cost surface in GRASS r.cost from a stream network, taking an initial (max) cost threshold, computing mean cost inside that belt, re-thresholding with that mean, and cleaning, smoothing and filling skinny gaps.
--   Initial cost distance threshold: `[500*(resolution/10m)]` is a good starting point 
+-   Initial cost distance threshold: `[500*(resolution/10m)]` is a good starting point
 
 ------------------------------------------------------------------------
 
@@ -232,9 +223,9 @@ The following table summarizes the nine geomorphic and environmental features th
 Use: `"[1] Generate Transects"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/generate_transects_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
@@ -262,9 +253,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[2] Extract Point Data"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/extract_point_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
@@ -291,9 +282,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[3] Extract VW, VFW", and RAT`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/extract_vw_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
@@ -323,9 +314,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[4] Extract LVS, RVS, and MVS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/lvs_rvs_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
@@ -353,9 +344,9 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 Use: `"[5] Extract DVS and SIN"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/dvs_sin_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
@@ -377,50 +368,39 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
     -   `SIN` is the ratio of actual segment length to straight-line distance.
 -   Features with insufficient geometry or elevation data are skipped.
 
-------------------------------------------------------------------------
-### Step 6: Extract Channel Belt Width (CBW)
++:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \### Step 6: Extract Channel Belt Width (CBW)                                                                                                                                                                                                                              |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Use: `"[6] Extract CBW"`\                                                                                                                                                                                                                                                  |
+| Location: `Processing Toolbox > OpenRES > Feature Extraction`                                                                                                                                                                                                              |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                                                                                                                                            |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \#### Inputs                                                                                                                                                                                                                                                               |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \- **Transects Layer** - **Segment Centers Layer** (from Step 5) - **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt` - **River Network Layer**                                                                                         |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \#### Output                                                                                                                                                                                                                                                               |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \- **Left Channel Belt Width Reference** - **Right Channel Belt Width Reference** - **Segment Centers** updated with: - Channel belt width                                                                                                                                 |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \#### Notes                                                                                                                                                                                                                                                                |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| \- Uses intersection logic to find points where transects intersect the channel belt right and left reference. - Then calculates distance between these intersections to compute 'CBW'. - Reference points (left/right) are saved as point layers for inspection or QA/QC. |
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
-Use: `"[6] Extract CBW"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-<div align="center">
-<img src="imgs/extract_cbw_window.png" width="800"/>
-</div>
-
-#### Inputs
-
--   **Transects Layer** 
--   **Segment Centers Layer** (from Step 5)
--   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`
--   **River Network Layer**
-
-#### Output
-
--   **Left Channel Belt Width Reference**
--   **Right Channel Belt Width Reference**
--   **Segment Centers** updated with:
-    -  Channel belt width
-
-#### Notes
-
--   Uses intersection logic to find points where transects intersect the channel belt right and left reference.
--   Then calculates distance between these intersections to compute 'CBW'.
--   Reference points (left/right) are saved as point layers for inspection or QA/QC.
-
-------------------------------------------------------------------------
-
-### Step 7: Extract Left, Right and Center Channel Sinuosity 
+### Step 7: Extract Left, Right and Center Channel Sinuosity
 
 Use: `"[7] Extract LCS, RCS, and CBS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/extract_cbw_window.png" width="800"/>
-</div>
+:::
 
 #### Inputs
 
--   **Transects Layer** 
+-   **Transects Layer**
 -   **Segment Centers Layer** (from Step 5)
 -   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`)
 -   **River Network Layer**
@@ -433,7 +413,7 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
 -   **Segment Centers** updated with:
     -   Left channel sinuoisty
     -   Right channel sinuoisty
-    -   Channel belt sinuosity 
+    -   Channel belt sinuosity
 
 ------------------------------------------------------------------------
 
@@ -443,9 +423,9 @@ At the end of Step 7, your segment center point layer will contain **all 15 hydr
 
 -   `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `RAT`,`LVS`, `RVS`,`MVS`, `DVS`, `SIN`, `CBW`, `LCS`, `RCS`, `CBS`
 
-<div align="center">
+::: {align="center"}
 <img src="imgs/openres_output_table.png" width="800"/>
-</div>
+:::
 
 ------------------------------------------------------------------------
 
