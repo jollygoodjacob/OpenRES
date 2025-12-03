@@ -368,35 +368,37 @@ Location: `Processing Toolbox > OpenRES > Feature Extraction`
     -   `SIN` is the ratio of actual segment length to straight-line distance.
 -   Features with insufficient geometry or elevation data are skipped.
 
-+:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \### Step 6: Extract Channel Belt Width (CBW)                                                                                                                                                                                                                              |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Use: `"[6] Extract CBW"`\                                                                                                                                                                                                                                                  |
-| Location: `Processing Toolbox > OpenRES > Feature Extraction`                                                                                                                                                                                                              |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|                                                                                                                                                                                                                                                                            |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \#### Inputs                                                                                                                                                                                                                                                               |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \- **Transects Layer** - **Segment Centers Layer** (from Step 5) - **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt` - **River Network Layer**                                                                                         |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \#### Output                                                                                                                                                                                                                                                               |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \- **Left Channel Belt Width Reference** - **Right Channel Belt Width Reference** - **Segment Centers** updated with: - Channel belt width                                                                                                                                 |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \#### Notes                                                                                                                                                                                                                                                                |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| \- Uses intersection logic to find points where transects intersect the channel belt right and left reference. - Then calculates distance between these intersections to compute 'CBW'. - Reference points (left/right) are saved as point layers for inspection or QA/QC. |
-+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+### Step 6: Extract Channel Belt Width (CBW)
+
+Use: `"[6] Extract CBW"\  Location:`Processing Toolbox \> OpenRES \> Feature Extraction\`
+
+::: {align="center"}
+<img src="imgs/extract_cbw_window.png" width="800"/>
+:::
+
+#### Inputs
+
+-   **Transects Layer**
+-   **Segment Centers Layer** (from Step 5)
+-   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`
+-   **River Network Layer**
+
+#### Output
+
+-   **Left Channel Belt Width Reference**
+-   **Right Channel Belt Width Reference**
+-   **Segment Centers** updated with: - Channel belt width
+
+#### Notes
+
+-   Uses intersection logic to find points where transects intersect the channel belt right and left reference.
+-   Then calculates distance between these intersections to compute 'CBW'.
+-   Reference points (left/right) are saved as point layers for inspection or QA/QC.
 
 ### Step 7: Extract Left, Right and Center Channel Sinuosity
 
 Use: `"[7] Extract LCS, RCS, and CBS"`\
 Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/extract_cbw_window.png" width="800"/>
-:::
 
 #### Inputs
 
