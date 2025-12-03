@@ -413,24 +413,24 @@ the River Continuum Concept; <span class="citation">Vannote et al.
 Zones, arise from interactions between catchment geomorphology,
 hydrology, and climate and typically span 5–10 km of river valley (<span class="citation">Thorp, Thoms, and Delong (2010)</span>). FPZs describe
 differences in channel and valley structure, floodplain connectivity,
-and sediment and flow dynamics (<span class="citation">Hestir
-(2007)</span>), and have been linked to variation in ecological
-communities and ecosystem properties in rivers across five continents
-(<span class="citation">Thorp et al. (2023)</span>).</p>
+and sediment and flow dynamics across watersheds (<span class="citation">Hestir (2007)</span>), and have been linked to
+variation in ecological communities and ecosystem properties in rivers
+across five continents (<span class="citation">Thorp et al.
+(2023)</span>).</p>
 <p>FPZ classification requires spatially consistent measures of
 climatic, geologic, and geomorphic features, yet collecting these data
 in the field is often impractical. Automated geospatial tools therefore
 play a critical role in enabling watershed scale classification.
 <code>OpenRES</code> was developed to meet this need by offering a
 unified, reproducible, and open-source workflow for extracting the
-hydrogeomorphic attributes required for FPZ delineation.</p>
+hydrogeomorphic features required for FPZ delineation.</p>
 </div>
 <div id="openres-audience" class="section level1">
 <h1>OpenRES Audience</h1>
 <p><code>OpenRES</code> is intended for students, instructors,
 researchers, and practitioners in river science, geomorphology,
 hydrology, and ecosystem management who use QGIS and need a
-standardized, open-source tool to delineate FPZs and conduct studies on
+standardized, open-source tool to delineate FPZs and conduct studies of
 riverine ecosystems.</p>
 </div>
 <div id="openres-functionality" class="section level1">
@@ -441,13 +441,13 @@ riverine ecosystems.</p>
 hydrogeomorphic features along a user’s watershed of interest using
 OpenRES in QGIS:</p>
 <ul>
-<li><p>a rasterized mean annual precipitation layer</p></li>
-<li><p>a digital elevation model (DEM) layer</p></li>
-<li><p>a simplified geology polygon layer</p></li>
-<li><p>a geomorphically corrected stream network layer</p></li>
-<li><p>a valley-boundary line layer delimiting valley bottoms and
+<li><p>A rasterized mean annual precipitation layer</p></li>
+<li><p>A digital elevation model (DEM) layer</p></li>
+<li><p>A simplified geology polygon layer</p></li>
+<li><p>A geomorphically corrected stream network layer</p></li>
+<li><p>A valley-boundary line layer delimiting valley bottoms and
 confining slopes</p></li>
-<li><p>a channel-belt line layer defining the active or recently active
+<li><p>A channel-belt line layer defining the active or recently active
 channel zone</p></li>
 </ul>
 </div>
@@ -459,12 +459,12 @@ channel zone</p></li>
 channel-belt boundaries:</p>
 <ul>
 <li><p><strong>Generate Channel Belt</strong> creates lateral offsets
-from the stream network to approximate the channel-belt extent, which
+from the stream network to approximate the channel belt extent, which
 users should manually refine to capture the active or recently active
 channel zone.</p></li>
 <li><p><strong>Valley Floor Delineation – Sechu</strong> implements a
-cost-accumulation method (<span class="citation">Sechu et al.
-(2021)</span>) to identify low-relief valley-floor areas from a DEM,
+slope-based cost accumulation method (<span class="citation">Sechu et
+al. (2021)</span>) to identify low relief valley floor areas from a DEM,
 serving as a starting point for defining valley boundaries.</p></li>
 </ul>
 <p>These tools assist in constructing the line layers required for
@@ -477,10 +477,10 @@ data extraction tools, each of which is intended to be used sequentially
 to automate the extraction of fifteen hydrogeomorphic features.</p>
 <ul>
 <li><p><strong>[1] Generate Transects</strong>: Perpendicular transects
-are generated from each river-segment centerline to the valley
-boundaries. The tool iteratively extends transects until intersections
-with both left and right valley-boundary lines are found, providing a
-consistent sampling framework for valley geometry.</p></li>
+are generated from each river segment centerline to the valley
+boundaries. The tool iteratively extends transects until two
+intersections with both left and right valley boundary lines are found,
+providing a consistent sampling framework for valley geometry.</p></li>
 <li><p><strong>[2] Extract ELE, PRE, and GEO</strong>: Elevation (ELE),
 precipitation (PRE), and geology class (GEO) are sampled directly from
 user-provided raster and polygon datasets for each stream
@@ -492,15 +492,16 @@ intersections. The ratio VW:VFW (RAT) provides a measure of valley
 confinement.</p></li>
 <li><p><strong>[4] Extract LVS, RVS, and MVS</strong>: Left and Right
 Valley Slope (LVS, RVS) are computed using elevation differences between
-valley-bottom and valley-top intersections along each transect. Mean
-Valley Slope (MVS) averages the two and provides an index of valley
-asymmetry.</p></li>
+valley bottom and valley top intersections along each transect on each
+side. Mean Valley Slope (MVS) averages the two, providing an index of
+valley asymmetry.</p></li>
 <li><p><strong>[5] Extract DVS and SIN</strong>: Down-Valley Slope (DVS)
-is calculated from segment endpoints in the stream network. River
-Sinuosity (SIN) compares segment length to its straight-line
-distance.</p></li>
+is calculated from the difference in elevation and distance between each
+segment start and end point in the stream network. River Sinuosity (SIN)
+compares each segments true length to its straight line distance between
+start and end points.</p></li>
 <li><p><strong>[6] Extract CBW</strong>: Channel Belt Width (CBW) is
-extracted by intersecting transects with the channel-belt line layer and
+extracted by intersecting transects with the channel belt line layer and
 measuring the distance between the first left and right
 intersections.</p></li>
 <li><p><strong>[7] Extract LCS, RCS, and CBS</strong>: Left and Right
@@ -532,9 +533,9 @@ ecological composition, and ecosystem function (<span class="citation">Thorp et 
 <p><code>OpenRES</code> was developed by members of the Earth
 Observation and Remote Sensing Laboratory at the University of
 California, Merced. The authors would like to thank Matthew Rossi,
-Rachel S. Meyer, Natasha Stavros, Madeline Slimp, and Meghan T. Hayden
-for their feedback, suggestions, and support during the development of
-OpenRES.</p>
+Rachel S. Meyer, E. Natasha Stavros, Madeline Slimp, and Meghan T.
+Hayden for their feedback, suggestions, and support during the
+development of OpenRES.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
