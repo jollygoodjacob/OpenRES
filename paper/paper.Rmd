@@ -44,17 +44,17 @@ FPZ classification requires spatially consistent measures of climatic, geologic,
 ## Data Preparation
 There are six required datasets needed prior to the extraction of hydrogeomorphic features along a user's watershed of interest using OpenRES in QGIS:
 
-- A rasterized mean annual precipitation layer
+- A rasterized mean annual precipitation layer.
 
-- A digital elevation model (DEM) layer
+- A digital elevation model (DEM) layer.
 
-- A simplified geology polygon layer
+- A simplified geology polygon layer.
 
-- A geomorphically corrected stream network layer
+- A geomorphically corrected stream network layer.
 
-- A valley-boundary line layer delimiting valley bottoms and confining slopes
+- A valley-boundary line layer delimiting valley bottoms and confining slopes.
 
-- A channel-belt line layer defining the active or recently active channel zone
+- A channel-belt line layer defining the active or recently active channel zone.
 
 ## Using OpenRES
 
