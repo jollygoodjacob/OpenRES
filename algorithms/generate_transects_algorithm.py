@@ -31,10 +31,12 @@ from qgis.core import (
     QgsProcessingFeedback,
     QgsProcessingOutputVectorLayer,
     QgsVectorLayer,
-    QgsFeatureRequest
+    QgsFeatureRequest,
+    QgsProcessingUtils
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtGui import QColor
 import math
 
 
@@ -45,6 +47,8 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
     MAX_LENGTH = 'MAX_LENGTH'
     TRANSECTS = 'TRANSECTS'
     CENTER_POINTS = 'CENTER_POINTS'
+
+
 
     def initAlgorithm(self, config=None):
         self.addParameter(QgsProcessingParameterFeatureSource(self.RIVER_LAYER, "River Network Layer"))
@@ -66,8 +70,29 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
     def groupId(self):
         return "feature_extraction"
 
+    def shortHelpString(self):
+        return (
+            "Generates perpendicular transects for each river segment by extending lines "
+            "from the segment midpoint until intersections with the valley lines are found on "
+            "both sides.\n\n"
+            "Inputs:\n"
+            "• River Network Layer: line features (one transect per feature)\n"
+            "• Valley Lines Layer: boundary lines used to stop transect extension\n"
+            "• Extension Increment (m): step size used while extending outward for intersection checks\n"
+            "• Max Length (m): maximum extension distance per side\n\n"
+            "Outputs:\n"
+            "• Transects: multiline features with attributes t_ID, left_n, right_n\n"
+            "• Segment Centers: midpoint point features with attribute t_ID\n\n"
+            "Notes:\n"
+            "• Transects are only created when ≥2 intersections are found on BOTH sides. These intersections "
+            "represent the valley floor boundary (1st intersection) and the top of the constraining valley (2nd intersection)\n"
+            "• The river input is updated with a t_ID field when possible."
+        )
+
+
     def createInstance(self):
         return GenerateTransectsAlgorithm()
+
 
     def processAlgorithm(self, parameters, context: QgsProcessingContext, feedback: QgsProcessingFeedback):
         river_layer = self.parameterAsSource(parameters, self.RIVER_LAYER, context)
@@ -160,6 +185,24 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         # Commit river layer edits
         if river_vector_layer is not None and river_vector_layer.isEditable():
             river_vector_layer.commitChanges()
+
+        transect_layer = context.getMapLayer(transect_dest_id)
+        if transect_layer:
+            symbol = transect_layer.renderer().symbol()
+            symbol.setColor(QColor(255,96,17))  # orange
+            if symbol.symbolLayerCount() > 0:
+                symbol.symbolLayer(0).setWidth(2.0) # 2 mm
+            transect_layer.triggerRepaint()
+            feedback.pushInfo("Applied orange symbology to transects.")
+
+        center_layer = context.getMapLayer(center_dest_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(2.0) # 2 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
+
 
         return {
             self.TRANSECTS: transect_dest_id,
