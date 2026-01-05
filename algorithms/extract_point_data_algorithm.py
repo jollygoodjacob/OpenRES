@@ -20,7 +20,7 @@ from qgis.core import (
     QgsProcessingParameterRasterLayer,
     QgsProcessingParameterVectorLayer,
     QgsProcessingParameterField,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsFeatureSink,
     QgsField,
     QgsWkbTypes,
@@ -30,10 +30,12 @@ from qgis.core import (
     QgsVectorLayer,
     QgsProcessingContext,
     QgsProcessingFeedback,
-    QgsRaster
+    QgsRaster,
+    QgsProcessingUtils
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtGui import QColor
 
 
 class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
@@ -50,7 +52,7 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER2, "Precipitation Raster Layer (for 'PRE')"))
         self.addParameter(QgsProcessingParameterVectorLayer(self.POLYGONS, "Geology Polygon Layer (for 'GEO')", [QgsProcessing.TypeVectorPolygon]))
         self.addParameter(QgsProcessingParameterField(self.POLY_FIELD, "Geology Attribute Field", parentLayerParameterName=self.POLYGONS))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[2] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, "[2] Segment Centers"))
 
     def name(self):
         return "extract_point_attributes"
@@ -63,6 +65,25 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def shortHelpString(self):
+        return (
+            "Extracts environmental attributes at segment center points.\n\n"
+            "For each input point, the algorithm samples:\n"
+            "• Elevation (ELE) from a raster\n"
+            "• Precipitation (PRE) from a raster\n"
+            "• Geology (GEO) from an intersecting polygon layer\n\n"
+            "Inputs:\n"
+            "• Segment Centers Layer (points)\n"
+            "• Elevation Raster Layer\n"
+            "• Precipitation Raster Layer\n"
+            "• Geology Polygon Layer and attribute field\n\n"
+            "Output:\n"
+            "• Segment Centers with added ELE, PRE, and GEO attributes\n\n"
+            "Notes:\n"
+            "• Raster values are sampled at point locations.\n"
+            "• Polygon attributes are assigned from the containing feature."
+        )
 
     def createInstance(self):
         return ExtractPointDataAlgorithm()
@@ -98,6 +119,14 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
                                              out_layer.fields(), QgsWkbTypes.Point, out_layer.sourceCrs())
         for f in out_layer.getFeatures():
             sink.addFeature(f)
+
+        center_layer = QgsProcessingUtils.mapLayerFromString(dest_id,context)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(2.0) # 2 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
 
         return {self.OUTPUT: dest_id}
 
