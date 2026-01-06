@@ -18,7 +18,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterRasterLayer,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsFeatureSink,
     QgsField,
     QgsWkbTypes,
@@ -30,7 +30,7 @@ from qgis.core import (
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
-
+from qgis.PyQt.QtGui import QColor
 from ..extract_side_slopes import calculate_side_slopes_from_pairs
 
 
@@ -50,7 +50,7 @@ class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VW, "Right Valley Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
         self.addParameter(QgsProcessingParameterFeatureSource(self.RIGHT_VFW, "Right Valley Floor Width Reference Layer", [QgsProcessing.TypeVectorPoint]))
         self.addParameter(QgsProcessingParameterRasterLayer(self.RASTER, "Elevation Raster Layer"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[4] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, "[4] Segment Centers"))
 
     def name(self):
         return "extract_side_slopes"
@@ -63,6 +63,23 @@ class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def shortHelpString(self):
+        return (
+            "Computes left, right, and mean valley side slopes (LVS, RVS, MVS) "
+            "for each segment center using elevation differences between valley "
+            "floor width and valley width reference points.\n\n"
+            "Inputs:\n"
+            "• Segment Centers Layer (points; must include t_ID)\n"
+            "• Left / Right Valley Width (VW) reference points\n"
+            "• Left / Right Valley Floor Width (VFW) reference points\n"
+            "• Elevation Raster Layer\n\n"
+            "Output:\n"
+            "• [4] Segment Centers with added LVS, RVS, and MVS attributes\n\n"
+            "Notes:\n"
+            "• Slopes are computed from elevation differences sampled from the raster.\n"
+            "• MVS is the mean of left and right side slopes where both are available."
+        )
 
     def createInstance(self):
         return ExtractSideSlopesAlgorithm()
@@ -93,5 +110,13 @@ class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
                                              temp_center.fields(), QgsWkbTypes.Point, temp_center.crs())
         for f in temp_center.getFeatures():
             sink.addFeature(f)
+
+        center_layer = context.getMapLayer(dest_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(3) # 3 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
 
         return {self.OUTPUT: dest_id}
