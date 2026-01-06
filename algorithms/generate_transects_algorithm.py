@@ -191,7 +191,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             symbol = transect_layer.renderer().symbol()
             symbol.setColor(QColor(255,96,17))  # orange
             if symbol.symbolLayerCount() > 0:
-                symbol.symbolLayer(0).setWidth(2.0) # 2 mm
+                symbol.symbolLayer(0).setWidth(1.0) # 1 mm
             transect_layer.triggerRepaint()
             feedback.pushInfo("Applied orange symbology to transects.")
 
@@ -199,7 +199,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         if center_layer:
             symbol = center_layer.renderer().symbol()
             symbol.setColor(QColor(0,0,255))  # blue
-            symbol.setSize(2.0) # 2 mm
+            symbol.setSize(3.0) # 3 mm
             center_layer.triggerRepaint()
             feedback.pushInfo("Applied blue symbology to segment centers.")
 

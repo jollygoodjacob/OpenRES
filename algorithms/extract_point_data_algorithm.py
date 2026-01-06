@@ -124,7 +124,7 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
         if center_layer:
             symbol = center_layer.renderer().symbol()
             symbol.setColor(QColor(0,0,255))  # blue
-            symbol.setSize(2.0) # 2 mm
+            symbol.setSize(3.0) # 3 mm
             center_layer.triggerRepaint()
             feedback.pushInfo("Applied blue symbology to segment centers.")
 

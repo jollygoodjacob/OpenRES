@@ -18,7 +18,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterVectorLayer,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsWkbTypes,
     QgsProcessingContext,
     QgsProcessingFeedback,
@@ -29,10 +29,12 @@ from qgis.core import (
     QgsGeometry,
     QgsPointXY,
     QgsSpatialIndex,
-    QgsFields
+    QgsFields,
+    QgsSimpleMarkerSymbolLayer
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtGui import QColor
 
 from ..extract_valley_width import (
     find_two_intersections_by_side,
@@ -58,11 +60,11 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSource(self.VALLEY_LINES, "Valley Lines Layer", [QgsProcessing.TypeVectorLine]))
         self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "River Network Layer", [QgsProcessing.TypeVectorLine]))
 
-        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VFW, "Left VFW Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VFW, "Right VFW Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_VW, "Left VW Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_VW, "Right VW Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.CENTER_OUT, "[3] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.LEFT_VFW, "Left VFW Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.RIGHT_VFW, "Right VFW Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.LEFT_VW, "Left VW Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.RIGHT_VW, "Right VW Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.CENTER_OUT, "[3] Segment Centers"))
 
     def name(self):
         return "extract_valley_width"
@@ -75,6 +77,27 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def shortHelpString(self):
+        return (
+            "Computes valley-floor width (VFW), valley width (VW), and their ratio (RAT) for each "
+            "segment center using transects and valley boundary lines.\n\n"
+            "The algorithm finds two intersections on the left and right side of each transect:\n"
+            "• 1st intersection pair → VFW reference points\n"
+            "• 2nd intersection pair → VW reference points\n\n"
+            "Inputs:\n"
+            "• Transects Layer (lines)\n"
+            "• Segment Centers Layer (points; must include t_ID)\n"
+            "• Valley Lines Layer (lines)\n"
+            "• River Network Layer (lines)\n\n"
+            "Outputs:\n"
+            "• Left/Right VFW Reference (points)\n"
+            "• Left/Right VW Reference (points)\n"
+            "• [3] Segment Centers with added fields VFW, VW, and RAT\n\n"
+            "Notes:\n"
+            "• RAT = VW / VFW (null when VFW is 0 or missing)."
+        )
+
 
     def createInstance(self):
         return ExtractVWAlgorithm()
@@ -150,10 +173,10 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         add_points_in_batch(right2, right_vw, "right")
 
         # Save temporary layers to outputs
-        self.save_output_layer(left_vfw, parameters, self.LEFT_VFW, context)
-        self.save_output_layer(right_vfw, parameters, self.RIGHT_VFW, context)
-        self.save_output_layer(left_vw, parameters, self.LEFT_VW, context)
-        self.save_output_layer(right_vw, parameters, self.RIGHT_VW, context)
+        left_vfw_id  = self.save_output_layer(left_vfw,  parameters, self.LEFT_VFW,  context)
+        right_vfw_id = self.save_output_layer(right_vfw, parameters, self.RIGHT_VFW, context)
+        left_vw_id   = self.save_output_layer(left_vw,   parameters, self.LEFT_VW,   context)
+        right_vw_id  = self.save_output_layer(right_vw,  parameters, self.RIGHT_VW,  context)
         
 
         # Compute valley widths and get updated layer
@@ -166,16 +189,62 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         # Ratio of VW:VFW calculation
         self.add_ratio_field(center_updated2, feedback)
 
-        self.save_output_layer(center_updated2, parameters, self.CENTER_OUT, context)
+        center_id    = self.save_output_layer(center_updated2, parameters, self.CENTER_OUT, context)
 
+        left_vfw_layer = context.getMapLayer(left_vfw_id)
+        if left_vfw_layer:
+            symbol = left_vfw_layer.renderer().symbol()
+            symbol.setColor(QColor(180,0,0))  # red
+            symbol.setSize(3) # 3 mm
+            left_vfw_layer.triggerRepaint()
+            
 
+        left_vw_layer = context.getMapLayer(left_vw_id)
+        if left_vw_layer:
+            symbol = left_vw_layer.renderer().symbol()
+            symbol.setColor(QColor(120,0,0))  # red
+            symbol.setSize(4) # 4 mm
+            sl = symbol.symbolLayer(0)
+            if isinstance(sl, QgsSimpleMarkerSymbolLayer):
+                sl.setShape(QgsSimpleMarkerSymbolLayer.Triangle)
+            left_vw_layer.triggerRepaint()
+            feedback.pushInfo("Applied red symbology to left intersections.")
+
+        right_vfw_layer = context.getMapLayer(right_vfw_id)
+        if right_vfw_layer:
+            symbol = right_vfw_layer.renderer().symbol()
+            symbol.setColor(QColor(0,180,0))  # green
+            symbol.setSize(3) # 3 mm
+            right_vfw_layer.triggerRepaint()
+            
+
+        right_vw_layer = context.getMapLayer(right_vw_id)
+        if right_vw_layer:
+            symbol = right_vw_layer.renderer().symbol()
+            symbol.setColor(QColor(0,120,0))  # green
+            symbol.setSize(4) # 4 mm
+            sl = symbol.symbolLayer(0)
+            if isinstance(sl, QgsSimpleMarkerSymbolLayer):
+                sl.setShape(QgsSimpleMarkerSymbolLayer.Triangle)
+            right_vw_layer.triggerRepaint()
+            feedback.pushInfo("Applied green symbology to right intersections.")
+
+        center_layer = context.getMapLayer(center_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # red
+            symbol.setSize(3) # 3 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
+            
         return {
-            self.LEFT_VFW: parameters[self.LEFT_VFW],
-            self.RIGHT_VFW: parameters[self.RIGHT_VFW],
-            self.LEFT_VW: parameters[self.LEFT_VW],
-            self.RIGHT_VW: parameters[self.RIGHT_VW],
-            self.CENTER_OUT: parameters[self.CENTER_OUT]
+            self.LEFT_VFW: left_vfw_id,
+            self.RIGHT_VFW: right_vfw_id,
+            self.LEFT_VW: left_vw_id,
+            self.RIGHT_VW: right_vw_id,
+            self.CENTER_OUT: center_id
         }
+
 
     def save_output_layer(self, layer, parameters, param_name, context):
         fields = layer.fields()
