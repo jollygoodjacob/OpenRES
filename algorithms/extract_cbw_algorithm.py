@@ -18,7 +18,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterVectorLayer,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsWkbTypes,
     QgsProcessingContext,
     QgsProcessingFeedback,
@@ -33,7 +33,7 @@ from qgis.core import (
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
-
+from qgis.PyQt.QtGui import QColor
 from ..extract_valley_width import (
     find_one_intersection_by_side,
     add_points_in_batch,
@@ -57,9 +57,9 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_NETWORK, "River Network Layer", [QgsProcessing.TypeVectorLine]))
 
 
-        self.addParameter(QgsProcessingParameterVectorDestination(self.LEFT_CB, "Left CB Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.RIGHT_CB, "Right CB Reference"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.CENTER_OUT, "[6] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.LEFT_CB, "Left CB Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.RIGHT_CB, "Right CB Reference"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.CENTER_OUT, "[6] Segment Centers"))
 
     def name(self):
         return "extract_cbw"
@@ -72,6 +72,25 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def shortHelpString(self):
+        return (
+            "Computes channel belt width (CBW) for each segment center by intersecting "
+            "transects with the channel belt boundaries on the left and right sides.\n\n"
+            "Inputs:\n"
+            "• Transects Layer (lines)\n"
+            "• Segment Centers Layer (points; must include t_ID)\n"
+            "• Channel Belt Layer (lines)\n"
+            "• River Network Layer (lines)\n\n"
+            "Outputs:\n"
+            "• Left CB Reference (points)\n"
+            "• Right CB Reference (points)\n"
+            "• [6] Segment Centers with added CBW attribute\n\n"
+            "Notes:\n"
+            "• CBW is calculated from the distance between left and right channel belt intersections "
+            "along each transect."
+        )
+
 
     def createInstance(self):
         return ExtractCBWAlgorithm()
@@ -112,8 +131,8 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
 
 
         # Save temporary layers to outputs
-        self.save_output_layer(left_cb, parameters, self.LEFT_CB, context)
-        self.save_output_layer(right_cb, parameters, self.RIGHT_CB, context)
+        left_cb_id = self.save_output_layer(left_cb, parameters, self.LEFT_CB, context)
+        right_cb_id = self.save_output_layer(right_cb, parameters, self.RIGHT_CB, context)
 
         
 
@@ -124,13 +143,34 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
         if center_updated.isValid():
             center_updated.setCrs(centers_crs)
 
-        self.save_output_layer(center_updated, parameters, self.CENTER_OUT, context)
+        center_id = self.save_output_layer(center_updated, parameters, self.CENTER_OUT, context)
 
+        left_cb_layer = context.getMapLayer(left_cb_id)
+        if left_cb_layer:
+            symbol = left_cb_layer.renderer().symbol()
+            symbol.setColor(QColor(220,0,0))  # red
+            symbol.setSize(3) # 3 mm
+            left_cb_layer.triggerRepaint()
+
+        right_cb_layer = context.getMapLayer(right_cb_id)
+        if right_cb_layer:
+            symbol = right_cb_layer.renderer().symbol()
+            symbol.setColor(QColor(0,220,0))  # green
+            symbol.setSize(3) # 3 mm
+            right_cb_layer.triggerRepaint()
+
+        center_layer = context.getMapLayer(center_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(3) # 3 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
 
         return {
-            self.LEFT_CB: parameters[self.LEFT_CB],
-            self.RIGHT_CB: parameters[self.RIGHT_CB],
-            self.CENTER_OUT: parameters[self.CENTER_OUT]
+            self.LEFT_CB: left_cb_id ,
+            self.RIGHT_CB: right_cb_id,
+            self.CENTER_OUT: center_id
         }
 
     def save_output_layer(self, layer, parameters, param_name, context):
