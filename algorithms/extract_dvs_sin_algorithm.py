@@ -18,7 +18,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterRasterLayer,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsProcessingContext,
     QgsProcessingFeedback,
     QgsFeatureSink,
@@ -31,6 +31,7 @@ from qgis.core import (
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtGui import QColor
 import math
 
 
@@ -44,7 +45,7 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterFeatureSource(self.CENTER_POINTS, "Segment Centers Layer", [QgsProcessing.TypeVectorPoint]))
         self.addParameter(QgsProcessingParameterFeatureSource(self.STREAM_SEGMENTS, "River Network Layer", [QgsProcessing.TypeVectorLine]))
         self.addParameter(QgsProcessingParameterRasterLayer(self.ELEVATION, "Elevation Raster Layer"))
-        self.addParameter(QgsProcessingParameterVectorDestination(self.OUTPUT, "[5] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT, "[5] Segment Centers"))
 
     def name(self):
         return "extract_dvs_sinuosity"
@@ -57,6 +58,25 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def shortHelpString(self):
+        return (
+            "Computes downstream valley slope (DVS) and channel sinuosity (SIN) "
+            "for each segment center using the associated river segment geometry "
+            "and elevation data.\n\n"
+            "DVS is calculated from the elevation difference between the upstream "
+            "and downstream ends of each stream segment, normalized by segment length. "
+            "SIN is computed as the ratio of channel length to straight-line distance.\n\n"
+            "Inputs:\n"
+            "• Segment Centers Layer (points; must include t_id)\n"
+            "• River Network Layer (lines; must include matching t_id)\n"
+            "• Elevation Raster Layer\n\n"
+            "Output:\n"
+            "• [5] Segment Centers with added DVS and SIN attributes\n\n"
+            "Notes:\n"
+            "• DVS is reported as percent slope.\n"
+            "• SIN values ≥ 1 indicate increasing channel sinuosity."
+        )
 
     def createInstance(self):
         return ExtractDVSAlgorithm()
@@ -135,5 +155,13 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
                                              out_layer.fields(), QgsWkbTypes.Point, out_layer.sourceCrs())
         for f in out_layer.getFeatures():
             sink.addFeature(f)
+
+        center_layer = context.getMapLayer(dest_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(3) # 3 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
 
         return {self.OUTPUT: dest_id}
