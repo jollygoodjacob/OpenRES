@@ -20,7 +20,7 @@ from qgis.core import (
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterVectorLayer,
-    QgsProcessingParameterVectorDestination,
+    QgsProcessingParameterFeatureSink,
     QgsProcessingContext,
     QgsProcessingFeedback,
     QgsProcessingException,
@@ -30,6 +30,8 @@ from qgis.core import (
 )
 import math
 from collections import defaultdict
+from qgis.PyQt.QtGui import QColor
+from ..icon_utils import openres_icon
 
 
 class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
@@ -56,6 +58,26 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
     def displayName(self):
         return "[7] Extract LCS, RCS, and CBS"
 
+    def icon(self):
+        return openres_icon("openres_provider.png")
+
+    def shortHelpString(self):
+        return (
+            "Computes channel belt sinuosity metrics for each segment center: left (LCS), "
+            "right (RCS), and mean channel-belt sinuosity (CBS).\n\n"
+            "For each t_ID and side (LEFT/RIGHT), sinuosity is calculated as:\n"
+            "• line length / straight-line distance between endpoints\n"
+            "If multiple channel-belt features exist for a side, the longest is used.\n\n"
+            "Inputs:\n"
+            "• Segment Centers Layer (points; must include t_ID)\n"
+            "• Channel Belt Layer (lines; must include t_ID and side = LEFT/RIGHT)\n\n"
+            "Output:\n"
+            "• [7] Segment Centers with added LCS, RCS, and CBS attributes\n\n"
+            "Notes:\n"
+            "• Use a projected CRS for accurate distance-based metrics."
+        )
+
+
     def group(self):
         return "Feature Extraction"
 
@@ -79,7 +101,7 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
             )
         )
         self.addParameter(
-            QgsProcessingParameterVectorDestination(
+            QgsProcessingParameterFeatureSink(
                 self.OUTPUT,
                 self.tr("[7] Segment Centers"),
             )
@@ -218,5 +240,14 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
             if (i + 1) % 500 == 0:
                 feedback.pushInfo(self.tr(f"Processed {i+1}/{total} centers..."))
             feedback.setProgress(int(100 * (i + 1) / total))
+
+        center_layer = context.getMapLayer(dest_id)
+        if center_layer:
+            symbol = center_layer.renderer().symbol()
+            symbol.setColor(QColor(0,0,255))  # blue
+            symbol.setSize(3) # 3 mm
+            center_layer.triggerRepaint()
+            feedback.pushInfo("Applied blue symbology to segment centers.")
+        
 
         return {self.OUTPUT: dest_id}

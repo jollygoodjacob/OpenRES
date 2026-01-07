@@ -35,6 +35,7 @@ import processing
 import os
 import math
 from osgeo import gdal
+from ..icon_utils import openres_icon
 
 
 class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
@@ -66,6 +67,9 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return 'geomorphology'
+
+    def icon(self):
+        return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return self.tr(
