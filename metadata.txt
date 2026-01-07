@@ -1,7 +1,15 @@
 [general]
 name=OpenRES: Open Riverine Ecosystem Synthesis
-description=A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks.
-about=OpenRES is a QGIS plugin for river and floodplain scientists, geomorphologists, and environmental managers who need to rapidly quantify hydrogeomorphic characteristics along river networks. The core tools automate the extraction of elevation (ELE), precipitation (PRE), geology (GEO), valley width (VW), valley floor width (VFW), the ratio of valley width to valley floor width (RAT), valley side slopes (LVS, RVS, MVS), down-valley slope (DVS), river sinuosity (SIN), channel belt width (CBW), and channel belt sinuosity (LCS, RCS, CBS) for each user-defined river segment (typically 5–10 km). OpenRES also includes geomorphology utility tools to help users generate key input layers such as valley floor polygons and channel belts. The metrics obtained using OpenRES can be used individually for river science or combined through unsupervised classification to define Functional Process Zones — repeatable, discontinuous hydrogeomorphic patches that link stream ecology with hydrology and geomorphology across river corridors.
+description=A QGIS plugin for automated extraction of hydrogeomorphic features to support Functional Process Zone classification of river networks.
+about=OpenRES is a QGIS plugin designed to support Riverine Ecosystem Synthesis (RES)–based analyses by enabling the systematic, reproducible delineation and characterization of Functional Process Zones (FPZs) along river networks.
+
+	RES emphasizes that river corridors are organized as hierarchically nested, longitudinally discontinuous patches whose geomorphic structure constrains hydrologic and ecological processes. In practice, however, applying RES concepts across entire river networks is often limited by labor-intensive GIS workflows, inconsistent metric definitions, and difficulty scaling analyses beyond individual reaches.
+
+	OpenRES addresses these limitations by automating the extraction of hydrogeomorphic variables that define FPZ structure for user-defined river segments (typically 5–10 km). Core tools quantify elevation (ELE), precipitation (PRE), geology (GEO), valley width (VW), valley floor width (VFW), the valley width–to–valley floor width ratio (RAT), valley side slopes (LVS, RVS, MVS), down-valley slope (DVS), channel sinuosity (SIN), channel belt width (CBW), and channel belt sinuosity (LCS, RCS, CBS). OpenRES also includes geomorphology utility tools to generate essential input layers such as valley floor polygons and channel belts.
+
+	The metrics produced can be evaluated individually or integrated using hierarchical, unsupervised classification approaches to delineate FPZs — repeatable hydrogeomorphic patches that organize physical habitat templates and ecological processes along river corridors. By enabling network-scale, standardized FPZ characterization, OpenRES facilitates comparative analyses, cross-system synthesis, and management applications grounded in RES theory
+
+
 version=1.1.0
 qgisMinimumVersion=3.28
 author=Jacob Nesslage
@@ -12,4 +20,4 @@ hasProcessingProvider=yes
 homepage=https://github.com/jollygoodjacob/OpenRES
 repository=https://github.com/jollygoodjacob/OpenRES
 tracker=https://github.com/jollygoodjacob/OpenRES/issues
-tags=hydrology,geomorphology,river,watershed,restoration,FPZ,hydrogeomorphic,OpenRES
+tags=hydrology,geomorphology,ecology,river,watershed,FPZ,OpenRES
