@@ -19,6 +19,9 @@ from qgis.core import QgsProcessingProvider,QgsMessageLog,Qgis
 import os
 from qgis.PyQt.QtGui import QIcon
 
+# Icon utility (to give OpenRES an icon)
+from .icon_utils import openres_icon
+
 # Feature Extraction Tools
 from .algorithms.generate_transects_algorithm import GenerateTransectsAlgorithm
 from .algorithms.extract_vw_algorithm import ExtractVWAlgorithm
@@ -39,40 +42,12 @@ def _log(msg, level=Qgis.Info):
     if DEBUG:
         QgsMessageLog.logMessage(msg, "OpenRES", level)
 
+
+
 class OpenRESProvider(QgsProcessingProvider):
     def __init__(self):
         super().__init__()
-        self._icon = None
-       
-        # 1.) Try install from filesystem path
-        pkg_root = Path(__file__).resolve().parent       # .../OpenRES
-        disk_icon = pkg_root / "icons" / "openres_provider.png"
-        _log(f"Provider looking for icon at: {disk_icon}")
-        if disk_icon.exists():
-            self._icon = QIcon(str(disk_icon))
-            if not self._icon.isNull():
-                _log("Loaded provider icon from disk.")
-            else:
-                _log("Disk icon found but QIcon is NULL (format issue?).", Qgis.Warning)
-        else:
-            _log("Disk icon NOT found. Check packaging/install.", Qgis.Warning)
-
-        # 2.) Try install from resources_rc.py
-        if self._icon.isNull():
-            try:
-                from . import resources_rc  # registers :/ namespace if present
-                qrc_path = ":/openres/icons/openres_provider.png"
-                _log(f"Trying Qt resource path: {qrc_path}")
-                icon = QIcon(qrc_path)
-                if not icon.isNull():
-                    self._icon = icon
-                    _log("Loaded provider icon from Qt resource.")
-                else:
-                    _log("Qt resource path resolved but icon is NULL.", Qgis.Warning)
-            except Exception as e:
-                _log(f"Qt resource import failed: {e}", Qgis.Warning)
-
-
+        self._icon = openres_icon("openres_provider.png")
 
     def loadAlgorithms(self):
         # Feature Extraction Tools

@@ -39,7 +39,7 @@ from ..extract_valley_width import (
     add_points_in_batch,
     compute_valley_width
 )
-
+from ..icon_utils import openres_icon
 
 class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
     TRANSECTS = 'TRANSECTS'
@@ -72,6 +72,9 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def icon(self):
+        return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return (

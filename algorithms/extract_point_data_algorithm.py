@@ -36,7 +36,7 @@ from qgis.core import (
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
 from qgis.PyQt.QtGui import QColor
-
+from ..icon_utils import openres_icon
 
 class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
     POINTS = 'POINTS'
@@ -65,6 +65,9 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def icon(self):
+        return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return (

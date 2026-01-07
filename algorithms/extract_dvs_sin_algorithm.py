@@ -33,7 +33,7 @@ from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant
 from qgis.PyQt.QtGui import QColor
 import math
-
+from ..icon_utils import openres_icon
 
 class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
     CENTER_POINTS = 'CENTER_POINTS'
@@ -58,6 +58,9 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return "feature_extraction"
+
+    def icon(self):
+        return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return (

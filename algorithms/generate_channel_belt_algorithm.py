@@ -30,6 +30,7 @@ from qgis.core import (
     QgsWkbTypes,
     QgsFeatureSink,
 )
+from ..icon_utils import openres_icon
 
 class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
     """
@@ -62,6 +63,9 @@ class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
 
     def groupId(self):
         return 'geomorphology'
+
+    def icon(self):
+        return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return self.tr(
