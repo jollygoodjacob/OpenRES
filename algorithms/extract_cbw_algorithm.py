@@ -29,7 +29,7 @@ from qgis.core import (
     QgsGeometry,
     QgsPointXY,
     QgsSpatialIndex,
-    QgsFields
+    QgsFields,
 )
 from qgis.core import QgsProcessing
 from PyQt5.QtCore import QVariant

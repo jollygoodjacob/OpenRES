@@ -124,10 +124,10 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
                 vw = f[vw_idx]
                 vfw = f[vfw_idx]
 
-                if vfw in (None, 0):
+                if vw is None or vfw is None or vw == QVariant() or vfw == QVariant(): # condiional to account for NULLs
                     rat_val = None  # or -9999
                 else:
-                    rat_val = float(vw) / float(vfw)
+                    rat_val = float(vw) / float(vfw) if float(vfw) != 0 else None # no dividing by 0
 
                 f[rat_idx] = rat_val
                 layer.updateFeature(f)
