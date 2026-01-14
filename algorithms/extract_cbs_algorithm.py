@@ -26,7 +26,7 @@ from qgis.core import (
     QgsProcessingException,
     QgsFeatureSink,
     QgsFields, QgsField, QgsFeature,
-    QgsGeometry, QgsWkbTypes,
+    QgsGeometry, QgsWkbTypes, QgsVariantUtils
 )
 import math
 from collections import defaultdict
@@ -218,6 +218,13 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
             try:
                 tid = int(c["t_ID"])
             except Exception:
+                sink.addFeature(of, QgsFeatureSink.FastInsert)
+                continue
+
+            if "CBW" in centers.fields().names() and QgsVariantUtils.isNull(c["CBW"]): # conditional to ensure transects 
+                of.setAttribute("LCS", None)                                           # not intersecting channel belts do not get a sinuosity
+                of.setAttribute("RCS", None)
+                of.setAttribute("CBS", None)
                 sink.addFeature(of, QgsFeatureSink.FastInsert)
                 continue
 

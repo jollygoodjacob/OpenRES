@@ -239,11 +239,16 @@ def compute_valley_width(center_layer, left_points, right_points, out_field="VW"
         lw = left_distances.get(tid, 0)
         rw = right_distances.get(tid, 0)
 
+        if lw == 0 or rw == 0: #Added conditional to ensure only if two sides intersect is a width reported
+            vw_value = None
+        else:
+            vw_value = lw + rw
+
         new_attrs = new_feat.attributes()
         if out_field in center_layer.fields().names():
-            new_attrs[cloned_layer.fields().indexFromName(out_field)] = lw + rw
+            new_attrs[cloned_layer.fields().indexFromName(out_field)] = vw_value
         else:
-            new_attrs.append(lw + rw)
+            new_attrs.append(vw_value)
         new_feat.setAttributes(new_attrs)
 
         features.append(new_feat)
