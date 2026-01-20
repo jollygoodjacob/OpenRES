@@ -75,7 +75,7 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         return self.tr(
             'Delineate a valley bottom by:\n'
             '1) building slope from DEM, \n'
-            '2) using slope as cost surface in GRASS r.cost from a stream network, \n'
+            '2) using slope as cost surface in GRASS r.cost from a river network, \n'
             '3) taking an initial (max) cost threshold (usually [500 * (res / 10m)] is a good starting point), \n'
             '4) computing the mean cost inside that belt, \n'
             '5) re-thresholding with that mean, and \n'
@@ -87,7 +87,7 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterVectorLayer(
                 self.PARAM_RIVER,
-                self.tr('Stream network'),
+                self.tr('River network'),
                 [QgsProcessing.TypeVectorLine]
             )
         )
