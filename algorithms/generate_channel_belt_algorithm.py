@@ -69,7 +69,7 @@ class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
 
     def shortHelpString(self):
         return self.tr(
-            "Offsets each input stream segment to LEFT (+) and RIGHT (-) by the given distance "
+            "Offsets each input river segment to LEFT (+) and RIGHT (-) by the given distance "
             "and writes results into a single line layer. "
             "Copies t_ID from input when present; otherwise creates sequential t_ID. "
             "Adds fields: t_ID (int), side {'LEFT'|'RIGHT'}, offset (double).\n\n"
@@ -86,7 +86,7 @@ class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterVectorLayer(
                 self.PARAM_INPUT,
-                self.tr("Stream network"),
+                self.tr("River network"),
                 [QgsProcessing.TypeVectorLine],
             )
         )
