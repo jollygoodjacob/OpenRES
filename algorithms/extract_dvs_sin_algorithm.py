@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from qgis.core import (
+    QgsProcessing,
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterRasterLayer,
@@ -29,8 +30,23 @@ from qgis.core import (
     QgsRaster,
     QgsPointXY
 )
-from qgis.core import QgsProcessing
-from PyQt5.QtCore import QVariant
+
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 from qgis.PyQt.QtGui import QColor
 import math
 from ..icon_utils import openres_icon
@@ -99,7 +115,7 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
         # Add missing fields
         for name in ["DVS", "SIN"]:
             if out_layer.fields().indexFromName(name) == -1:
-                out_dp.addAttributes([QgsField(name, QVariant.Double)])
+                out_dp.addAttributes([QgsField(name, DOUBLE)])
         out_layer.updateFields()
 
         # Stream features by t_id

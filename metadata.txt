@@ -12,6 +12,7 @@ about=OpenRES is a QGIS plugin designed to support Riverine Ecosystem Synthesis 
 
 version=1.2.0
 qgisMinimumVersion=3.28
+qgis=MaximumVersion=4.99
 author=Jacob Nesslage
 email=jnesslage@ucmerced.edu
 category=Analysis

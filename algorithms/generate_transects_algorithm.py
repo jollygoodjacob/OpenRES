@@ -15,6 +15,8 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from qgis.core import (
+    Qgis,
+    QgsProcessing,
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterFeatureSink,
@@ -34,8 +36,24 @@ from qgis.core import (
     QgsFeatureRequest,
     QgsProcessingUtils
 )
-from qgis.core import QgsProcessing
-from PyQt5.QtCore import QVariant
+
+#To ensure QGIS 4.XX compatibility
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 from qgis.PyQt.QtGui import QColor
 from ..icon_utils import openres_icon
 import math
@@ -109,17 +127,17 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         if river_vector_layer is not None:
             if not river_vector_layer.fields().indexFromName("t_ID") >= 0:
                 river_vector_layer.startEditing()
-                river_vector_layer.dataProvider().addAttributes([QgsField("t_ID", QVariant.Int)])
+                river_vector_layer.dataProvider().addAttributes([QgsField("t_ID", INT)])
                 river_vector_layer.updateFields()
 
         # Output fields
         river_fields = QgsFields()
-        river_fields.append(QgsField("t_ID", QVariant.Int))
-        river_fields.append(QgsField("left_n", QVariant.Int))
-        river_fields.append(QgsField("right_n", QVariant.Int))
+        river_fields.append(QgsField("t_ID", INT))
+        river_fields.append(QgsField("left_n", INT))
+        river_fields.append(QgsField("right_n", INT))
 
         center_fields = QgsFields()
-        center_fields.append(QgsField("t_ID", QVariant.Int))
+        center_fields.append(QgsField("t_ID", INT))
 
         (transect_sink, transect_dest_id) = self.parameterAsSink(
             parameters, self.TRANSECTS, context,

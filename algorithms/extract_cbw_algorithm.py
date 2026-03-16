@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from qgis.core import (
+    QgsProcessing,
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterVectorLayer,
@@ -31,8 +32,23 @@ from qgis.core import (
     QgsSpatialIndex,
     QgsFields,
 )
-from qgis.core import QgsProcessing
-from PyQt5.QtCore import QVariant
+
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 from qgis.PyQt.QtGui import QColor
 from ..extract_valley_width import (
     find_one_intersection_by_side,
@@ -110,9 +126,9 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
 
         def create_output_layer(name):
             fields = QgsFields()
-            fields.append(QgsField("side", QVariant.String))
-            fields.append(QgsField("t_ID", QVariant.Int))     # Field needed downstream
-            fields.append(QgsField("distance", QVariant.Double))
+            fields.append(QgsField("side", STRING))
+            fields.append(QgsField("t_ID", INT))     # Field needed downstream
+            fields.append(QgsField("distance", DOUBLE))
             
             layer = QgsVectorLayer(f"Point?crs={crs}", name, "memory")
             layer.dataProvider().addAttributes(fields)
