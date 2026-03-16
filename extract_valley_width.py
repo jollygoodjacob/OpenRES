@@ -26,7 +26,21 @@ from qgis.core import (
     QgsSpatialIndex,        # Optimized spatial lookup for vector features
     QgsWkbTypes             # Enum for identifying geometry types (Point, Line, etc.)
 )
-from PyQt5.QtCore import QVariant  # Used for defining attribute types
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
 
 # --- Determine which side of the transect a point lies on ---
 def determine_side(start_point, direction_vector, intersect_point):
@@ -196,7 +210,7 @@ from qgis.core import (
     QgsVectorLayer, QgsFeature, QgsField, QgsFeatureRequest,
     QgsWkbTypes, QgsProject, QgsGeometry, QgsPointXY, QgsFields
 )
-from PyQt5.QtCore import QVariant
+
 
 def compute_valley_width(center_layer, left_points, right_points, out_field="VW"):
     """
@@ -216,7 +230,7 @@ def compute_valley_width(center_layer, left_points, right_points, out_field="VW"
 
     # Add output field if missing
     if cloned_layer.fields().indexFromName(out_field) == -1:
-        cloned_layer_data.addAttributes([QgsField(out_field, QVariant.Double)])
+        cloned_layer_data.addAttributes([QgsField(out_field, DOUBLE)])
         cloned_layer.updateFields()
 
     # Build distance dictionaries

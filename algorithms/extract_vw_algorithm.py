@@ -15,6 +15,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from qgis.core import (
+    QgsProcessing,
     QgsProcessingAlgorithm,
     QgsProcessingParameterFeatureSource,
     QgsProcessingParameterVectorLayer,
@@ -30,10 +31,26 @@ from qgis.core import (
     QgsPointXY,
     QgsSpatialIndex,
     QgsFields,
-    QgsSimpleMarkerSymbolLayer
+    QgsSimpleMarkerSymbolLayer,
+    NULL
 )
-from qgis.core import QgsProcessing
-from PyQt5.QtCore import QVariant
+
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 from qgis.PyQt.QtGui import QColor
 
 from ..extract_valley_width import (
@@ -110,7 +127,7 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
 
             # add field if it doesn't exist yet
             if layer.fields().indexFromName("RAT") == -1:
-                dp.addAttributes([QgsField("RAT", QVariant.Double)])
+                dp.addAttributes([QgsField("RAT", DOUBLE)])
                 layer.updateFields()
 
             vw_idx = layer.fields().indexFromName("VW")
@@ -124,7 +141,7 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
                 vw = f[vw_idx]
                 vfw = f[vfw_idx]
 
-                if vw is None or vfw is None or vw == QVariant() or vfw == QVariant(): # condiional to account for NULLs
+                if vw is None or vfw is None or vw == NULL or vfw == NULL: # condiional to account for NULLs
                     rat_val = None  # or -9999
                 else:
                     rat_val = float(vw) / float(vfw) if float(vfw) != 0 else None # no dividing by 0
@@ -149,9 +166,9 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
 
         def create_output_layer(name):
             fields = QgsFields()
-            fields.append(QgsField("side", QVariant.String))
-            fields.append(QgsField("t_ID", QVariant.Int))     # Field needed downstream
-            fields.append(QgsField("distance", QVariant.Double))
+            fields.append(QgsField("side", STRING))
+            fields.append(QgsField("t_ID", INT))     # Field needed downstream
+            fields.append(QgsField("distance", DOUBLE))
             
             layer = QgsVectorLayer(f"Point?crs={crs}", name, "memory")
             layer.dataProvider().addAttributes(fields)

@@ -22,7 +22,22 @@ from qgis.core import (
     QgsRaster,
     QgsRasterLayer
 )
-from PyQt5.QtCore import QVariant
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 import math
 
 
@@ -118,7 +133,7 @@ def calculate_side_slopes_from_pairs(center_points_layer,
     # Add LVS, RVS, and MVS fields if missing
     for field_name in ["LVS", "RVS", "MVS"]:
         if center_points_layer.fields().indexFromName(field_name) == -1:
-            center_points_layer.dataProvider().addAttributes([QgsField(field_name, QVariant.Double)])
+            center_points_layer.dataProvider().addAttributes([QgsField(field_name, DOUBLE)])
     center_points_layer.updateFields()
 
     # Build slope info from raster

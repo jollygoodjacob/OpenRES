@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.PyQt.QtCore import QCoreApplication, QVariant
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
@@ -28,6 +28,23 @@ from qgis.core import (
     QgsFields, QgsField, QgsFeature,
     QgsGeometry, QgsWkbTypes, QgsVariantUtils
 )
+
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 import math
 from collections import defaultdict
 from qgis.PyQt.QtGui import QColor
@@ -189,11 +206,11 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
         # Prepare output schema: centers + LCS/RCS/MCS
         out_fields = QgsFields(centers.fields())
         if out_fields.indexFromName("LCS") == -1:
-            out_fields.append(QgsField("LCS", QVariant.Double))
+            out_fields.append(QgsField("LCS", DOUBLE))
         if out_fields.indexFromName("RCS") == -1:
-            out_fields.append(QgsField("RCS", QVariant.Double))
+            out_fields.append(QgsField("RCS", DOUBLE))
         if out_fields.indexFromName("CBS") == -1:
-            out_fields.append(QgsField("CBS", QVariant.Double))
+            out_fields.append(QgsField("CBS", DOUBLE))
 
         sink, dest_id = self.parameterAsSink(
             params, self.OUTPUT, context,

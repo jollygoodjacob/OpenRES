@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from qgis.PyQt.QtCore import QCoreApplication, QVariant
+from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (
     QgsProcessing,
     QgsProcessingAlgorithm,
@@ -30,6 +30,23 @@ from qgis.core import (
     QgsWkbTypes,
     QgsFeatureSink,
 )
+
+from qgis.PyQt.QtCore import QMetaType
+
+try:
+    INT = QMetaType.Type.Int
+    DOUBLE = QMetaType.Type.Double
+    STRING = QMetaType.Type.QString
+    BOOL = QMetaType.Type.Bool
+    LONG_LONG = QMetaType.Type.LongLong
+except AttributeError:
+    from qgis.PyQt.QtCore import QVariant
+    INT = QVariant.Int
+    DOUBLE = QVariant.Double
+    STRING = QVariant.String
+    BOOL = QVariant.Bool
+    LONG_LONG = QVariant.LongLong
+    
 from ..icon_utils import openres_icon
 
 class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
@@ -173,9 +190,9 @@ class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
 
 
         fields = QgsFields()
-        fields.append(QgsField("t_ID", QVariant.Int))
-        fields.append(QgsField("side", QVariant.String))
-        fields.append(QgsField("offset", QVariant.Double))
+        fields.append(QgsField("t_ID", INT))
+        fields.append(QgsField("side", STRING))
+        fields.append(QgsField("offset", DOUBLE))
 
         (sink, dest_id) = self.parameterAsSink(
             parameters,
