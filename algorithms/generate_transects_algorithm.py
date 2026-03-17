@@ -66,6 +66,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
     MAX_LENGTH = 'MAX_LENGTH'
     TRANSECTS = 'TRANSECTS'
     CENTER_POINTS = 'CENTER_POINTS'
+    OUTPUT_STREAM = 'OUTPUT_STREAM'
 
 
 
@@ -76,6 +77,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(QgsProcessingParameterNumber(self.MAX_LENGTH, "Max Length (m)", defaultValue=50000))
         self.addParameter(QgsProcessingParameterFeatureSink(self.TRANSECTS, "Transects"))
         self.addParameter(QgsProcessingParameterFeatureSink(self.CENTER_POINTS, "[1] Segment Centers"))
+        self.addParameter(QgsProcessingParameterFeatureSink(self.OUTPUT_STREAM, "[1] River Network"))
 
     def name(self):
         return "generate_transects"
@@ -104,11 +106,12 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             "• Max Length (m): maximum extension distance per side\n\n"
             "Outputs:\n"
             "• Transects: multiline features with attributes t_ID, left_n, right_n\n"
-            "• Segment Centers: midpoint point features with attribute t_ID\n\n"
+            "• Segment Centers: midpoint point features with attribute t_ID\n"
+            "• River Network: copy of the input river network with t_ID added/updated\n\n"
             "Notes:\n"
             "• Transects are only created when ≥2 intersections are found on BOTH sides. These intersections "
             "represent the valley floor boundary (1st intersection) and the top of the constraining valley (2nd intersection)\n"
-            "• The river input is updated with a t_ID field when possible."
+            "• The input river layer is not edited in place; an updated output copy is created instead."
         )
 
 
@@ -123,14 +126,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
         extension_increment = self.parameterAsInt(parameters, self.EXTENSION_INCREMENT, context)
         max_length = self.parameterAsInt(parameters, self.MAX_LENGTH, context)
 
-        # Add t_ID field to river layer
-        if river_vector_layer is not None:
-            if not river_vector_layer.fields().indexFromName("t_ID") >= 0:
-                river_vector_layer.startEditing()
-                river_vector_layer.dataProvider().addAttributes([QgsField("t_ID", INT)])
-                river_vector_layer.updateFields()
-
-        # Output fields
+        # Output fields for transects and center points
         river_fields = QgsFields()
         river_fields.append(QgsField("t_ID", INT))
         river_fields.append(QgsField("left_n", INT))
@@ -138,6 +134,16 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
 
         center_fields = QgsFields()
         center_fields.append(QgsField("t_ID", INT))
+
+        # Output fields for copied river network
+        output_stream_fields = QgsFields()
+        for field in river_layer.fields():
+            output_stream_fields.append(field)
+        if output_stream_fields.indexFromName("t_ID") == -1:
+            output_stream_fields.append(QgsField("t_ID", INT))
+
+        original_t_id_index = river_layer.fields().indexFromName("t_ID")
+        output_t_id_index = output_stream_fields.indexFromName("t_ID")
 
         (transect_sink, transect_dest_id) = self.parameterAsSink(
             parameters, self.TRANSECTS, context,
@@ -147,9 +153,16 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             parameters, self.CENTER_POINTS, context,
             center_fields, QgsWkbTypes.Point, river_layer.sourceCrs()
         )
+        (stream_sink, stream_dest_id) = self.parameterAsSink(
+            parameters, self.OUTPUT_STREAM, context,
+            output_stream_fields, river_layer.wkbType(), river_layer.sourceCrs()
+        )
 
         lines_index = QgsSpatialIndex(lines_layer.getFeatures())
         feature_count = river_layer.featureCount()
+
+        # Store successful transect IDs by river feature id
+        t_id_by_fid = {}
 
         for i, river_feature in enumerate(river_layer.getFeatures()):
             if feedback.isCanceled():
@@ -184,29 +197,35 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
                 )
 
                 t_id = i  # Assign unique ID
+                t_id_by_fid[river_feature.id()] = t_id
 
                 # Create transect feature
-                t_feat = QgsFeature()
+                t_feat = QgsFeature(river_fields)
                 t_feat.setGeometry(full_transect)
                 t_feat.setAttributes([t_id, len(left_intersections), len(right_intersections)])
                 transect_sink.addFeature(t_feat, QgsFeatureSink.FastInsert)
 
                 # Create center point feature
-                c_feat = QgsFeature()
+                c_feat = QgsFeature(center_fields)
                 c_feat.setGeometry(QgsGeometry.fromPointXY(midpoint))
                 c_feat.setAttributes([t_id])
                 center_sink.addFeature(c_feat, QgsFeatureSink.FastInsert)
 
-                # Update river feature with t_ID
-                if river_vector_layer is not None:
-                    river_fid = river_feature.id()
-                    field_index = river_vector_layer.fields().indexFromName("t_ID")
-                    if field_index != -1:
-                        river_vector_layer.changeAttributeValue(river_fid, field_index, t_id)
+        # Write copied river network with t_ID values
+        for river_feature in river_layer.getFeatures():
+            out_feat = QgsFeature(output_stream_fields)
+            out_feat.setGeometry(river_feature.geometry())
 
-        # Commit river layer edits
-        if river_vector_layer is not None and river_vector_layer.isEditable():
-            river_vector_layer.commitChanges()
+            attrs = list(river_feature.attributes())
+            new_t_id = t_id_by_fid.get(river_feature.id(), None)
+
+            if original_t_id_index != -1:
+                attrs[original_t_id_index] = new_t_id
+            else:
+                attrs.append(new_t_id)
+
+            out_feat.setAttributes(attrs)
+            stream_sink.addFeature(out_feat, QgsFeatureSink.FastInsert)
 
         transect_layer = context.getMapLayer(transect_dest_id)
         if transect_layer:
@@ -225,10 +244,16 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             center_layer.triggerRepaint()
             feedback.pushInfo("Applied blue symbology to segment centers.")
 
+        stream_layer = context.getMapLayer(stream_dest_id)
+        if stream_layer:
+            base_name = river_vector_layer.name() if river_vector_layer is not None else "river_network"
+            stream_layer.setName(f"{base_name}")
+            feedback.pushInfo(f"Named updated river output: {base_name}")
 
         return {
             self.TRANSECTS: transect_dest_id,
-            self.CENTER_POINTS: center_dest_id
+            self.CENTER_POINTS: center_dest_id,
+            self.OUTPUT_STREAM: stream_dest_id
         }
 
 
