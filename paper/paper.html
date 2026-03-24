@@ -256,6 +256,7 @@ if (window.hljs) {
 div.csl-bib-body { }
 div.csl-entry {
 clear: both;
+margin-bottom: 0em;
 }
 .hanging div.csl-entry {
 margin-left:2em;
@@ -379,41 +380,42 @@ networks</h1>
 </div>
 
 
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p><strong>Open Riverine Ecosystem Synthesis</strong>, or
+<code>OpenRES</code>, is an open-source, modular, and GUI-accessible
+QGIS plugin that automates the extraction of key hydrogeomorphic
+features necessary for Functional Process Zone (FPZ) classification of
+river networks. FPZs represent recurring hydrogeomorphic units within
+river corridors that operate at the reach-to-valley scale. Accurate
+classification and mapping of these zones are essential for evaluating
+how spatial variations in hydrogeomorphic structure influence ecological
+communities and ecosystem functioning within the Riverine Ecosystem
+Synthesis (RES) framework (<span class="citation">Thorp, Thoms, and
+Delong (2006)</span>). However, the delineation and classification of
+FPZs have been constrained by the deprecation of standardized GIS tools
+(e.g., RESonate for ArcMap; <span class="citation">Williams et al.
+(2013)</span>) and by the absence of open-source alternatives capable of
+extracting the diverse hydrogeomorphic features required for FPZ
+classification across river networks at scale. This limitation has
+hindered reproducibility and comparability across studies seeking to
+test or extend the RES framework. By integrating reproducible methods
+within a widely adopted open-source GIS platform, <code>OpenRES</code>
+promotes standardization, accessibility, and scalability in riverine
+ecosystem analyses.</p>
+</div>
 <div id="statement-of-need" class="section level1">
 <h1>Statement of need</h1>
-<p>Functional Process Zones (FPZs) represent recurring hydrogeomorphic
-units within river corridors that operate at the reach-to-valley scale.
-Accurate classification and mapping of these zones are essential for
-evaluating how spatial variations in hydrogeomorphic structure influence
-ecological communities and ecosystem functioning within the Riverine
-Ecosystem Synthesis (RES) framework (<span class="citation">Thorp,
-Thoms, and Delong (2006)</span>). However, the delineation and
-classification of FPZs have been constrained by the deprecation of
-standardized GIS tools (e.g., RESonate for ArcMap; <span class="citation">Williams et al. (2013)</span>) and by the absence of
-open-source alternatives capable of extracting the diverse
-hydrogeomorphic features required for FPZ classification across entire
-river networks. This limitation has hindered reproducibility and
-comparability across studies seeking to test or extend the RES
-framework.</p>
-<p><strong>Open Riverine Ecosystem Synthesis</strong>, or
-<code>OpenRES</code>, addresses this gap by providing an open-source,
-modular, and GUI-accessible QGIS plugin that automates the extraction of
-key hydrogeomorphic features necessary for FPZ classification. By
-integrating reproducible methods within a widely adopted open-source GIS
-platform, <code>OpenRES</code> promotes standardization, accessibility,
-and scalability in riverine ecosystem analyses.</p>
-</div>
-<div id="background" class="section level1">
-<h1>Background</h1>
 <p>The Riverine Ecosystem Synthesis (RES) reconceptualizes rivers as
 downstream mosaics of large, discrete, and repeating hydrogeomorphic
 patches rather than continuous longitudinal gradients (in contrast with
 the River Continuum Concept; <span class="citation">Vannote et al.
 (1980)</span>). These hydrogeomorphic patches, termed Functional Process
 Zones, arise from interactions between catchment geomorphology,
-hydrology, and climate and typically span 5–10 km of river valley (<span class="citation">Thorp, Thoms, and Delong (2010)</span>). FPZs describe
-differences in channel and valley structure, floodplain connectivity,
-and sediment and flow dynamics across watersheds (<span class="citation">Hestir (2007)</span>), and have been linked to
+hydrology, and climate and typically span 5–10 km sections of a river
+valley (<span class="citation">Thorp, Thoms, and Delong (2010)</span>).
+FPZs describe differences in channel and valley structure, floodplain
+connectivity, and sediment and flow dynamics across watersheds (<span class="citation">Hestir (2007)</span>), and have been linked to
 variation in ecological communities and ecosystem properties in rivers
 across five continents (<span class="citation">Thorp et al.
 (2023)</span>).</p>
@@ -424,28 +426,28 @@ play a critical role in enabling watershed scale classification.
 <code>OpenRES</code> was developed to meet this need by offering a
 unified, reproducible, and open-source workflow for extracting the
 hydrogeomorphic features required for FPZ delineation.</p>
-</div>
-<div id="openres-audience" class="section level1">
-<h1>OpenRES Audience</h1>
 <p><code>OpenRES</code> is intended for students, instructors,
 researchers, and practitioners in river science, geomorphology,
 hydrology, and ecosystem management who use QGIS and need a
 standardized, open-source tool to delineate FPZs and conduct studies of
 riverine ecosystems.</p>
 </div>
-<div id="openres-functionality" class="section level1">
-<h1>OpenRES Functionality</h1>
+<div id="state-of-the-field" class="section level1">
+<h1>State of the field</h1>
+</div>
+<div id="software-design" class="section level1">
+<h1>Software design</h1>
 <div id="data-preparation" class="section level2">
 <h2>Data Preparation</h2>
 <p>There are six required datasets needed prior to the extraction of
 hydrogeomorphic features along a user’s watershed of interest using
-OpenRES in QGIS:</p>
+<code>OpenRES</code> in QGIS:</p>
 <ul>
 <li><p>A rasterized mean annual precipitation layer.</p></li>
 <li><p>A digital elevation model (DEM) layer.</p></li>
 <li><p>A simplified geology polygon layer.</p></li>
 <li><p>A geomorphically corrected stream network layer.</p></li>
-<li><p>A valley-boundary line layer delimiting valley bottoms and
+<li><p>A valley-boundary line layer delineating valley bottoms and
 confining slopes.</p></li>
 <li><p>A channel-belt line layer defining the active or recently active
 channel zone.</p></li>
@@ -454,7 +456,7 @@ channel zone.</p></li>
 <div id="using-openres" class="section level2">
 <h2>Using OpenRES</h2>
 <div id="geomorphology-tools" class="section level3">
-<h3>Geomorphology Tools</h3>
+<h3>Geomorphology tools</h3>
 <p>OpenRES includes optional tools to help users prepare valley and
 channel-belt boundaries:</p>
 <ul>
@@ -471,7 +473,7 @@ serving as a starting point for defining valley boundaries.</p></li>
 subsequent feature extraction.</p>
 </div>
 <div id="data-extraction-tools" class="section level3">
-<h3>Data Extraction Tools</h3>
+<h3>Data extraction tools</h3>
 <p>The core functionality of <code>OpenRES</code> is contained in seven
 data extraction tools, each of which is intended to be used sequentially
 to automate the extraction of fifteen hydrogeomorphic features.</p>
@@ -516,7 +518,7 @@ river corridor.</p>
 </div>
 </div>
 <div id="after-openres-unsupervised-classification" class="section level2">
-<h2>After OpenRES: Unsupervised Classification</h2>
+<h2>After OpenRES: unsupervised classification</h2>
 <p>The extracted attributes can be exported to Python, R, or another
 software for clustering analyses commonly used to delineate FPZs (e.g.,
 hierarchical clustering; <span class="citation">Maasri et al.
@@ -527,6 +529,22 @@ reproducible, cross-watershed FPZ classification and supports testing of
 RES hypotheses regarding linkages among hydrogeomorphic structure,
 ecological composition, and ecosystem function (<span class="citation">Thorp et al. (2023)</span>).</p>
 </div>
+</div>
+<div id="research-impact-statement" class="section level1">
+<h1>Research impact statement</h1>
+<p><code>OpenRES</code> is the first open-source implementation of a
+complete hydrogeomorphic feature extraction workflow for FPZ
+classification within QGIS. Unlike legacy tools such as RESonate, which
+depend on deprecated ArcMap environments, <code>OpenRES</code>:</p>
+<ul>
+<li>operates in a modern, actively maintained GIS platform,</li>
+<li>provides a modular and extensible architecture,</li>
+<li>enables reproducible workflows across watersheds, and</li>
+<li>integrates directly with open-source geospatial ecosystems.</li>
+</ul>
+<p>By lowering technical and software barriers, <code>OpenRES</code>
+facilitates broader adoption of the RES framework in river science and
+ecosystem studies.</p>
 </div>
 <div id="acknowledgements" class="section level1">
 <h1>Acknowledgements</h1>
@@ -539,7 +557,7 @@ development of OpenRES.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-elgueta_2019" class="csl-entry">
 Elgueta, Anaysa, Martin C Thoms, Konrad Górski, Gustavo Díaz, and Evelyn
 M Habit. 2019. <span>“Functional Process Zones and Their Fish
