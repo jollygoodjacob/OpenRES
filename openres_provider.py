@@ -34,6 +34,8 @@ from .algorithms.extract_cbs_algorithm import ExtractCBSAlgorithm
 # Geomorphology Tools
 from .algorithms.Sechu_valley_bottom_algorithm import SechuCostDistanceAlgorithm
 from .algorithms.generate_channel_belt_algorithm import GenerateChannelBeltAlgorithm
+from .algorithms.generate_microsheds_algorithm import GenerateMicroshedsAlgorithm
+from .algorithms.create_valley_boundary_algorithm import CreateValleyBoundary
 
 #To use log, type OPENRES_DEBUG=1 qgis in bash, then check Log Messages Panel → OpenRES tab for messages
 
@@ -61,6 +63,8 @@ class OpenRESProvider(QgsProcessingProvider):
         # Geomorphology Tools
         self.addAlgorithm(SechuCostDistanceAlgorithm())
         self.addAlgorithm(GenerateChannelBeltAlgorithm())
+        self.addAlgorithm(GenerateMicroshedsAlgorithm())
+        self.addAlgorithm(CreateValleyBoundary())
 
     def id(self):
         return "openres"
