@@ -1,0 +1,23 @@
+cff-version: 1.4.0
+title: "Open Riverine Ecosystem Synthesis (OpenRES): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks"
+version: 1.4.0
+license: "GNU GPL v3"
+type: software
+abstract: "OpenRES is a QGIS plugin designed to support Riverine Ecosystem Synthesis (RES)–based analyses by enabling the systematic, reproducible delineation and characterization of Functional Process Zones (FPZs) along river networks."
+message: "If you use this software, please cite it as below."
+authors:
+  - given-names: Jacob
+    family-names: Nesslage
+    affiliation: University of California, Merced
+    orcid: "https://orcid.org/0000-0001-9219-8365"
+  - given-names: Erin
+    family-names: Hestir
+    affiliation: University of California, Merced
+    orcid: "https://orcid.org/0000-0002-4673-5745"
+keywords:
+  - functional process zone
+  - riverine ecosystem synthesis
+  - river classification
+  - river ecology
+  - stream ecology
+  - hydrogeomorphology
