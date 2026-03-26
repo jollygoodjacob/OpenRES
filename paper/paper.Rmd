@@ -66,6 +66,10 @@ OpenRES includes optional tools to help users prepare valley and channel-belt bo
 
 -   **Valley Floor Delineation – Sechu** implements a slope-based cost accumulation method (@sechu_2021) to identify low relief valley floor areas from a DEM, serving as a starting point for defining valley boundaries.
 
+-   **Generate Microsheds**
+
+-   **Create Valley Boundary**
+
 These tools assist in constructing the line layers required for subsequent feature extraction.
 
 ### Data extraction tools
