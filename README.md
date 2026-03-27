@@ -8,7 +8,7 @@
 
 If you use this plugin in your work, please cite it as:
 
-> **Cite:** Nesslage, J., & Hestir, E. (2026). OpenRES (Open Riverine Ecosystem Synthesis): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks (Version 1.3.0) [Software]. Zenodo. <https://doi.org/10.5281/zenodo.17641964>
+> **Cite:** Nesslage, J., & Hestir, E. (2026). Open Riverine Ecosystem Synthesis (OpenRES): A QGIS plugin for automated extraction of hydrogeomorphic features to support functional process zone classification of river networks (Version 1.3.0) [Software]. Zenodo. <https://doi.org/10.5281/zenodo.17641964>
 
 ``` bibtex
 @software{nesslage2026OpenRES,
