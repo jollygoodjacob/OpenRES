@@ -23,8 +23,8 @@ If you use this plugin in your work, please cite it as:
   year         = 2026,
   publisher    = {Zenodo},
   version      = {v1.4.0},
-  doi          = {10.5281/zenodo.17641964},
-  url          = {https://doi.org/10.5281/zenodo.17641964}
+  doi          = {10.5281/zenodo.17196890},
+  url          = {https://doi.org/10.5281/zenodo.17196890}
 }
                 
 ```
