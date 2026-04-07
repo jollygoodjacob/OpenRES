@@ -5,12 +5,12 @@ about=OpenRES is a QGIS plugin designed to support Riverine Ecosystem Synthesis 
 
 	RES emphasizes that river corridors are organized as hierarchically nested, longitudinally discontinuous patches whose geomorphic structure constrains hydrologic and ecological processes. In practice, however, applying RES concepts across entire river networks is often limited by labor-intensive GIS workflows, inconsistent metric definitions, and difficulty scaling analyses beyond individual reaches.
 
-	OpenRES addresses these limitations by automating the extraction of hydrogeomorphic variables that define FPZ structure for user-defined river segments (typically 5–10 km). Core tools quantify elevation (ELE), precipitation (PRE), geology (GEO), valley width (VW), valley floor width (VFW), the valley width–to–valley floor width ratio (RAT), valley side slopes (LVS, RVS, MVS), down-valley slope (DVS), channel sinuosity (SIN), channel belt width (CBW), and channel belt sinuosity (LCS, RCS, CBS). OpenRES also includes geomorphology utility tools to generate essential input layers such as valley floor polygons and channel belts.
+	OpenRES addresses these limitations by automating the extraction of hydrogeomorphic variables that define FPZ structure for user-defined river segments (typically 5–10 km). Core tools quantify elevation (ELE), precipitation (PRE), geology (GEO), valley width (VW), valley floor width (VFW), the valley width–to–valley floor width ratio (RAT), valley side slopes (LVS, RVS, MVS), down-valley slope (DVS), channel sinuosity (SIN), channel belt width (CBW), and channel belt sinuosity (LCS, RCS, CBS). OpenRES also includes geomorphology utility tools to generate essential input layers such as valley floor polygons, microsheds, valley boundaries, and channel belts.
 
 	The metrics produced can be evaluated individually or integrated using hierarchical, unsupervised classification approaches to delineate FPZs — repeatable hydrogeomorphic patches that organize physical habitat templates and ecological processes along river corridors. By enabling network-scale, standardized FPZ characterization, OpenRES facilitates comparative analyses, cross-system synthesis, and management applications grounded in RES theory
 
 
-version=1.3.0
+version=1.4.0
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
 author=Jacob Nesslage
