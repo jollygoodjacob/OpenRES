@@ -87,14 +87,14 @@ The extracted attributes can be joined to the river network, then exported to Py
 
 # Research impact statement
 
-`OpenRES` is the first open-source implementation of a complete hydrogeomorphic feature extraction workflow for FPZ classification within QGIS. Unlike legacy tools such as RESonate, which depend on deprecated ArcMap environments, `OpenRES`:
+`OpenRES` is the first free and open-source implementation of a complete hydrogeomorphic feature extraction workflow for FPZ classification. Unlike legacy tools such as RESonate, which depend on commercial GIS software, `OpenRES`:
 
--   operates in a modern, actively maintained GIS platform,
--   provides a modular and extensible architecture,
--   enables reproducible workflows across watersheds, and
--   integrates directly with open-source geospatial ecosystems.
+-   operates in a modern, actively maintained FOSS GIS platform,
+-   provides a modular and extensible architecture, and
+-   enables complete and reproducible workflows across watersheds
 
-By lowering technical and software barriers, `OpenRES` facilitates broader adoption of the RES framework in river science and ecosystem studies. `OpenRES` has supported growing adoption of standardized workflows for extracting hydrogeomorphic features used in FPZ classification under the RES framework. Since its release, the software has been downloaded thousands of times from the official QGIS repository and has been cloned hundreds of times from the GitHub repository. On the applications side, `OpenRES` is being utilized in environmental DNA-based watershed studies in California (USA) and South Africa (@stavros_2023, @nesslage_2024). These applications indicate demand for reproducible, open-source tools capable of supporting consistent FPZ analyses across river networks.
+
+By lowering technical and software barriers, `OpenRES` facilitates broader adoption of the RES framework in river science and ecosystem studies. `OpenRES` has supported growing adoption of standardized workflows for extracting hydrogeomorphic features used in FPZ classification under the RES framework. Since its release, the software has been downloaded thousands of times from the official QGIS repository and has been cloned hundreds of times from the GitHub repository. On the applications side, `OpenRES` is being utilized in environmental DNA-based watershed studies across the state of California (@stavros_2023, @nesslage_2024), as well as in South Africa's Greater Cape Floristic Region as part of NASA's Biodiversity Survey of the Cape (BioSCape) (@cardoso_2025). These applications indicate demand for reproducible, open-source tools capable of supporting consistent FPZ analyses across river networks.
 
 # Acknowledgements
 
