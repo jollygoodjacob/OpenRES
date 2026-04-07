@@ -87,7 +87,7 @@ The resulting dataset contains standardized metrics that collectively describe l
 
 ## After OpenRES: unsupervised classification
 
-The extracted attributes can be joined to the river network, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
+The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
 
 # Research impact statement
 
@@ -98,7 +98,7 @@ The extracted attributes can be joined to the river network, then exported to Py
 -   enables complete and reproducible workflows across watersheds
 
 
-By lowering technical and software barriers, `OpenRES` facilitates broader adoption of the RES framework in river science and ecosystem studies. `OpenRES` has supported growing adoption of standardized workflows for extracting hydrogeomorphic features used in FPZ classification under the RES framework. Since its release, the software has been downloaded thousands of times from the official QGIS repository and has been cloned hundreds of times from the GitHub repository. On the applications side, `OpenRES` is being utilized in environmental DNA-based watershed studies across the state of California [@stavros_2023, @nesslage_2024], as well as in South Africa's Greater Cape Floristic Region as part of NASA's Biodiversity Survey of the Cape (BioSCape) [@cardoso_2025]. These applications indicate demand for reproducible, open-source tools capable of supporting consistent FPZ analyses across river networks.
+By lowering technical and software barriers, `OpenRES` facilitates broader adoption of the RES framework in river science and ecosystem studies. `OpenRES` has supported growing adoption of standardized workflows for extracting hydrogeomorphic features used in FPZ classification under the RES framework. Since its release, the software has been downloaded thousands of times from the official QGIS repository and has been cloned hundreds of times from the GitHub repository. On the applications side, `OpenRES` is being utilized in environmental DNA-based watershed studies across the state of California [@stavros_2023; @nesslage_2024], as well as in South Africa's Greater Cape Floristic Region as part of NASA's Biodiversity Survey of the Cape (BioSCape) [@cardoso_2025]. These applications indicate demand for reproducible, open-source tools capable of supporting consistent FPZ analyses across river networks.
 
 # AI usage disclosure
 
