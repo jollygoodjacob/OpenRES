@@ -391,13 +391,14 @@ reach-to-valley scale. Accurate classification and mapping of these
 zones are essential for evaluating how spatial variations in
 hydrogeomorphic structure influence ecological communities and ecosystem
 functioning within the Riverine Ecosystem Synthesis (RES) framework
-(<span class="citation">Thorp, Thoms, and Delong (2006)</span>).
-However, classification of FPZs has been constrained by the deprecation
-of standardized GIS tools (e.g., <code>RESonate</code> for ArcMap; <span class="citation">Williams et al. (2013)</span>) built for this purpose
-and by the absence of open-source alternatives capable of extracting the
-diverse hydrogeomorphic features required for FPZ classification across
-river networks at scale. This limitation has hindered reproducibility
-and comparability across studies seeking to test or extend the RES
+<span class="citation">(Thorp, Thoms, and Delong 2006)</span>. However,
+classification of FPZs has been constrained by the deprecation of
+standardized GIS tools such as RESonate <span class="citation">(Williams
+et al. 2013)</span> built for this purpose and by the absence of
+open-source alternatives capable of extracting the diverse
+hydrogeomorphic features required for FPZ classification across river
+networks at scale. This limitation has hindered reproducibility and
+comparability across studies seeking to test or extend the RES
 framework. By integrating reproducible methods within a widely adopted
 open-source GIS platform, <code>OpenRES</code> promotes standardization,
 accessibility, and scalability in riverine ecosystem analyses.</p>
@@ -406,16 +407,18 @@ accessibility, and scalability in riverine ecosystem analyses.</p>
 <h1>Statement of need</h1>
 <p>The Riverine Ecosystem Synthesis (RES) reconceptualizes rivers as
 downstream mosaics of large, discrete, and repeating hydrogeomorphic
-patches rather than continuous longitudinal gradients (in contrast with
-the River Continuum Concept; <span class="citation">Vannote et al.
-(1980)</span>). These hydrogeomorphic patches, termed Functional Process
-Zones, arise from interactions between catchment geomorphology,
+patches <span class="citation">(Thorp, Thoms, and Delong 2010)</span>
+rather than continuous longitudinal gradients, such as those described
+by the popular River Continuum Concept <span class="citation">(Vannote
+et al. 1980)</span>. These hydrogeomorphic patches, termed Functional
+Process Zones, arise from interactions between catchment geomorphology,
 hydrology, and climate and typically span 5–10 km sections of river
-(<span class="citation">Thorp, Thoms, and Delong (2010)</span>). FPZs
+<span class="citation">(Thorp, Thoms, and Delong 2010)</span>. FPZs
 describe differences in channel and valley structure, floodplain
-connectivity, and sediment and flow dynamics across watersheds (<span class="citation">Hestir (2007)</span>), and have been linked to
-variation in fish and macroinvertebrate communities and ecosystem
-properties in rivers across five continents (<span class="citation">Thorp et al. (2023)</span>).</p>
+connectivity, and sediment and flow dynamics across watersheds <span class="citation">(Hestir 2007)</span>, and have been linked to variation
+in fish and macroinvertebrate communities and ecosystem properties in
+rivers across five continents <span class="citation">(Thorp et al.
+2023)</span>.</p>
 <p>FPZ classification requires spatially consistent measures of
 climatic, geologic, and geomorphic features across a watershed, yet
 collecting these data in the field using “bottom-up” approaches is often
@@ -432,24 +435,25 @@ riverine ecosystems.</p>
 </div>
 <div id="state-of-the-field" class="section level1">
 <h1>State of the field</h1>
-<p>While there are many “top-down” and “bottom-up” river classification
-schema available to river scientists and researchers,
-<code>OpenRES</code> is different in that it is the only public-facing
-tool currently available that can extract the specific features needed
-for FPZ classification. FPZs are different from other river
-classification schema in that 1.) they are discontinuous, patchy, and
-repeating river segments that self-organize based on hydrogeomorphic
-processes, 2.) they are defined at a specific scale occurring between
-the scale of river reaches and river valleys (5 km-10 km segments), and
-3.) are associated with at least 21 specific ecological hypotheses
-proposed by the Riverine Ecosystem Synthesis, many of which require
-further investigation. Essentially, without access to legacy tools like
-<code>RESonate</code>, investigation of the tenets of the Riverine
-Ecosystem Synthesis has been next to impossible for most researchers.
-With the release of <code>OpenRES</code>, extraction of hydrogeeomorphic
-features for Functional Process Zone classification is now accessible
-for researchers globally, free of charge, with open-source code
-available in perpetuity.</p>
+<p>Early operationalization of the RES framework was advanced through
+the development of the RESonate toolbox by the U.S. Environmental
+Protection Agency (EPA) <span class="citation">(Flotemersch, Thorp, and
+Williams 2010)</span>, which provided a workflow for deriving
+hydrogeomorphic attributes used to delineate FPZs <span class="citation">(Williams et al. 2013)</span>. RESonate represented an
+important step toward translating RES theory into reproducible spatial
+analysis, enabling early applications of FPZ classification in large
+river systems. However, the tool was not broadly accessible to many
+researchers due to software availability constraints and reliance on
+proprietary ArcGIS environments.</p>
+<p>OpenRES builds on this foundation by providing an open-source,
+publicly available implementation designed for the QGIS ecosystem. At
+present, it is the only openly available software specifically designed
+to extract the hydrogeomorphic variables required for FPZ classification
+within a modern, maintained geospatial platform. By lowering technical
+barriers to applying RES concepts, OpenRES facilitates broader
+evaluation of the ecological hypotheses proposed by the Riverine
+Ecosystem Synthesis, many of which remain underexplored due in part to
+the historical lack of accessible computational tools..</p>
 </div>
 <div id="software-design" class="section level1">
 <h1>Software design</h1>
@@ -514,8 +518,8 @@ the stream network to approximate the channel belt extent, which users
 should manually edit to capture the active or recently active channel
 zone.</li>
 <li><strong>Valley Floor Delineation – Sechu</strong> implements a
-slope-based cost accumulation method (<span class="citation">Sechu et
-al. (2021)</span>) to identify low relief valley floor areas from a DEM,
+slope-based cost accumulation method <span class="citation">(Sechu et
+al. 2021)</span> to identify low relief valley floor areas from a DEM,
 serving as a starting point for defining valley floor boundaries.</li>
 <li><strong>Generate Microsheds</strong> implements a simplified version
 of GRASS 7’s watershed algorithm with a threshold to generate microsheds
@@ -582,14 +586,16 @@ river corridor.</p>
 <div id="after-openres-unsupervised-classification" class="section level2">
 <h2>After OpenRES: unsupervised classification</h2>
 <p>The extracted attributes can be joined to the river network, then
-exported to Python, R, or another software for clustering analyses
-commonly used to delineate FPZs (e.g., hierarchical clustering; <span class="citation">Maasri et al. (2019)</span>; <span class="citation">Elgueta et al. (2019)</span>). To assist users in this
+exported to Python, R, or another software for hierarchical clustering
+analyses commonly used to delineate FPZs <span class="citation">(Maasri
+et al. 2019; Elgueta et al. 2019)</span>. To assist users in this
 process, we developed a separate Shiny app in R, ShinyFPZ, which
 contains common methods for FPZ classification as well as visualization
-tools (<span class="citation">Nesslage (2026)</span>). This workflow
-enables reproducible, cross-watershed FPZ classification and supports
-testing of RES hypotheses regarding linkages among hydrogeomorphic
-structure, ecological composition, and ecosystem function (<span class="citation">Thorp et al. (2023)</span>).</p>
+tools for OpenRES output data <span class="citation">(Nesslage
+2026)</span>. This workflow enables reproducible, cross-watershed FPZ
+classification and supports testing of RES hypotheses regarding linkages
+among hydrogeomorphic structure, ecological composition, and ecosystem
+function <span class="citation">(Thorp et al. 2023)</span>.</p>
 </div>
 </div>
 <div id="research-impact-statement" class="section level1">
@@ -612,12 +618,20 @@ software has been downloaded thousands of times from the official QGIS
 repository and has been cloned hundreds of times from the GitHub
 repository. On the applications side, <code>OpenRES</code> is being
 utilized in environmental DNA-based watershed studies across the state
-of California (<span class="citation">Stavros et al. (2023)</span>,
-<span class="citation">Nesslage et al. (2024)</span>), as well as in
-South Africa’s Greater Cape Floristic Region as part of NASA’s
-Biodiversity Survey of the Cape (BioSCape) (<span class="citation">Cardoso et al. (2025)</span>). These applications
+of California <span class="citation">Nesslage et al. (2024)</span>, as
+well as in South Africa’s Greater Cape Floristic Region as part of
+NASA’s Biodiversity Survey of the Cape (BioSCape) <span class="citation">(Cardoso et al. 2025)</span>. These applications
 indicate demand for reproducible, open-source tools capable of
 supporting consistent FPZ analyses across river networks.</p>
+</div>
+<div id="ai-usage-disclosure" class="section level1">
+<h1>AI usage disclosure</h1>
+<p>AI (specifically, ChatGPT 4 and 5) was used to aid in development of
+the <code>OpenRES</code> source code.</p>
+<p>AI-assisted language editing was used to improve wording in parts of
+the manuscript.</p>
+<p>All code and text generated or modified by AI was proofread by the
+authors and AI generated code was also tested comprehensively.</p>
 </div>
 <div id="acknowledgements" class="section level1">
 <h1>Acknowledgements</h1>
@@ -643,6 +657,13 @@ Elgueta, Anaysa, Martin C Thoms, Konrad Górski, Gustavo Díaz, and Evelyn
 M Habit. 2019. <span>“Functional Process Zones and Their Fish
 Communities in Temperate <span>Andean</span> River Networks.”</span>
 <em>River Research and Applications</em> 35 (10): 1702–11. <a href="https://doi.org/10.1002/rra.3557">https://doi.org/10.1002/rra.3557</a>.
+</div>
+<div id="ref-flotemersch_2010" class="csl-entry">
+Flotemersch, JE, JH Thorp, and BS Williams. 2010. <span>“Application of
+the Riverine Ecosystem Synthesis (RES) and the Functional Process Zone
+(FPZ) Approach to EPA Environmental Mission Tasks for Rivers.”</span>
+<em>US Environmental Protection Agency Office of Research and
+Development, Washington</em>.
 </div>
 <div id="ref-hestir_2007" class="csl-entry">
 Hestir, Erin L. 2007. <span>“Functional <span>Process</span>
