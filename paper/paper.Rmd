@@ -41,7 +41,7 @@ OpenRES builds on this foundation by providing an open-source, publicly availabl
 
 # Software design
 
-`OpenRES` borrows from the software design and philosophy of the `RESonate` toolbox described in @williams_2013, with the intent of providing users with comparable functionality for extraction and calculation of hydrogeomorphic features (\autoref{fig:workflow}). However, OpenRES was developed specifically for the free and open-source QGIS ecosystem, relying only on core QGIS libraries and the natively available GRASS 7 geospatial processing engine. The software adopts a modular design in which individual tools are implemented as QGIS Processing algorithms, allowing users to execute components independently, integrate them into custom workflows, or adapt individual steps for alternative hydrogeomorphic feature definitions. By leveraging the QGIS Processing framework, OpenRES interoperates with other geospatial tools available within QGIS while maintaining minimal external dependencies, improving reproducibility and accessibility.
+`OpenRES` borrows from the software design and philosophy of the `RESonate` toolbox described in @williams_2013, with the intent of providing users with comparable functionality for extraction and calculation of hydrogeomorphic features \autoref{fig:workflow}. However, OpenRES was developed specifically for the free and open-source QGIS ecosystem, relying only on core QGIS libraries and the natively available GRASS 7 geospatial processing engine. The software adopts a modular design in which individual tools are implemented as QGIS Processing algorithms, allowing users to execute components independently, integrate them into custom workflows, or adapt individual steps for alternative hydrogeomorphic feature definitions. By leveraging the QGIS Processing framework, OpenRES interoperates with other geospatial tools available within QGIS while maintaining minimal external dependencies, improving reproducibility and accessibility.
 
 ![Flow chart summarizing processing steps in functional process zone classification using OpenRES and the data inputs used and data products produced in each step.](JOSS_diagram.png)
 
@@ -77,15 +77,15 @@ Here, there are two notable differences from `RESonate`. First, the stream netwo
 
 The core functionality of `OpenRES` is contained in seven data extraction tools, each of which is intended to be used sequentially to automate the extraction of fifteen hydrogeomorphic features \autoref{tab:openres-tools}:
 
-| Step | Tool                      | Features      | Description                                                                                                                                        | Required |
-| ---- | ------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
-| [1]  | Generate Transects        | t_ID          | Generates perpendicular transects from river centerlines to valley boundaries, ensuring consistent sampling and linking outputs via a transect ID. | Yes      |
-| [2]  | Extract ELE, PRE, and GEO | ELE, PRE, GEO | Samples elevation, precipitation, and geologic class from user provided datasets.                                                                  | Yes      |
-| [3]  | Extract VW, VFW, and RAT  | VW, VFW, RAT  | Measures valley width and valley floor width from transects and computes their ratio.                                      | Yes      |
-| [4]  | Extract LVS, RVS, and MVS | LVS, RVS, MVS | Computes left, right, and mean valley slopes from elevation differences along transects.                                                           | Yes      |
-| [5]  | Extract DVS and SIN       | DVS, SIN      | Calculates down valley slope and river sinuosity from segment geometry.                                                                            | Yes      |
-| [6]  | Extract CBW               | CBW           | Measures channel belt width from transect intersections with the channel belt layer.                                                               | Optional |
-| [7]  | Extract LCS, RCS, and CBS | LCS, RCS, CBS | Quantifies within belt channel sinuosity on each side and summarizes with a mean value.                                                            | Optional |
+| Step / Tool                      | Features      | Description                                                                                                                                        | Required |
+|----------------------------------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------------|----------|
+| [1] Generate Transects            | t_ID          | Generates perpendicular transects from river centerlines to valley boundaries, ensuring consistent sampling and linking outputs via a transect ID. | Yes      |
+| [2] Extract ELE, PRE, and GEO     | ELE, PRE, GEO | Samples elevation, precipitation, and geologic class from user-provided datasets.                                                                  | Yes      |
+| [3] Extract VW, VFW, and RAT      | VW, VFW, RAT  | Measures valley width and valley floor width from transects and computes their ratio.                                                             | Yes      |
+| [4] Extract LVS, RVS, and MVS     | LVS, RVS, MVS | Computes left, right, and mean valley slopes from elevation differences along transects.                                                           | Yes      |
+| [5] Extract DVS and SIN           | DVS, SIN      | Calculates down-valley slope and river sinuosity from segment geometry.                                                                            | Yes      |
+| [6] Extract CBW                   | CBW           | Measures channel belt width from transect intersections with the channel belt layer.                                                              | Optional |
+| [7] Extract LCS, RCS, and CBS     | LCS, RCS, CBS | Quantifies within-belt channel sinuosity on each side and summarizes with a mean value.                                                            | Optional |
 
 : Core `OpenRES` data extraction workflow. \label{tab:openres-tools}
 
