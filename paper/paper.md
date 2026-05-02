@@ -43,9 +43,8 @@ OpenRES builds on this foundation by providing an open-source, publicly availabl
 
 `OpenRES` borrows from the software design and philosophy of the `RESonate` toolbox described in @williams_2013, with the intent of providing users with comparable functionality for extraction and calculation of hydrogeomorphic features \autoref{fig:workflow}. However, OpenRES was developed specifically for the free and open-source QGIS ecosystem, relying only on core QGIS libraries and the natively available GRASS 7 geospatial processing engine. The software adopts a modular design in which individual tools are implemented as QGIS Processing algorithms, allowing users to execute components independently, integrate them into custom workflows, or adapt individual steps for alternative hydrogeomorphic feature definitions. By leveraging the QGIS Processing framework, OpenRES interoperates with other geospatial tools available within QGIS while maintaining minimal external dependencies, improving reproducibility and accessibility.
 
-![Flow chart summarizing processing steps in functional process zone classification using OpenRES and the data inputs used and data products produced in each step.](JOSS_diagram.png)
+![Flow chart summarizing processing steps in functional process zone classification using OpenRES and the data inputs used and data products produced in each step. \label{fig:workflow}](JOSS_diagram.png)
 
-: Workflow for functional process zone classification using `OpenRES`. \label{fig:workflow}
 
 ## Data preparation
 
