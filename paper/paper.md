@@ -41,9 +41,11 @@ OpenRES builds on this foundation by providing an open-source, publicly availabl
 
 # Software design
 
-`OpenRES` borrows from the software design and philosophy of the `RESonate` toolbox described in @williams_2013, with the intent of providing users with comparable functionality for extraction and calculation of hydrogeomorphic features \autoref{fig:1}. However, OpenRES was developed specifically for the free and open-source QGIS ecosystem, relying only on core QGIS libraries and the natively available GRASS 7 geospatial processing engine. The software adopts a modular design in which individual tools are implemented as QGIS Processing algorithms, allowing users to execute components independently, integrate them into custom workflows, or adapt individual steps for alternative hydrogeomorphic feature definitions. By leveraging the QGIS Processing framework, OpenRES interoperates with other geospatial tools available within QGIS while maintaining minimal external dependencies, improving reproducibility and accessibility.
+`OpenRES` borrows from the software design and philosophy of the `RESonate` toolbox described in @williams_2013, with the intent of providing users with comparable functionality for extraction and calculation of hydrogeomorphic features (\autoref{fig:workflow}). However, OpenRES was developed specifically for the free and open-source QGIS ecosystem, relying only on core QGIS libraries and the natively available GRASS 7 geospatial processing engine. The software adopts a modular design in which individual tools are implemented as QGIS Processing algorithms, allowing users to execute components independently, integrate them into custom workflows, or adapt individual steps for alternative hydrogeomorphic feature definitions. By leveraging the QGIS Processing framework, OpenRES interoperates with other geospatial tools available within QGIS while maintaining minimal external dependencies, improving reproducibility and accessibility.
 
-![Flow chart summarizing processing steps in functional process zone classification using OpenRES and the data inputs used and data products produced in each step.\label{fig:1}](JOSS_diagram.png)
+![Flow chart summarizing processing steps in functional process zone classification using OpenRES and the data inputs used and data products produced in each step.](JOSS_diagram.png)
+
+: Workflow for functional process zone classification using `OpenRES`. \label{fig:workflow}
 
 ## Data preparation
 
@@ -78,12 +80,12 @@ The core functionality of `OpenRES` is contained in seven data extraction tools,
 | Step | Tool                      | Features      | Description                                                                                                                                        | Required |
 | ---- | ------------------------- | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | [1]  | Generate Transects        | t_ID          | Generates perpendicular transects from river centerlines to valley boundaries, ensuring consistent sampling and linking outputs via a transect ID. | Yes      |
-| [2]  | Extract ELE, PRE, and GEO | ELE, PRE, GEO | Samples elevation, precipitation, and geologic class from user-provided datasets.                                                                  | Yes      |
-| [3]  | Extract VW, VFW, and RAT  | VW, VFW, RAT  | Measures valley width and valley floor width from transects; computes their ratio as an index of confinement.                                      | Yes      |
+| [2]  | Extract ELE, PRE, and GEO | ELE, PRE, GEO | Samples elevation, precipitation, and geologic class from user provided datasets.                                                                  | Yes      |
+| [3]  | Extract VW, VFW, and RAT  | VW, VFW, RAT  | Measures valley width and valley floor width from transects and computes their ratio.                                      | Yes      |
 | [4]  | Extract LVS, RVS, and MVS | LVS, RVS, MVS | Computes left, right, and mean valley slopes from elevation differences along transects.                                                           | Yes      |
-| [5]  | Extract DVS and SIN       | DVS, SIN      | Calculates down-valley slope and river sinuosity from segment geometry.                                                                            | Yes      |
+| [5]  | Extract DVS and SIN       | DVS, SIN      | Calculates down valley slope and river sinuosity from segment geometry.                                                                            | Yes      |
 | [6]  | Extract CBW               | CBW           | Measures channel belt width from transect intersections with the channel belt layer.                                                               | Optional |
-| [7]  | Extract LCS, RCS, and CBS | LCS, RCS, CBS | Quantifies within-belt channel sinuosity on each side and summarizes with a mean value.                                                            | Optional |
+| [7]  | Extract LCS, RCS, and CBS | LCS, RCS, CBS | Quantifies within belt channel sinuosity on each side and summarizes with a mean value.                                                            | Optional |
 
 : Core `OpenRES` data extraction workflow. \label{tab:openres-tools}
 
@@ -97,23 +99,23 @@ The resulting dataset contains up to 15 standardized metrics that collectively d
 | PRE     | Precipitation           | Hydroclimatic setting                           |
 | GEO     | Geology                 | Substrate and structural control                |
 | VW      | Valley Width            | Lateral accommodation space at the valley scale |
-| VFW     | Valley Floor Width      | Floodplain/low-relief valley floor extent       |
+| VFW     | Valley Floor Width      | Floodplain/low relief valley floor extent       |
 | RAT     | VW:VFW Ratio            | Relative valley confinement                     |
-| LVS     | Left Valley Slope       | Left-side valley confinement                    |
-| RVS     | Right Valley Slope      | Right-side valley confinement                   |
+| LVS     | Left Valley Slope       | Left side valley confinement                    |
+| RVS     | Right Valley Slope      | Right side valley confinement                   |
 | MVS     | Mean Valley Slope       | Overall valley confinement                      |
 | DVS     | Down Valley Slope       | Longitudinal channel gradient                   |
 | SIN     | River Sinuosity         | Planform complexity of the river                |
 | CBW     | Channel Belt Width      | Active channel belt extent                      |
-| LCS     | Left Channel Sinuosity  | Left-side within-belt planform curvature        |
-| RCS     | Right Channel Sinuosity | Right-side within-belt planform curvature       |
+| LCS     | Left Channel Sinuosity  | Left side within-belt planform curvature        |
+| RCS     | Right Channel Sinuosity | Right side within-belt planform curvature       |
 | CBS     | Channel Belt Sinuosity  | Mean within-belt planform curvature             |
 
 : Hydrogeomorphic features available for extraction across a watershed in OpenRES. \label{tab:featuretable}
 
 ## After OpenRES: unsupervised classification
 
-The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. For users preferring to stay in the QGIS environment for this step, there are also QGIS plugins that contain the appropriate capabilities, such as the Attribute based clustering plugin (@kazakov_2025). This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
+The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. For users preferring to stay in the QGIS environment for this step, there are also QGIS plugins that contain the appropriate capabilities, such as the Attribute based clustering plugin [@kazakov_2025]. This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
 
 # Research impact statement
 
