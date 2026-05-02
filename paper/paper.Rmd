@@ -71,7 +71,7 @@ Here, there are two notable differences from `RESonate`. First, the stream netwo
 | Generate Microsheds              | Generates microsheds using a threshold-based watershed approach (1–3 km² typical) to capture valley tops in confining valleys.             | Microshed layer       | Vector (polygon) |
 | Create Valley Boundary           | Applies a difference operation between valley floor and microsheds and converts the result to a line layer representing valley boundaries. | Valley boundary layer | Vector (line)    |
 
-: Geomorphology utility tools in `OpenRES` used to prepare channel belt and valley boundary inputs. []{#tab:geomorph-tools}
+: Geomorphology utility tools in `OpenRES` used to prepare channel belt and valley boundary inputs. \label{tab:geomorph-tools}
 
 The core functionality of `OpenRES` is contained in seven data extraction tools, each of which is intended to be used sequentially to automate the extraction of fifteen hydrogeomorphic features \autoref{tab:openres-tools}:
 
@@ -84,7 +84,8 @@ The core functionality of `OpenRES` is contained in seven data extraction tools,
 | [5]  | Extract DVS and SIN       | DVS, SIN      | Calculates down-valley slope and river sinuosity from segment geometry.                                                                            | Yes      |
 | [6]  | Extract CBW               | CBW           | Measures channel belt width from transect intersections with the channel belt layer.                                                               | Optional |
 | [7]  | Extract LCS, RCS, and CBS | LCS, RCS, CBS | Quantifies within-belt channel sinuosity on each side and summarizes with a mean value.                                                            | Optional |
-: Core `OpenRES` data extraction workflow. []{#tab:openres-tools}
+
+: Core `OpenRES` data extraction workflow. \label{tab:openres-tools}
 
 The resulting dataset contains up to 15 standardized metrics that collectively describe longitudinal and lateral hydrogeomorphic variation along the river corridor \autoref{tab:featuretable}.
 
@@ -108,11 +109,11 @@ The resulting dataset contains up to 15 standardized metrics that collectively d
 | RCS     | Right Channel Sinuosity | Right-side within-belt planform curvature       |
 | CBS     | Channel Belt Sinuosity  | Mean within-belt planform curvature             |
 
-: Hydrogeomorphic features available for extraction across a watershed in OpenRES. []{#tab:featuretable}
+: Hydrogeomorphic features available for extraction across a watershed in OpenRES. \label{tab:featuretable}
 
 ## After OpenRES: unsupervised classification
 
-The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. For users prefering to stay in the QGIS environment for this step, there are also QGIS plugins that contain the appropriate capabilities, such as the Attribute based clustering plugin (@attributeBasedClustering). This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
+The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs [@maasri_2019; @elgueta_2019]. To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data [@nesslage_2026]. For users preferring to stay in the QGIS environment for this step, there are also QGIS plugins that contain the appropriate capabilities, such as the Attribute based clustering plugin (@kazakov_2025). This workflow enables reproducible, cross-watershed FPZ classification and supports testing of RES hypotheses regarding linkages among hydrogeomorphic structure, ecological composition, and ecosystem function [@thorp_2023].
 
 # Research impact statement
 
