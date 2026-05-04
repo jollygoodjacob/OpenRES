@@ -28,7 +28,8 @@ from qgis.core import (
     QgsProcessingOutputVectorLayer,
     QgsProcessingUtils,
     QgsRasterLayer,
-    QgsFeatureSink
+    QgsFeatureSink,
+    QgsProcessingParameterEnum
 )
 from qgis.PyQt.QtGui import QColor
 import processing
@@ -49,6 +50,9 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
     PARAM_COST_THRESHOLD = 'COST_THRESHOLD'
     PARAM_GAP_FACTOR = 'GAP_FACTOR'
     PARAM_OUTPUT = 'OUTPUT'
+    PARAM_SMOOTH_ITERATIONS = 'SMOOTH_ITERATIONS'
+    PARAM_SMOOTH_OFFSET = 'SMOOTH_OFFSET'
+    PARAM_SMOOTH_MAX_ANGLE = 'SMOOTH_MAX_ANGLE'
 
     def tr(self, string):
         return QCoreApplication.translate('Processing', string)
@@ -110,6 +114,40 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
             )
         )
 
+        # smoothing iterations 
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.PARAM_SMOOTH_ITERATIONS,
+                self.tr('Smoothing iterations'),
+                QgsProcessingParameterNumber.Integer,
+                defaultValue=3,
+                minValue=0
+            )
+        )
+
+        # smoothing offset
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.PARAM_SMOOTH_OFFSET,
+                self.tr('Smoothing offset'),
+                QgsProcessingParameterNumber.Double,
+                defaultValue=0.4,
+                minValue=0.0
+            )
+        )
+
+        # Max smoothing angle
+        self.addParameter(
+            QgsProcessingParameterNumber(
+                self.PARAM_SMOOTH_MAX_ANGLE,
+                self.tr('Maximum smoothing angle'),
+                QgsProcessingParameterNumber.Double,
+                defaultValue=180.0,
+                minValue=0.0,
+                maxValue=180.0
+            )
+        )
+
         # gap factor (how much to buffer in/out, in pixels of DEM)
         self.addParameter(
             QgsProcessingParameterNumber(
@@ -134,6 +172,9 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         dem_layer = self.parameterAsRasterLayer(parameters, self.PARAM_DEM, context)
         cost_threshold = self.parameterAsDouble(parameters, self.PARAM_COST_THRESHOLD, context)
         gap_factor = self.parameterAsDouble(parameters, self.PARAM_GAP_FACTOR, context)
+        smooth_iterations = self.parameterAsInt(parameters, self.PARAM_SMOOTH_ITERATIONS, context)
+        smooth_offset = self.parameterAsDouble(parameters, self.PARAM_SMOOTH_OFFSET, context)
+        smooth_max_angle = self.parameterAsDouble(parameters, self.PARAM_SMOOTH_MAX_ANGLE, context)
 
         if river_layer is None or dem_layer is None:
             raise QgsProcessingException('River Network or DEM not valid')
@@ -355,8 +396,9 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
             {
                 'INPUT': hole_free,
                 'METHOD': 0,
-                'ITERATIONS': 3,
-                'OFFSET': 0.4,
+                'ITERATIONS': smooth_iterations,
+                'OFFSET': smooth_offset,
+                'MAX_ANGLE': smooth_max_angle,
                 'OUTPUT': 'memory:'
             },
             context=context,
@@ -436,7 +478,7 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
             symbol = layer.renderer().symbol()
             symbol.setColor(QColor(173, 216, 230))  # light blue (RGB)
             layer.triggerRepaint()
-            feedback.pushInfo("Applied light blue symbology with 30% transparency.")
+            feedback.pushInfo("Applied light blue symbology.")
 
         return {
             self.PARAM_OUTPUT: dest_id
