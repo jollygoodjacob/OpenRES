@@ -8,7 +8,8 @@ from qgis.core import (
     QgsProcessingException,
     QgsVectorLayer,
     QgsFeature,
-    QgsFeatureRequest
+    QgsFeatureRequest,
+    QgsGeometry
 )
 import processing
 from ..icon_utils import openres_icon
@@ -44,9 +45,10 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
 
     def shortHelpString(self):
         return self.tr(
-            "Subtract valley floor polygons from microsheds polygons using an "
-            "optimized per-feature difference workflow, then convert to lines, "
-            "lightly smooth, and dissolve the final valley boundary."
+            "Subtract valley floor polygons from microsheds polygons that intersect the "
+            "valley floor using an optimized per-feature difference workflow, then convert to lines, "
+            "lightly smooth, and dissolve the final valley boundary. The created valley boundary layer "
+            "should delineate the valley floor boundary and the confining valley margins."
         )
 
     def initAlgorithm(self, config=None):
@@ -147,6 +149,9 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
             if microshed_geom is None or microshed_geom.isEmpty():
                 continue
 
+            diff_geom = QgsGeometry(microshed_geom)
+            intersects_valley = False
+
             request = QgsFeatureRequest().setFilterRect(microshed_geom.boundingBox())
 
             for valley_feat in valley_fixed.getFeatures(request):
@@ -154,17 +159,16 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
                 if valley_geom is None or valley_geom.isEmpty():
                     continue
 
-                if not microshed_geom.intersects(valley_geom):
-                    continue
+                if microshed_geom.intersects(valley_geom):
+                    intersects_valley = True
+                    diff_geom = diff_geom.difference(valley_geom)
 
-                microshed_geom = microshed_geom.difference(valley_geom)
+                    if diff_geom.isEmpty():
+                        break
 
-                if microshed_geom.isEmpty():
-                    break
-
-            if not microshed_geom.isEmpty():
+            if intersects_valley and not diff_geom.isEmpty():
                 new_feat = QgsFeature(diff_layer.fields())
-                new_feat.setGeometry(microshed_geom)
+                new_feat.setGeometry(diff_geom)
                 new_feat.setAttributes(microshed_feat.attributes())
                 out_features.append(new_feat)
 
