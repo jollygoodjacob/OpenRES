@@ -35,6 +35,7 @@ from qgis.PyQt.QtGui import QColor
 import processing
 import os
 import math
+import uuid
 from osgeo import gdal
 from ..icon_utils import openres_icon
 
@@ -110,7 +111,7 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
                 self.PARAM_COST_THRESHOLD,
                 self.tr('Initial cost distance threshold'),
                 QgsProcessingParameterNumber.Double,
-                defaultValue=1500.0
+                defaultValue=500.0
             )
         )
 
@@ -183,12 +184,15 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         temp_dir = QgsProcessingUtils.tempFolder()
 
         # temp rasters
-        slope_raster = os.path.join(temp_dir, 'cb_tmp_slope.tif')
-        cond_slope_raster = os.path.join(temp_dir, 'cb_tmp_slope_cond.tif')
-        river_raster = os.path.join(temp_dir, 'cb_tmp_river.tif')
-        accum_cost_raster = os.path.join(temp_dir, 'cb_tmp_costdist.tif')
-        belt_mask_raster = os.path.join(temp_dir, 'cb_tmp_mask_coarse.tif')
-        refined_mask_raster = os.path.join(temp_dir, 'cb_tmp_mask_refined.tif')
+        run_id = uuid.uuid4().hex[:8]
+
+        slope_raster = os.path.join(temp_dir, f'cb_{run_id}_slope.tif')
+        cond_slope_raster = os.path.join(temp_dir, f'cb_{run_id}_slope_cond.tif')
+        river_raster = os.path.join(temp_dir, f'cb_{run_id}_river.tif')
+        accum_cost_raster = os.path.join(temp_dir, f'cb_{run_id}_costdist.tif')
+        belt_mask_raster = os.path.join(temp_dir, f'cb_{run_id}_mask_coarse.tif')
+        refined_mask_raster = os.path.join(temp_dir, f'cb_{run_id}_mask_refined.tif')
+        refined_poly = os.path.join(temp_dir, f'cb_{run_id}_refined_poly.gpkg')
 
         # DEM info
         dem_path = dem_layer.source()
@@ -325,6 +329,12 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         mean_cost = total / count
         feedback.pushInfo(f"Mean cost inside coarse mask = {mean_cost}")
 
+        # To enable deletion after processing
+        cost_band = None
+        mask_band = None
+        cost_ds = None
+        mask_ds = None
+
         # 5b. refined mask
         feedback.pushInfo('Creating refined mask...')
         processing.run(
@@ -344,7 +354,6 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         # 6. polygonize refined mask
         feedback.pushInfo('Polygonizing refined mask...')
         
-        refined_poly = os.path.join(temp_dir, 'cb_refined_poly.gpkg')
         processing.run(
             "gdal:polygonize",
             {
@@ -450,6 +459,8 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
             gaps_closed.sourceCrs()
         )
 
+        
+        
         for f in gaps_closed.getFeatures():
             if feedback.isCanceled():
                 break
@@ -462,7 +473,8 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
             accum_cost_raster,
             belt_mask_raster,
             refined_mask_raster,
-            refined_poly,  # the gpkg we used before extracting
+            refined_poly  # the gpkg we used before extracting
+
         ]
 
         for p in to_delete:
