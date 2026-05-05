@@ -10,7 +10,7 @@ about=OpenRES is a QGIS plugin designed to support Riverine Ecosystem Synthesis 
 	The metrics produced can be evaluated individually or integrated using hierarchical, unsupervised classification approaches to delineate FPZs — repeatable hydrogeomorphic patches that organize physical habitat templates and ecological processes along river corridors. By enabling network-scale, standardized FPZ characterization, OpenRES facilitates comparative analyses, cross-system synthesis, and management applications grounded in RES theory
 
 
-version=1.4.0
+version=1.4.1
 qgisMinimumVersion=3.28
 qgisMaximumVersion=4.99
 author=Jacob Nesslage
