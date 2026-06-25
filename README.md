@@ -10,7 +10,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases) 
 [![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.4.1)](https://github.com/jollygoodjacob/OpenRES/commits) 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
-[![status](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c/status.svg)](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c)
+
 
 ## General Information
 
