@@ -227,13 +227,15 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         # 2. Condition slope
         feedback.pushInfo('Conditioning slope...')
         processing.run(
-            "qgis:rastercalculator",
+            "gdal:rastercalculator",
             {
-                'EXPRESSION': f'("{slope_raster}@1" * {dem_xres}) + 0.00001',
-                'LAYERS': [slope_raster],
-                'CELL_SIZE': dem_xres,
-                'EXTENT': f"{xmin},{xmax},{ymin},{ymax}",
-                'CRS': crs_auth,
+                'INPUT_A': slope_raster,
+                'BAND_A': 1,
+                'FORMULA': f'(A * {dem_xres}) + 0.00001',
+                'NO_DATA': None,
+                'RTYPE': 5,
+                'OPTIONS': '',
+                'EXTRA': '',
                 'OUTPUT': cond_slope_raster
             },
             context=context,
@@ -287,13 +289,15 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         # 5. coarse mask
         feedback.pushInfo('Creating coarse mask...')
         processing.run(
-            "qgis:rastercalculator",
+            "gdal:rastercalculator",
             {
-                'EXPRESSION': f'if(("{accum_cost_raster}@1" > 0) AND ("{accum_cost_raster}@1" <= {cost_threshold}), 1, 0)',
-                'LAYERS': [accum_cost_raster],
-                'CELL_SIZE': dem_xres,
-                'EXTENT': f"{xmin},{xmax},{ymin},{ymax}",
-                'CRS': crs_auth,
+                'INPUT_A': accum_cost_raster,
+                'BAND_A': 1,
+                'FORMULA': f'(A > 0) * (A <= {cost_threshold})',
+                'NO_DATA': 0,
+                'RTYPE': 0,  # Byte
+                'OPTIONS': '',
+                'EXTRA': '',
                 'OUTPUT': belt_mask_raster
             },
             context=context,
@@ -338,13 +342,15 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         # 5b. refined mask
         feedback.pushInfo('Creating refined mask...')
         processing.run(
-            "qgis:rastercalculator",
+            "gdal:rastercalculator",
             {
-                'EXPRESSION': f'if(("{accum_cost_raster}@1" > 0) AND ("{accum_cost_raster}@1" <= {mean_cost}), 1, 0)',
-                'LAYERS': [accum_cost_raster],
-                'CELL_SIZE': dem_xres,
-                'EXTENT': f"{xmin},{xmax},{ymin},{ymax}",
-                'CRS': crs_auth,
+                'INPUT_A': accum_cost_raster,
+                'BAND_A': 1,
+                'FORMULA': f'(A > 0) * (A <= {mean_cost})',
+                'NO_DATA': 0,
+                'RTYPE': 0,  # Byte
+                'OPTIONS': '',
+                'EXTRA': '',
                 'OUTPUT': refined_mask_raster
             },
             context=context,
