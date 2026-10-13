@@ -178,7 +178,7 @@ def find_two_intersections_by_side(transect_layer, other_layer, split_layer, tol
                 cross = direction_vector.x() * vec.y() - direction_vector.y() * vec.x()
                 side = "left" if cross > 0 else "right"
 
-                dist = midpoint.distance(pt)
+                dist = stream_mid.distance(pt)
 
                 # Store
                 if side == "left":
