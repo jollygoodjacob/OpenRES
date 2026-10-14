@@ -75,8 +75,9 @@ def main(names=()):
         suite = loader.discover(str(tests_dir), pattern="test_*.py", top_level_dir=str(tests_dir))
 
     result = unittest.TextTestRunner(stream=sys.stdout, verbosity=2).run(suite)
-    if not bootstrap.started_qgis():
-        bootstrap.teardown()  # leave a running QGIS as we found it
+    # Unregister the test provider while QGIS is still fully alive. (Inside
+    # QGIS this also leaves the session as we found it.)
+    bootstrap.teardown()
     if not result.wasSuccessful():
         print("\nSOME TESTS FAILED (see above)")
     elif result.skipped:
@@ -91,5 +92,15 @@ if __name__ == "__main__":
     outcome = main(args)
     import bootstrap
 
-    if bootstrap.started_qgis():  # running from a terminal, not inside QGIS
-        sys.exit(0 if outcome.wasSuccessful() else 1)
+    if bootstrap.started_qgis():  # running from a terminal or CI, not inside QGIS
+        # Exit immediately instead of letting Python shut QGIS down: QGIS's
+        # own exit handler runs after Python has half-dismantled the PyQGIS
+        # objects and can segfault (exit code 139) even though every test
+        # passed. All results are already printed, so nothing is lost.
+        import gc
+        import os
+
+        gc.collect()
+        sys.stdout.flush()
+        sys.stderr.flush()
+        os._exit(0 if outcome.wasSuccessful() else 1)
