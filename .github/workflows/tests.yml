@@ -1,0 +1,28 @@
+name: Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  qgis:
+    name: QGIS ${{ matrix.qgis }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # ltr = current long-term release (QGIS 3.x); stable = latest release (QGIS 4.x)
+        qgis: [ltr, stable]
+    container:
+      image: qgis/qgis:${{ matrix.qgis }}
+      env:
+        QT_QPA_PLATFORM: offscreen
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Same command contributors run locally; see tests/README.md
+      - name: Run test suite
+        run: python3 tests/run_tests.py
