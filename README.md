@@ -10,7 +10,6 @@
 [![GitHub release](https://img.shields.io/github/v/release/jollygoodjacob/OpenRES)](https://github.com/jollygoodjacob/OpenRES/releases) 
 [![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.4.1)](https://github.com/jollygoodjacob/OpenRES/commits) 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
-[![status](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c/status.svg)](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c)
 [![Tests](https://github.com/jollygoodjacob/OpenRES/actions/workflows/tests.yml/badge.svg)](https://github.com/jollygoodjacob/OpenRES/actions/workflows/tests.yml)
 
 OpenRES is a QGIS plugin that extracts a standard set of 15 hydrogeomorphic features (valley width, valley floor width, side slopes, down-valley slope, sinuosity, channel belt metrics, and more) for every segment of a river network. These features are the inputs used to classify rivers into **Functional Process Zones (FPZs)**: valley-scale reaches (typically 5–10 km) that share similar physical structure and hydrogeomorphic processes, as described by the Riverine Ecosystem Synthesis ([Thorp et al. 2006](https://doi.org/10.1002/rra.901); [Thorp et al. 2023](https://doi.org/10.3389/fevo.2023.1184433)).
@@ -18,7 +17,7 @@ OpenRES is a QGIS plugin that extracts a standard set of 15 hydrogeomorphic feat
 Extracting these features by hand is slow, hard to reproduce, and difficult to scale beyond a few reaches. OpenRES turns it into a repeatable sequence of QGIS Processing tools that can be run on whole networks, from the graphical toolbox or from Python.
 
 <p align="center">
-  <img src="imgs/openres_workflow.png" alt="OpenRES workflow: input layers feed the geomorphology tools and the seven data extraction tools, producing a feature layer for FPZ classification" width="900"/>
+  <img src="paper/JOSS_workflow.png" alt="OpenRES workflow: input layers feed the geomorphology tools and the seven data extraction tools, producing a feature layer for FPZ classification" width="900"/>
 </p>
 
 ## Table of contents
@@ -187,10 +186,6 @@ Join the resulting classes back to the stream network output from tool [1] on `t
 ## Contributing
 
 Contributions are welcome, from bug reports to new tools. See [CONTRIBUTING.md](CONTRIBUTING.md) to get started, and run the [test suite](#running-tests) before opening a pull request that changes an algorithm.
-
-### Code of Conduct
-
-Everyone participating in this project is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ## FAQ
 
