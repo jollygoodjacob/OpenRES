@@ -17,7 +17,7 @@ OpenRES is a QGIS plugin that extracts a standard set of 15 hydrogeomorphic feat
 Extracting these features by hand is slow, hard to reproduce, and difficult to scale beyond a few reaches. OpenRES turns it into a repeatable sequence of QGIS Processing tools that can be run on whole networks, from the graphical toolbox or from Python.
 
 <p align="center">
-  <img src="paper/JOSS_workflow.png" alt="OpenRES workflow: input layers feed the geomorphology tools and the seven data extraction tools, producing a feature layer for FPZ classification" width="900"/>
+  <img src="paper/JOSS_diagram.png" alt="OpenRES workflow: input layers feed the geomorphology tools and the seven data extraction tools, producing a feature layer for FPZ classification" width="900"/>
 </p>
 
 ## Table of contents
