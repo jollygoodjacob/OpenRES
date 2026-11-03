@@ -17,12 +17,10 @@
 (the README walkthrough). Checks that every output is produced and that the
 extracted features are physically consistent."""
 import unittest
-from pathlib import Path
 
 import bootstrap
-from bootstrap import alg
+import pipelines
 
-TMP = "TEMPORARY_OUTPUT"
 ALL_FIELDS = ["t_ID", "ELE", "PRE", "GEO", "VFW", "VW", "RAT", "LVS", "RVS", "MVS",
               "DVS", "SIN", "CBW", "LCS", "RCS", "CBS"]
 
@@ -40,61 +38,11 @@ def is_null(value):
 class TestEersteSampleWorkflow(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        import processing
-        from qgis.core import QgsRasterLayer, QgsVectorLayer
-
-        d = bootstrap.sample_data_dir()
-
-        def vec(rel):
-            layer = QgsVectorLayer(str(d / rel), Path(rel).stem, "ogr")
-            assert layer.isValid(), f"could not open {rel}"
-            return layer
-
-        def ras(rel):
-            layer = QgsRasterLayer(str(d / rel), Path(rel).stem)
-            assert layer.isValid(), f"could not open {rel}"
-            return layer
-
-        river = vec("Eerste_stream_network/Eerste_stream_network/Eerste_stream_network_2km_final.shp")
-        valley = vec("Eerste_valley_boundary/Eerste_valley_boundary.shp")
-        belt = vec("Eerste_channel_belt/Eerste_channel_belt.shp")
-        geology = vec("Eerste_geology/Eerste_geology/Eerste_geology.shp")
-        dem = ras("Eerste_elevation/Eerste_elevation/Eerste_SRTM_30m_extent.tif")
-        precip = ras("Eerste_precipitation/Eerste_MAP/Eerste_MAP_extent.tif")
-        cls.river = river
-
-        cls.s1 = processing.run(alg("generate_transects"), {
-            "RIVER_LAYER": river, "LINE_LAYER": valley,
-            "EXTENSION_INCREMENT": 250, "MAX_LENGTH": 50000,
-            "TRANSECTS": TMP, "CENTER_POINTS": TMP, "OUTPUT_STREAM": TMP,
-        })
-        s2 = processing.run(alg("extract_point_attributes"), {
-            "POINTS": cls.s1["CENTER_POINTS"], "RASTER1": dem, "RASTER2": precip,
-            "POLYGONS": geology, "POLY_FIELD": "GEOLOGY", "OUTPUT": TMP,
-        })
-        s3 = processing.run(alg("extract_valley_width"), {
-            "TRANSECTS": cls.s1["TRANSECTS"], "CENTER_POINTS": s2["OUTPUT"],
-            "VALLEY_LINES": valley, "STREAM_NETWORK": cls.s1["OUTPUT_STREAM"],
-            "LEFT_VFW": TMP, "RIGHT_VFW": TMP, "LEFT_VW": TMP, "RIGHT_VW": TMP, "CENTER_OUT": TMP,
-        })
-        s4 = processing.run(alg("extract_side_slopes"), {
-            "CENTER": s3["CENTER_OUT"], "LEFT_VW": s3["LEFT_VW"], "LEFT_VFW": s3["LEFT_VFW"],
-            "RIGHT_VW": s3["RIGHT_VW"], "RIGHT_VFW": s3["RIGHT_VFW"],
-            "RASTER": dem, "OUTPUT": TMP,
-        })
-        s5 = processing.run(alg("extract_dvs_sinuosity"), {
-            "CENTER_POINTS": s4["OUTPUT"], "STREAM_SEGMENTS": cls.s1["OUTPUT_STREAM"],
-            "ELEVATION": dem, "OUTPUT": TMP,
-        })
-        s6 = processing.run(alg("extract_cbw"), {
-            "TRANSECTS": cls.s1["TRANSECTS"], "CENTER_POINTS": s5["OUTPUT"],
-            "CHANNEL_BELT": belt, "STREAM_NETWORK": cls.s1["OUTPUT_STREAM"],
-            "LEFT_CB": TMP, "RIGHT_CB": TMP, "CENTER_OUT": TMP,
-        })
-        s7 = processing.run(alg("extract_channel_belt_sinuosity"), {
-            "CENTER_POINTS": s6["CENTER_OUT"], "CHANNEL_BELT": belt, "OUTPUT": TMP,
-        })
-        cls.final = s7["OUTPUT"]
+        inputs = pipelines.eerste_inputs()
+        cls.river = inputs["river"]
+        steps = pipelines.run_workflow(**inputs)
+        cls.s1 = steps["s1"]
+        cls.final = steps["s7"]["OUTPUT"]
         cls.features = list(cls.final.getFeatures())
 
     def test_one_center_per_transect(self):
