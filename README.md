@@ -11,506 +11,214 @@
 [![GitHub commits](https://img.shields.io/github/commits-since/jollygoodjacob/OpenRES/v1.4.1)](https://github.com/jollygoodjacob/OpenRES/commits) 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://GitHub.com/jollygoodjacob/OpenRES/graphs/commit-activity)
 [![status](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c/status.svg)](https://joss.theoj.org/papers/e77a17b280506d4d28a0b6ada290f25c)
+[![Tests](https://github.com/jollygoodjacob/OpenRES/actions/workflows/tests.yml/badge.svg)](https://github.com/jollygoodjacob/OpenRES/actions/workflows/tests.yml)
 
-## General Information
+OpenRES is a QGIS plugin that extracts a standard set of 15 hydrogeomorphic features (valley width, valley floor width, side slopes, down-valley slope, sinuosity, channel belt metrics, and more) for every segment of a river network. These features are the inputs used to classify rivers into **Functional Process Zones (FPZs)**: valley-scale reaches (typically 5–10 km) that share similar physical structure and hydrogeomorphic processes, as described by the Riverine Ecosystem Synthesis ([Thorp et al. 2006](https://doi.org/10.1002/rra.901); [Thorp et al. 2023](https://doi.org/10.3389/fevo.2023.1184433)).
 
-**OpenRES** enables QGIS users to extract up to fifteen physical and environmental features along river segments (typically 5--10 km) to support classification of river networks into **Functional Process Zones (FPZs)**.
+Extracting these features by hand is slow, hard to reproduce, and difficult to scale beyond a few reaches. OpenRES turns it into a repeatable sequence of QGIS Processing tools that can be run on whole networks, from the graphical toolbox or from Python.
 
-**Functional Process Zone (FPZ)** classification is a method used to divide a river network into river valley scale (5-10 km) segments (or "zones") that share similar physical, hydrological, and geomorphic characteristics. Rather than treating a river as a continuous longitudinal gradient of changing physical conditions, FPZ classification recognizes that rivers are composed of a discontinuous set of hydrogeomorphic patches, each shaped by different landscape and hydrologic processes ([Hestir 2007](https://www.researchgate.net/profile/Erin-Hestir/publication/265026989_Functional_Process_Zones_and_the_River_Continuum_Concept/links/546248c00cf2c0c6aec1ade8/Functional-Process-Zones-and-the-River-Continuum-Concept.pdf)). These zones reflect how the river behaves in a given segment, including how it flows, how it transports sediment, how it interacts with its floodplain, and what types of habitats it supports.
+<p align="center">
+  <img src="imgs/openres_workflow.png" alt="OpenRES workflow: input layers feed the geomorphology tools and the seven data extraction tools, producing a feature layer for FPZ classification" width="900"/>
+</p>
 
-After classifying a river network in FPZs, research questions posed by the tenets of the Riverine Ecosystem Synthesis hypothesis ([Thorp et al. 2006](https://onlinelibrary.wiley.com/doi/abs/10.1002/rra.901), [Thorp et al. 2023](https://www.frontiersin.org/journals/ecology-and-evolution/articles/10.3389/fevo.2023.1184433/full)) can be explored.
+## Table of contents
 
-------------------------------------------------------------------------
+- [Features](#features)
+- [Getting started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running tests](#running-tests)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [FAQ](#faq)
+- [Citing OpenRES](#citing-openres)
+- [License](#license)
+- [Contact](#contact)
+- [Acknowledgements](#acknowledgements)
 
-## Installation
+## Features
 
-> **Note:** OpenRES requires QGIS version \>=3.28.
+- **Fifteen features per river segment**, written to one point layer and linked to transects and the stream network by a shared `t_ID`.
+- **Geomorphology tools** to build the less common inputs: Generate Channel Belt, Valley Floor Delineation ([Sechu et al. 2021](https://doi.org/10.3390/w13060827)), Generate Microsheds, and Create Valley Boundary.
+- **QA/QC layers** (left/right reference points for every width measurement) so each value can be checked on the map.
+- **Runs in the Processing Toolbox or from Python**, so the same workflow can be clicked through once or scripted across many watersheds.
+- **Tested** on QGIS 3.x LTR and QGIS 4 against a synthetic valley with hand-calculated answers and the bundled sample data.
 
-**Installation from QGIS:**
+The extraction tools are run in order:
 
--   Open QGIS -\> Plugins -\> Manage and Install Plugins... -\> select All tab -\> search for OpenRES --\> select and install plugin
+| Tool | Features produced | Required |
+|---|---|---|
+| [1] Generate Transects | `t_ID` (links transects, segment centers, and streams) | Yes |
+| [2] Extract ELE, PRE, and GEO | Elevation (`ELE`), mean annual precipitation (`PRE`), geologic class (`GEO`) | Yes |
+| [3] Extract VW, VFW, and RAT | Valley width (`VW`), valley floor width (`VFW`), VW:VFW ratio (`RAT`) | Yes |
+| [4] Extract LVS, RVS, and MVS | Left, right, and mean valley side slope (`LVS`, `RVS`, `MVS`) | Yes |
+| [5] Extract DVS and SIN | Down-valley slope (`DVS`), channel sinuosity (`SIN`) | Yes |
+| [6] Extract CBW | Channel belt width (`CBW`) | Optional |
+| [7] Extract LCS, RCS, and CBS | Left, right, and mean channel belt sinuosity (`LCS`, `RCS`, `CBS`) | Optional |
 
-**Offline installation from .zip file** :
+Each tool's dialog in QGIS includes help text for its parameters. Algorithm details are in [help/Functions_description.md](help/Functions_description.md).
 
--   Go to releases of this repository -\> select desired version -\> download the .zip file (Note: use OpenRES.zip, not the source .tar).
-
--   Open QGIS -\> Plugins -\> Manage and Install Plugins... -\> install from ZIP tab --\> select the downloaded zip --\> install plugin (ignore warnings, if any).
-
-------------------------------------------------------------------------
-
-## Data Prerequisites
-
-Users should prepare the following **six datasets** for your watershed of interest. Use consistent CRS and units (projected meters recommended, e.g., UTM) for all layers.
-
-| Dataset | Format | Description |
-|----|----|----|
-| **Mean Annual Precipitation Layer** | `.tif` | Raster of mean annual precipitation for the watershed. |
-| **Digital Elevation Model (DEM) Layer** | `.tif` | Elevation raster used for slopes, valley floors, and longitudinal gradients. |
-| **Simplified Geology Layer** | `.shp` | Polygon layer with generalized classes (e.g., alluvial, mixed, bedrock). Typically a simplified version of a detailed map. |
-| **Geomorphically Corrected Stream Network Layer** | `.shp` | Stream lines generated from the DEM and manually corrected to follow observed channel positions in imagery for the analysis period (Whitebox Workflows recommended here). |
-| **Valley-Boundary Line Layer** | `.shp` | Lines delineating both the valley floor boundary and valley-edge boundary. Suggested workflow: (1) delineate valley floor, (2) edit to remove holes and unrealistic extents, (3) derive 1-2 km² microsheds/isobasins from the DEM (Whitebox Workflows recommended here), (4) apply intersection/difference/polygon-to-line to extract combined boundaries as a line feature. |
-| **Channel Belt Layer** (Optional) | `.shp` | Lines delineating the channel belt (active/recent fluvial influence, including channel and depositional features). Suggested workflow: (1) OpenRES → Geomorphology Tools → Generate Channel Belt, (2) manual refinement to match meanders and depositional forms visible in imagery. |
-
-Some of these layers may not be very common for most river systems (especially the **Valley-Boundary Line Layer** and **Channel Belt Layer**). For these less common datasets, `OpenRES` provides several geomorphology utility tools to allow users to create these datasets for their watershed of interest.
-
-**Data quality tips**
-
--   Ensure all inputs share the same projected CRS and unit (meters)
-
--   Snap and clean linework to avoid sliver gaps that can break intersections
-
-------------------------------------------------------------------------
-
-## Core Functionality
-
-**OpenRES** provides geomorphology utilities to prepare key boundary layers and a set of sequential extraction tools that produce a standard suite of **15 hydrogeomorphic attributes** for FPZ classification.
-
-### Geomorphology Tools
-
-Use these tools to produce your **Valley-Boundary Line Layer** and **Channel Belt** .
-
-`OpenRES` includes geomorphology utility tools to help users prepare the valley boundaries and channel belt layers required for subsequent feature extraction \autoref{tab:geomorph-tools}:
-
-| Tool | Purpose | Output | GIS Data Type |
-|----|----|----|----|
-| Generate Channel Belt | Creates lateral offsets from the stream network to approximate the channel belt extent; intended for manual refinement. | Channel belt layer | Vector (line) |
-| Valley Floor Delineation – Sechu | Identifies low-relief valley floor areas from a DEM using a slope-based cost accumulation method [@sechu_2021]. | Valley floor layer | Vector (polygon) |
-| Generate Microsheds | Generates microsheds using a threshold-based watershed approach (1–3 km² typical) to capture valley tops in confining valleys. | Microshed layer | Vector (polygon) |
-| Create Valley Boundary | Applies a difference operation between valley floor and microsheds and converts the result to a line layer representing valley boundaries. | Valley boundary layer | Vector (line) |
-
-### Data Extraction Tools
-
-Run these tools in order. Together, they generate all attributes required for FPZ classification.
-
-| Step / Tool | Features | Description | Required |
-|----|----|----|----|
-| [1] Generate Transects | t_ID | Generates perpendicular transects from river centerlines to valley boundaries, ensuring consistent sampling and linking outputs via a transect ID. | Yes |
-| [2] Extract ELE, PRE, and GEO | ELE, PRE, GEO | Samples elevation, precipitation, and geologic class from user-provided datasets. | Yes |
-| [3] Extract VW, VFW, and RAT | VW, VFW, RAT | Measures valley width and valley floor width from transects and computes their ratio. | Yes |
-| [4] Extract LVS, RVS, and MVS | LVS, RVS, MVS | Computes left, right, and mean valley slopes from elevation differences along transects. | Yes |
-| [5] Extract DVS and SIN | DVS, SIN | Calculates down-valley slope and river sinuosity from segment geometry. | Yes |
-| [6] Extract CBW | CBW | Measures channel belt width from transect intersections with the channel belt layer. | Optional |
-| [7] Extract LCS, RCS, and CBS | LCS, RCS, CBS | Quantifies within-belt channel sinuosity on each side and summarizes with a mean value. | Optional |
-
-------------------------------------------------------------------------
-
-## Example usage: Eerste River catchment, South Africa
-
-> **Note:** All the following processing steps should be done in a sequential manner, following the instructions below. Sample data for hydrogeomorphic feature extraction is provided in [sample_data](/sample_data/) folder.
-
-To demonstrate the use of OpenRES, we have provided a dataset from the Eerste River catchment, a small watershed located in the Greater Cape Floristic Region of South Africa.
-
-::: {align="center"}
-<img src="/imgs/Eerste_watershed.png" alt="Eerste River catchment, South Africa" width="600"/><br> <sub><b> Eerste River catchment, South Africa</b></sub>
-:::
-
-The Eerste River originates in the Jonkershoek Mountains, part of the Hottentots-Holland mountain range, and flows westward through the Stellenbosch area before reaching the False Bay coast near Strand. It drains a catchment area of approximately 390 km². Dominated by fynbos vegetation, the area hosts numerous endemic plant species and is under increasing pressure from urban development, invasive species, and agricultural runoff.
-
-------------------------------------------------------------------------
+## Getting started
 
 ### Prerequisites
 
-Before starting the OpenRES workflow:
+- **QGIS 3.28 or later** (QGIS 4 is supported). GRASS, which ships with QGIS, is used by the Valley Floor Delineation and Generate Microsheds tools.
+- **Input data** for your watershed, all in the same projected CRS with units in meters (e.g., UTM):
 
--   Ensure all input data are properly prepared:
-    -   Mean annual precipitation (raster)
-    -   Digital Elevation Model (\<= 30 m DEM, raster)
-    -   Simplified geologic class layer (i.e., alluvial, non-alluvial, bedrock; vector - polygon).
-    -   Stream network (vector - line)
-    -   Valley-boundary layer (vector - line)
-    -   (Optional) Channel belt layer (vector - line)
--   The **OpenRES** plugin is installed and enabled in QGIS.
--   The **Processing Toolbox** is open (via `Processing > Toolbox`).
+| Layer | Type | Notes |
+|---|---|---|
+| Stream network | Line | Segmented to the reach length you want to classify; ideally corrected to match channel positions in imagery. |
+| Valley boundary lines | Line | Valley floor edge and valley margin. Can be built with the OpenRES geomorphology tools. |
+| Digital elevation model | Raster | 30 m or finer recommended. |
+| Mean annual precipitation | Raster | |
+| Simplified geology | Polygon | Generalized classes, e.g., alluvial, mixed, bedrock. |
+| Channel belt *(optional)* | Line | Needed only for tools [6] and [7]. Start from Generate Channel Belt, then refine by hand. |
 
-::: {align="center"}
-<img src="/imgs/OpenRES_processing_toolbox.png" alt="The OpenRES Processing Toolbox" width="300"/><br> <sub><b> The OpenRES Processing Toolbox</b></sub>
-:::
+### Installation
 
-------------------------------------------------------------------------
+In QGIS, open **Plugins → Manage and Install Plugins**, search for **OpenRES**, and click **Install Plugin**. The tools appear under **OpenRES** in the Processing Toolbox (**Processing → Toolbox**).
 
-### Using the Geomorphology Tool to Prepare Input Data
+For offline installation, download `OpenRES.zip` from the [latest release](https://github.com/jollygoodjacob/OpenRES/releases) and use **Install from ZIP** in the same dialog.
 
-#### Generate Channel Belt Layer
+### Running tests
 
-Use `"Generate Channel Belt"`\
+The test suite needs only QGIS. From a copy of this repository, paste this into the QGIS Python Console (**Plugins → Python Console**), replacing the path:
 
-Location: `Processing Toolbox > OpenRES > Geomorphology`
+```python
+import runpy; _ = runpy.run_path(r"C:\path\to\OpenRES\tests\run_tests.py", run_name="__main__")
+```
 
-::: {align="center"}
-<img src="imgs/generate_channel_belt_window.png" width="800"/>
-:::
+Or, with Docker:
 
-##### Inputs
+```bash
+docker run --rm -v "$PWD":/OpenRES -w /OpenRES -e QT_QPA_PLATFORM=offscreen qgis/qgis:ltr python3 tests/run_tests.py
+```
 
--   **River Network Layer** (polyline)
+See [tests/README.md](tests/README.md) for terminal options and troubleshooting. Tests also run on every push and pull request.
 
-##### Outputs
+## Usage
 
--   **Channel Belt Layer**
+### Example: Eerste River, South Africa
 
-##### Notes
+The repository includes a complete input dataset for the Eerste River catchment (~390 km², Western Cape) in [sample_data/Eerste_rivier.zip](sample_data/Eerste_rivier.zip). Unzip it, then either run the tools from the Processing Toolbox in the order [1] to [7], or run the whole workflow from the QGIS Python Console:
 
--   Offsets each input stream segment to LEFT (+) and RIGHT (-) by the given distance.
--   Offsets use layers CRS; use a projected CRS (e.g., meters).
--   LEFT/RIGHT are relative to the digitized direction of each line
--   Use `Round` join style for smooth banks; `Miter` for sharp corners (user will have to tune miter limit).
--   Copies `t_ID` from input if present, otherwise creates sequential `t_ID`.
--   Adds fields `t_ID` (int), `side` {'LEFT'\|'RIGHT'}, `offset` (double).
+```python
+import os
+import processing
+from qgis.core import QgsProject, QgsRasterLayer, QgsVectorLayer
 
-> **Note:** You must edit this layer to capture the channel belt appropriately. This means delineating areas of active/recent fluvial influence, including channel and depositional features AND removing areas with no visible channel belt.
+DATA = r"C:\path\to\Eerste_rivier"  # the unzipped sample data folder
+TMP = "TEMPORARY_OUTPUT"
 
-#### Delineate Valley Floor
+def vector(path):
+    return QgsVectorLayer(os.path.join(DATA, path), os.path.basename(path), "ogr")
 
-Use `"Valley Floor Delineation - Sechu"`
+def raster(path):
+    return QgsRasterLayer(os.path.join(DATA, path), os.path.basename(path))
 
-Location: `Processing Toolbox > OpenRES > Geomorphology`
+streams = vector("Eerste_stream_network/Eerste_stream_network/Eerste_stream_network_2km_final.shp")
+valley  = vector("Eerste_valley_boundary/Eerste_valley_boundary.shp")
+belt    = vector("Eerste_channel_belt/Eerste_channel_belt.shp")
+geology = vector("Eerste_geology/Eerste_geology/Eerste_geology.shp")
+dem     = raster("Eerste_elevation/Eerste_elevation/Eerste_SRTM_30m_extent.tif")
+precip  = raster("Eerste_precipitation/Eerste_MAP/Eerste_MAP_extent.tif")
 
-::: {align="center"}
-<img src="imgs/valley_floor_delin_window.png" width="800"/>
-:::
+# [1] Transects perpendicular to each segment, extended until they reach the valley lines
+s1 = processing.run("openres:generate_transects", {
+    "RIVER_LAYER": streams, "LINE_LAYER": valley,
+    "EXTENSION_INCREMENT": 250, "MAX_LENGTH": 50000,
+    "TRANSECTS": TMP, "CENTER_POINTS": TMP, "OUTPUT_STREAM": TMP})
 
-##### Inputs
+# [2] ELE, PRE, GEO
+s2 = processing.run("openres:extract_point_attributes", {
+    "POINTS": s1["CENTER_POINTS"], "RASTER1": dem, "RASTER2": precip,
+    "POLYGONS": geology, "POLY_FIELD": "GEOLOGY", "OUTPUT": TMP})
 
--   **River Network Layer** (polyline)
--   **Elevation Raster**
+# [3] VW, VFW, RAT
+s3 = processing.run("openres:extract_valley_width", {
+    "TRANSECTS": s1["TRANSECTS"], "CENTER_POINTS": s2["OUTPUT"],
+    "VALLEY_LINES": valley, "STREAM_NETWORK": s1["OUTPUT_STREAM"],
+    "LEFT_VFW": TMP, "RIGHT_VFW": TMP, "LEFT_VW": TMP, "RIGHT_VW": TMP, "CENTER_OUT": TMP})
 
-##### Outputs
+# [4] LVS, RVS, MVS
+s4 = processing.run("openres:extract_side_slopes", {
+    "CENTER": s3["CENTER_OUT"], "LEFT_VW": s3["LEFT_VW"], "LEFT_VFW": s3["LEFT_VFW"],
+    "RIGHT_VW": s3["RIGHT_VW"], "RIGHT_VFW": s3["RIGHT_VFW"], "RASTER": dem, "OUTPUT": TMP})
 
--   **Valley Floor Layer** (MultiPolygon)
+# [5] DVS, SIN
+s5 = processing.run("openres:extract_dvs_sinuosity", {
+    "CENTER_POINTS": s4["OUTPUT"], "STREAM_SEGMENTS": s1["OUTPUT_STREAM"],
+    "ELEVATION": dem, "OUTPUT": TMP})
 
-##### Notes
+# [6] CBW (optional)
+s6 = processing.run("openres:extract_cbw", {
+    "TRANSECTS": s1["TRANSECTS"], "CENTER_POINTS": s5["OUTPUT"],
+    "CHANNEL_BELT": belt, "STREAM_NETWORK": s1["OUTPUT_STREAM"],
+    "LEFT_CB": TMP, "RIGHT_CB": TMP, "CENTER_OUT": TMP})
 
--   Delineates valley bottom by building slope from DEM, using slope as cost surface in GRASS r.cost from a stream network, taking an initial (max) cost threshold, computing mean cost inside that belt, re-thresholding with that mean, and cleaning, smoothing and filling skinny gaps.
--   Initial cost distance threshold: `[500*(resolution/10m)]` is a good starting point
+# [7] LCS, RCS, CBS (optional)
+s7 = processing.run("openres:extract_channel_belt_sinuosity", {
+    "CENTER_POINTS": s6["CENTER_OUT"], "CHANNEL_BELT": belt, "OUTPUT": TMP})
 
-#### Generate Microsheds
+features = s7["OUTPUT"]
+features.setName("Eerste OpenRES features")
+QgsProject.instance().addMapLayers([s1["OUTPUT_STREAM"], s1["TRANSECTS"], features])
+processing.run("native:savefeatures", {
+    "INPUT": features, "OUTPUT": os.path.join(DATA, "eerste_openres_features.csv")})
+```
 
-Use `"Generate Microsheds"`
+The result is one point per river segment with all 15 features, saved to `eerste_openres_features.csv`:
 
-Location: `Processing Toolbox > OpenRES > Geomorphology`
+<p align="center">
+  <img src="imgs/openres_output_table.png" alt="Attribute table of the OpenRES output layer with t_ID and the 15 feature columns" width="900"/>
+</p>
 
-::: {align="center"}
-<img src="imgs/generate_microsheds_window.png" width="800"/>
-:::
+To check a measurement, compare the transects and the left/right reference points from tools [3] and [6] (e.g. `s3["LEFT_VFW"]`) against the valley lines on the map.
 
-##### Inputs
+### From features to FPZs
 
--   **Input DEM**
+FPZs are usually delineated by hierarchical clustering of these features ([Maasri et al. 2019](https://doi.org/10.1016/j.scitotenv.2019.04.394); [Elgueta et al. 2019](https://doi.org/10.1002/rra.3557)). OpenRES does not do the classification itself. Export the feature table and use:
 
-##### Parameters
+- [ShinyFPZ](https://github.com/jollygoodjacob/ShinyFPZ), a companion R Shiny app for FPZ classification and visualization of OpenRES output, or
+- R, Python, or a QGIS clustering plugin such as Attribute Based Clustering.
 
--   **Threshold**: minimum exterior basin size in cells
--   **GRASS memory**: memory allocated to GRASS `r.watershed`, in MB
+Join the resulting classes back to the stream network output from tool [1] on `t_ID` to map the zones.
 
-##### Outputs
+## Contributing
 
--   **Output basins raster**
--   **Microsheds** polygon layer
+Contributions are welcome, from bug reports to new tools. See [CONTRIBUTING.md](CONTRIBUTING.md) to get started, and run the [test suite](#running-tests) before opening a pull request that changes an algorithm.
 
-##### Notes
+### Code of Conduct
 
--   Runs GRASS `r.watershed` to generate uniquely labeled watershed basins from an input DEM.
--   The threshold controls the minimum exterior basin size in raster cells.
--   The polygon output is created by polygonizing the labeled basin raster using `basin_id` as the output field.
--   A threshold corresponding to approximately 2–3 km² is a useful starting point, depending on DEM resolution.
+Everyone participating in this project is expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-#### Create Valley Boundary
+## FAQ
 
-Use `"Create Valley Boundary"`
+**My inputs are in a geographic CRS (degrees). Will OpenRES work?**
+Reproject every layer to the same projected CRS in meters first. Widths, slopes, and lengths are computed in layer units.
 
-Location: `Processing Toolbox > OpenRES > Geomorphology`
+**Some segments have empty VW or VFW values. Why?**
+The transect for that segment did not reach a valley line on both sides within the maximum length, usually because of a gap in the valley boundary layer. Inspect the transect and reference points for that `t_ID`, close the gap, and rerun from tool [1].
 
-::: {align="center"}
-<img src="imgs/create_valley_boundary_window.png" width="800"/>
-:::
+**Do I need a channel belt layer?**
+No. Tools [1]–[5] produce the ten core features. The channel belt is needed only for `CBW`, `LCS`, `RCS`, and `CBS`.
 
-##### Inputs
+**How long should my river segments be?**
+FPZs are typically 5–10 km long, but shhould be matched to the scale of your inquiry. OpenRES computes features for whatever segments you provide, so split the network to the scale of your question. The sample data uses ~2 km segments.
 
--   **Microsheds polygons**
--   **Valley floor polygons**
+## Citing OpenRES
 
-##### Parameters
+If you use OpenRES, please cite it using the metadata in [CITATION.cff](CITATION.cff) (GitHub's **Cite this repository** button) or the archived release on Zenodo: [10.5281/zenodo.17196890](https://doi.org/10.5281/zenodo.17196890).
 
--   **Smoothing iterations**
--   **Smoothing offset**
--   **Maximum node angle**
+## License
 
-##### Outputs
+OpenRES is distributed under the GNU General Public License v3.0 or later. See [LICENSE](LICENSE).
 
--   **Valley boundary lines**
+## Contact
 
-##### Notes
+- Bug reports and feature requests: [open an issue](https://github.com/jollygoodjacob/OpenRES/issues).
+- Other questions: Jacob Nesslage, [jnesslage@ucmerced.edu](mailto:jnesslage@ucmerced.edu).
 
--   Selects microshed polygons that intersect the valley floor, subtracts the valley floor polygons from those microsheds, then converts the remaining polygon boundaries to lines.
--   The resulting linework is lightly smoothed and dissolved to create a continuous valley boundary layer.
--   The output should delineate the valley floor boundary and the confining valley margins.
--   Lower smoothing values preserve sharper geomorphic breaks; higher values produce cleaner but more generalized boundaries.
+## Acknowledgements
 
-------------------------------------------------------------------------
-
-### Overview of Extracted Features
-
-The following table summarizes the 15 geomorphic and environmental features that will be automatically derived across the Eerste River catchment using the OpenRES tool suite. Each transect, generated perpendicular to the stream network, will be assigned a unique identifier `t_ID`, and the attributes listed below will be extracted or calculated at the transect or segment level. Transects, segment centers, and the river network segments are all linked together by the `t_ID` field, enabling subsequent FPZ classification methods to link using joins and relates to the stream network, river segment centers, or transects as desired for visualization purposes.
-
-| Feature | Name | Hydrogeomorphic role |
-|----|----|----|
-| ELE | Elevation | Longitudinal position and energy gradient |
-| PRE | Precipitation | Hydroclimatic setting |
-| GEO | Geologic class | Substrate and structural control |
-| VW | Valley Width | Lateral accommodation space at the valley scale |
-| VFW | Valley Floor Width | Floodplain/low relief valley floor extent |
-| RAT | VW:VFW Ratio | Relative valley confinement |
-| LVS | Left Valley Slope | Left side valley confinement |
-| RVS | Right Valley Slope | Right side valley confinement |
-| MVS | Mean Valley Slope | Overall valley confinement |
-| DVS | Down Valley Slope | Longitudinal channel gradient |
-| SIN | River Sinuosity | Planform complexity of the river |
-| CBW | Channel Belt Width | Active channel belt extent |
-| LCS | Left Channel Sinuosity | Left side within-belt planform curvature |
-| RCS | Right Channel Sinuosity | Right side within-belt planform curvature |
-| CBS | Channel Belt Sinuosity | Mean within-belt planform curvature |
-
-------------------------------------------------------------------------
-
-### Step 1: Generate Transects
-
-Use: `"[1] Generate Transects"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/generate_transects_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **River Network Layer** (polyline)
--   **Valley Lines Layer** (line)
--   **Extension Increment** (optional, default = 250m)
--   **Max Length** (optional, default = 50000m)
-
-#### Outputs
-
--   **Transects** -- Multiline layer across the valley
--   **Segment Centers** -- Points at the center of each transect
-
-#### Notes
-
--   Each river segment gets a unique `t_ID`.
--   Transects are generated perpendicular to the river segment direction.
--   **Verify** that transects intersect both valley lines properly; occasional mismatches may occur due to geometry errors.
--   Stream network will also be updated to include the `t_ID` field.
-
-------------------------------------------------------------------------
-
-### Step 2: Extract Elevation, Precipitation, and Geology
-
-Use: `"[2] Extract Point Data"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/extract_point_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **Segment Centers Layer** (from Step 1)
--   **Elevation Raster**
--   **Precipitation Raster**
--   **Geology Polygon Layer**
--   **Geology Field** (attribute from polygon layer, e.g., `GEO` or `LITH`)
-
-#### Output
-
--   **Segment Centers with ELE, PRE, GEO** -- Updated point layer
-
-#### Notes
-
--   Elevation and precipitation are sampled directly from rasters.
--   Geology is assigned from intersecting polygon based on the selected field.
--   Missing data (e.g., no polygon overlap or invalid raster) will be filled with fallback values (e.g., -9999 or "No Data").
-
-------------------------------------------------------------------------
-
-### Step 3: Extract Valley Width (VW), Valley Floor Width (VFW), and their ratio (RAT)
-
-Use: `"[3] Extract VW, VFW", and RAT`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/extract_vw_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **Transects Layer** (from Step 1)
--   **Segment Centers Layer** (from Step 2)
--   **Valley Lines Layer**
--   **Stream Network Layer**
-
-#### Outputs
-
--   **Left/Right VFW Reference Points**
--   **Left/Right VW Reference Points**
--   **Updated Segment Centers** with:
-    -   `VFW` -- Valley floor width
-    -   `VW` -- Valley width
-
-#### Notes
-
--   Uses intersection logic to find points where transects intersect valley floor and valley edge.
--   Then calculates distance between these intersections to compute `VFW` and `VW`.
--   Reference points (left/right) are saved as point layers for inspection or QA/QC.
-
-------------------------------------------------------------------------
-
-### Step 4: Extract Side Slopes (LVS, RVS, and MVS)
-
-Use: `"[4] Extract LVS, RVS, and MVS"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/lvs_rvs_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **Segment Centers Layer** (from Step 3)
--   **Left VW / VFW Reference Points**
--   **Right VW / VFW Reference Points**
--   **Elevation Raster**
-
-#### Output
-
--   **Segment Centers** updated with:
-    -   `LVS` -- Left valley side slope (%)
-    -   `RVS` -- Right valley side slope (%)
-
-#### Notes
-
--   Slopes are computed as the elevation difference between VFW and VW reference points on each side divided by the horizontal distance.
--   All calculations are in percent slope (`rise/run * 100`).
--   Output replaces the segment center layer with updated slope fields.
-
-------------------------------------------------------------------------
-
-### Step 5: Extract Down-Valley Slope and Sinuosity (DVS and SIN)
-
-Use: `"[5] Extract DVS and SIN"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-::: {align="center"}
-<img src="imgs/dvs_sin_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **Segment Centers Layer** (from Step 4)
--   **Stream Network Layer**
--   **Elevation Raster**
-
-#### Output
-
--   **Segment Centers** updated with:
-    -   `DVS` -- Down-valley slope (%)
-    -   `SIN` -- Sinuosity (unitless)
-
-#### Notes
-
--   For each stream segment:
-    -   Elevation is sampled at start and end points.
-    -   `DVS` is calculated as `(start - end) / length * 100`.
-    -   `SIN` is the ratio of actual segment length to straight-line distance.
--   Features with insufficient geometry or elevation data are skipped.
-
-### Step 6: Extract Channel Belt Width (CBW)
-
-Use: `"[6] Extract CBW"\  Location:`Processing Toolbox \> OpenRES \> Feature Extraction\`
-
-::: {align="center"}
-<img src="imgs/extract_cbw_window.png" width="800"/>
-:::
-
-#### Inputs
-
--   **Transects Layer**
--   **Segment Centers Layer** (from Step 5)
--   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`
--   **River Network Layer**
-
-#### Output
-
--   **Left Channel Belt Width Reference**
--   **Right Channel Belt Width Reference**
--   **Segment Centers** updated with: - Channel belt width
-
-#### Notes
-
--   Uses intersection logic to find points where transects intersect the channel belt right and left reference.
--   Then calculates distance between these intersections to compute 'CBW'.
--   Reference points (left/right) are saved as point layers for inspection or QA/QC.
-
-### Step 7: Extract Left, Right and Center Channel Sinuosity
-
-Use: `"[7] Extract LCS, RCS, and CBS"`\
-Location: `Processing Toolbox > OpenRES > Feature Extraction`
-
-#### Inputs
-
--   **Transects Layer**
--   **Segment Centers Layer** (from Step 5)
--   **Channel Belt Layer** (may be generated from `Geomorphology > Generate Channel Belt`)
--   **River Network Layer**
-
-#### Output
-
--   **Left Channel Sinuoisty** (LCS)
--   **Right Channel Sinuosity** (RCS)
--   **Channel Belt Sinuosity** (CBS)
--   **Segment Centers** updated with:
-    -   Left channel sinuoisty
-    -   Right channel sinuoisty
-    -   Channel belt sinuosity
-
-------------------------------------------------------------------------
-
-### Completion
-
-At the end of Step 7, your segment center point layer will contain **all 15 hydrogeomorphic attributes**:
-
--   `t_ID`, `ELE`, `PRE`, `GEO`, `VFW`, `VW`, `RAT`,`LVS`, `RVS`,`MVS`, `DVS`, `SIN`, `CBW`, `LCS`, `RCS`, `CBS`
-
-::: {align="center"}
-<img src="imgs/openres_output_table.png" width="800"/>
-:::
-
-The extracted attributes from `OpenRES` can be joined to the river network output from **[1] Generate Transects:** by using `t_ID` as the joining feature, then exported to Python, R, or another software for hierarchical clustering analyses commonly used to delineate FPZs.
-
-To assist users in this process, we developed a separate Shiny app in R, ShinyFPZ, which contains common methods for FPZ classification as well as visualization tools for OpenRES output data.
-
-For users preferring to stay in the QGIS environment for this step, there are also QGIS plugins that contain the appropriate capabilities, such as the Attribute based clustering plugin.
-
-------------------------------------------------------------------------
-
-## Issues
-
-1)  Report issues or problems with the software here: <https://github.com/jollygoodjacob/OpenRES/issues>
-
-2)  For questions about the OpenRES plugin, contact: [jnesslage\@ucmerced.edu](mailto:jnesslage@ucmerced.edu){.email}
-
-## References
-
-Elgueta, Anaysa, Martin C Thoms, Konrad Górski, Gustavo Díaz, and Evelyn M Habit. 2019. "Functional Process Zones and Their Fish Communities in Temperate Andean River Networks." River Research and Applications 35 (10): 1702--11.
-
-Hestir, Erin L. 2007. "Functional Process Zones and the River Continuum Concept." Center for Watershed Sciences, University of California, Davis, Los Angeles, USA.
-
-Maasri, Alain, James H Thorp, Jon K Gelhaus, Flavia Tromboni, Sudeep Chandra, and Scott J Kenner. 2019. "Communities Associated with the Functional Process Zone Scale: A Case Study of Stream Macroinvertebrates in Endorheic Drainages." Science of the Total Environment 677: 184--93.
-
-Sechu, Gasper L., Bertel Nilsson, Bo V. Iversen, Mette B. Greve, Christen D. Børgesen, and Mogens H. Greve. 2021. "A Stepwise GIS Approach for the Delineation of River Valley Bottom within Drainage Basins Using a Cost Distance Accumulation Analysis." *Water* 13 (6). <https://doi.org/10.3390/w13060827>.
-
-Thorp, James H, Martin C Thoms, and Michael D Delong. 2006. "The Riverine Ecosystem Synthesis: Biocomplexity in River Networks across Space and Time." River Research and Applications 22 (2): 123--47.
-
-Thorp, James H, Martin C Thoms, and Michael D Delong. 2010. The Riverine Ecosystem Synthesis: Toward Conceptual Cohesiveness in River Science. Elsevier.
-
-Thorp, James H, Martin C Thoms, Michael D Delong, and Alain Maasri. 2023. "The Ecological Nature of Whole River Macrosystems: New Perspectives from the Riverine Ecosystem Synthesis." Frontiers in Ecology and Evolution 11: 1184433.
-
-Williams, Bradley S, Ellen D'Amico, Jude H Kastens, James H Thorp, Joseph E Flotemersch, and Martin C Thoms. 2013. "Automated Riverine Landscape Characterization: GIS-Based Tools for Watershed-Scale Research, Assessment, and Management." Environmental Monitoring and Assessment 185: 7485--99.
+OpenRES was developed in the Earth Observation and Remote Sensing Laboratory at the University of California, Merced. We thank Matthew Rossi, Rachel S. Meyer, E. Natasha Stavros, Madeline Slimp, Meghan T. Hayden, Will Varela, and Martin C. Thoms for feedback and support during development.
