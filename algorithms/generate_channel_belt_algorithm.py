@@ -47,7 +47,7 @@ except AttributeError:
     BOOL = QVariant.Bool
     LONG_LONG = QVariant.LongLong
     
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
     """
@@ -76,10 +76,10 @@ class GenerateChannelBeltAlgorithm(QgsProcessingAlgorithm):
         return self.tr("Generate Channel Belt")
 
     def group(self):
-        return self.tr('Geomorphology')
+        return self.tr('Utilities')
 
     def groupId(self):
-        return 'geomorphology'
+        return 'utilities'
 
     def icon(self):
         return openres_icon("openres_provider.png")

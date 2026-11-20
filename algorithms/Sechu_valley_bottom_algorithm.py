@@ -37,7 +37,7 @@ import os
 import math
 import uuid
 from osgeo import gdal
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 
 class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
@@ -62,16 +62,16 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         return SechuCostDistanceAlgorithm()
 
     def name(self):
-        return 'valley_floor_costdist'
+        return 'valley_bottom_costdist'
 
     def displayName(self):
-        return self.tr('Valley Floor Delineation - Sechu')
+        return self.tr('Valley Bottom Delineation')
 
     def group(self):
-        return self.tr('Geomorphology')
+        return self.tr('Utilities')
 
     def groupId(self):
-        return 'geomorphology'
+        return 'utilities'
 
     def icon(self):
         return openres_icon("openres_provider.png")
@@ -163,7 +163,7 @@ class SechuCostDistanceAlgorithm(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFeatureSink(
                 self.PARAM_OUTPUT,
-                self.tr('Valley Floor'),
+                self.tr('Valley Bottom'),
                 QgsProcessing.TypeVectorPolygon
             )
         )

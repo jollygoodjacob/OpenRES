@@ -20,7 +20,7 @@ import os
 from qgis.PyQt.QtGui import QIcon
 
 # Icon utility (to give OpenRES an icon)
-from .icon_utils import openres_icon
+from .algorithms.icon_utils import openres_icon
 
 # Feature Extraction Tools
 from .algorithms.generate_transects_algorithm import GenerateTransectsAlgorithm
@@ -35,7 +35,7 @@ from .algorithms.extract_cbs_algorithm import ExtractCBSAlgorithm
 from .algorithms.Sechu_valley_bottom_algorithm import SechuCostDistanceAlgorithm
 from .algorithms.generate_channel_belt_algorithm import GenerateChannelBeltAlgorithm
 from .algorithms.generate_microsheds_algorithm import GenerateMicroshedsAlgorithm
-from .algorithms.create_valley_boundary_algorithm import CreateValleyBoundary
+from .algorithms.create_valley_margins_algorithm import CreateValleyMargins
 
 #To use log, type OPENRES_DEBUG=1 qgis in bash, then check Log Messages Panel → OpenRES tab for messages
 
@@ -64,7 +64,7 @@ class OpenRESProvider(QgsProcessingProvider):
         self.addAlgorithm(SechuCostDistanceAlgorithm())
         self.addAlgorithm(GenerateChannelBeltAlgorithm())
         self.addAlgorithm(GenerateMicroshedsAlgorithm())
-        self.addAlgorithm(CreateValleyBoundary())
+        self.addAlgorithm(CreateValleyMargins())
 
     def id(self):
         return "openres"

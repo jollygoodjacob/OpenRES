@@ -49,7 +49,7 @@ except AttributeError:
     
 from qgis.PyQt.QtGui import QColor
 import math
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
     CENTER_POINTS = 'CENTER_POINTS'
@@ -67,7 +67,7 @@ class ExtractDVSAlgorithm(QgsProcessingAlgorithm):
         return "extract_dvs_sinuosity"
 
     def displayName(self):
-        return "[5] Extract DVS and SIN"
+        return "[5] Extract Gradient and Sinuosity"
 
     def group(self):
         return "Feature Extraction"

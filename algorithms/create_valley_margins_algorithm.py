@@ -12,9 +12,9 @@ from qgis.core import (
     QgsGeometry
 )
 import processing
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
-class CreateValleyBoundary(QgsProcessingAlgorithm):
+class CreateValleyMargins(QgsProcessingAlgorithm):
     VALLEY = "VALLEY"
     MICROSHEDS = "MICROSHEDS"
     ITERATIONS = "ITERATIONS"
@@ -26,29 +26,29 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
         return QCoreApplication.translate("Processing", string)
 
     def createInstance(self):
-        return CreateValleyBoundary()
+        return CreateValleyMargins()
 
     def name(self):
-        return "createvalleyboundary"
+        return "createvalleymargins"
 
     def displayName(self):
-        return self.tr("Create Valley Boundary")
+        return self.tr("Create Valley Margins")
 
     def group(self):
-        return self.tr("Geomorphology")
+        return self.tr("Utilities")
 
     def groupId(self):
-        return "geomorphology"
+        return "utilities"
 
     def icon(self):
         return openres_icon("openres_provider.png")
 
     def shortHelpString(self):
         return self.tr(
-            "Subtract valley floor polygons from microsheds polygons that intersect the "
-            "valley floor using an optimized per-feature difference workflow, then convert to lines, "
-            "lightly smooth, and dissolve the final valley boundary. The created valley boundary layer "
-            "should delineate the valley floor boundary and the confining valley margins."
+            "Subtract valley bottom polygons from microsheds polygons that intersect the "
+            "valley bottom using an optimized per-feature difference workflow, then convert to lines, "
+            "lightly smooth, and dissolve the final valley margins layer. The created valley margins layer "
+            "should delineate the valley floor margins and the confining valley margins."
         )
 
     def initAlgorithm(self, config=None):
@@ -63,7 +63,7 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterFeatureSource(
                 self.VALLEY,
-                self.tr("Valley floor polygons"),
+                self.tr("Valley bottom polygons"),
                 [QgsProcessing.TypeVectorPolygon]
             )
         )
@@ -102,7 +102,7 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
         self.addParameter(
             QgsProcessingParameterVectorDestination(
                 self.OUTPUT,
-                self.tr("Valley boundary lines"),
+                self.tr("Valley margins"),
                 type=QgsProcessing.TypeVectorLine
             )
         )
@@ -121,7 +121,7 @@ class CreateValleyBoundary(QgsProcessingAlgorithm):
             feedback=feedback
         )["OUTPUT"]
 
-        feedback.pushInfo("Fixing valley floor geometries...")
+        feedback.pushInfo("Fixing valley bottom geometries...")
         valley_fixed = processing.run(
             "native:fixgeometries",
             {"INPUT": parameters[self.VALLEY], "OUTPUT": "memory:"},

@@ -48,7 +48,7 @@ except AttributeError:
 import math
 from collections import defaultdict
 from qgis.PyQt.QtGui import QColor
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 
 class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
@@ -73,7 +73,7 @@ class ExtractCBSAlgorithm(QgsProcessingAlgorithm):
         return "extract_channel_belt_sinuosity"
 
     def displayName(self):
-        return "[7] Extract LCS, RCS, and CBS"
+        return "[7] Extract Channel Belt Sinuosity"
 
     def icon(self):
         return openres_icon("openres_provider.png")
