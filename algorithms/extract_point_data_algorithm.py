@@ -52,7 +52,7 @@ except AttributeError:
     LONG_LONG = QVariant.LongLong
     
 from qgis.PyQt.QtGui import QColor
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
     POINTS = 'POINTS'
@@ -74,7 +74,7 @@ class ExtractPointDataAlgorithm(QgsProcessingAlgorithm):
         return "extract_point_attributes"
 
     def displayName(self):
-        return "[2] Extract ELE, PRE, and GEO"
+        return "[2] Extract Point Attributes"
 
     def group(self):
         return "Feature Extraction"

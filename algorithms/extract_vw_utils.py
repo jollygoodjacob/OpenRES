@@ -90,7 +90,7 @@ def add_points_in_batch(points, layer, side):
     layer.dataProvider().addFeatures(features)
 
 # --- Core intersection logic for identifying left/right candidates ---
-def find_two_intersections_by_side(transect_layer, other_layer, split_layer, tolerance=1e-8, debug=False):
+def find_two_intersections_by_side(transect_layer, other_layer, split_layer, tolerance=1e-3, debug=False):
     """
     For each transect, find the two nearest intersection points on each side
     (left and right) with a reference geometry (e.g., valley walls).
@@ -274,7 +274,7 @@ def compute_valley_width(center_layer, left_points, right_points, out_field="VW"
     return cloned_layer
 
 def find_one_intersection_by_side(transect_layer, other_layer, split_layer,
-                                  tolerance=1e-8, debug=False):
+                                  tolerance=1e-3, debug=False):
     """
     For each transect, find the single nearest intersection point on the left
     and the single nearest intersection point on the right, using the stream

@@ -38,7 +38,7 @@ Extracting these features by hand is slow, hard to reproduce, and difficult to s
 ## Features
 
 - **Fifteen features per river segment**, written to one point layer and linked to transects and the stream network by a shared `t_ID`.
-- **Geomorphology tools** to build the less common inputs: Generate Channel Belt, Valley Floor Delineation ([Sechu et al. 2021](https://doi.org/10.3390/w13060827)), Generate Microsheds, and Create Valley Boundary.
+- **Utilities** to build the less common inputs: Generate Channel Belt, Valley Bottom Delineation ([Sechu et al. 2021](https://doi.org/10.3390/w13060827)), Generate Microsheds, and Create Valley Margins.
 - **QA/QC layers** (left/right reference points for every width measurement) so each value can be checked on the map.
 - **Runs in the Processing Toolbox or from Python**, so the same workflow can be clicked through once or scripted across many watersheds.
 - **Tested** on QGIS 3.x LTR and QGIS 4 against a synthetic valley with hand-calculated answers and the bundled sample data.
@@ -49,7 +49,7 @@ The extraction tools are run in order:
 |---|---|---|
 | [1] Generate Transects | `t_ID` (links transects, segment centers, and streams) | Yes |
 | [2] Extract ELE, PRE, and GEO | Elevation (`ELE`), mean annual precipitation (`PRE`), geologic class (`GEO`) | Yes |
-| [3] Extract VW, VFW, and RAT | Valley width (`VW`), valley floor width (`VFW`), VW:VFW ratio (`RAT`) | Yes |
+| [3] Extract VW, VFW, and RAT | Valley width (`VW`), valley bottom width (`VBW`), VW:VBW ratio (`RAT`) | Yes |
 | [4] Extract LVS, RVS, and MVS | Left, right, and mean valley side slope (`LVS`, `RVS`, `MVS`) | Yes |
 | [5] Extract DVS and SIN | Down-valley slope (`DVS`), channel sinuosity (`SIN`) | Yes |
 | [6] Extract CBW | Channel belt width (`CBW`) | Optional |
@@ -61,13 +61,13 @@ Each tool's dialog in QGIS includes help text for its parameters. Algorithm deta
 
 ### Prerequisites
 
-- **QGIS 3.28 or later** (QGIS 4 is supported). GRASS, which ships with QGIS, is used by the Valley Floor Delineation and Generate Microsheds tools.
+- **QGIS 3.28 or later** (QGIS 4 is supported). GRASS, which ships with QGIS, is used by the Valley Bottom Delineation and Generate Microsheds tools.
 - **Input data** for your watershed, all in the same projected CRS with units in meters (e.g., UTM):
 
 | Layer | Type | Notes |
 |---|---|---|
 | Stream network | Line | Segmented to the reach length you want to classify; ideally corrected to match channel positions in imagery. |
-| Valley boundary lines | Line | Valley floor edge and valley margin. Can be built with the OpenRES geomorphology tools. |
+| Valley margin lines | Line | Valley bottom margin and valley margin as a single vector. Can be built with the OpenRES geomorphology tools. |
 | Digital elevation model | Raster | 30 m or finer recommended. |
 | Mean annual precipitation | Raster | |
 | Simplified geology | Polygon | Generalized classes, e.g., alluvial, mixed, bedrock. |

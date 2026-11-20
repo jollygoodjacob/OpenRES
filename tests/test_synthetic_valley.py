@@ -20,19 +20,16 @@ import math
 import unittest
 
 import bootstrap
+import pipelines
 from bootstrap import alg
 from synthetic import (
     EXPECTED,
     INT,
-    channel_belt_layer,
     dem_layer,
     elevation,
-    geology_layer,
     line_layer,
     point_layer,
-    precip_layer,
     river_layer,
-    valley_lines_layer,
 )
 
 TMP = "TEMPORARY_OUTPUT"
@@ -61,45 +58,10 @@ class TestSyntheticValleyWorkflow(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        import processing
-
         cls._tmp = bootstrap.scratch_dir("synthetic")
-        dem = dem_layer(cls._tmp)
-        precip = precip_layer(cls._tmp)
-
-        cls.s1 = processing.run(alg("generate_transects"), {
-            "RIVER_LAYER": river_layer(), "LINE_LAYER": valley_lines_layer(),
-            "EXTENSION_INCREMENT": 250, "MAX_LENGTH": 50000,
-            "TRANSECTS": TMP, "CENTER_POINTS": TMP, "OUTPUT_STREAM": TMP,
-        })
-        s2 = processing.run(alg("extract_point_attributes"), {
-            "POINTS": cls.s1["CENTER_POINTS"], "RASTER1": dem, "RASTER2": precip,
-            "POLYGONS": geology_layer(), "POLY_FIELD": "GEOLOGY", "OUTPUT": TMP,
-        })
-        cls.s3 = processing.run(alg("extract_valley_width"), {
-            "TRANSECTS": cls.s1["TRANSECTS"], "CENTER_POINTS": s2["OUTPUT"],
-            "VALLEY_LINES": valley_lines_layer(), "STREAM_NETWORK": cls.s1["OUTPUT_STREAM"],
-            "LEFT_VFW": TMP, "RIGHT_VFW": TMP, "LEFT_VW": TMP, "RIGHT_VW": TMP, "CENTER_OUT": TMP,
-        })
-        s4 = processing.run(alg("extract_side_slopes"), {
-            "CENTER": cls.s3["CENTER_OUT"],
-            "LEFT_VW": cls.s3["LEFT_VW"], "LEFT_VFW": cls.s3["LEFT_VFW"],
-            "RIGHT_VW": cls.s3["RIGHT_VW"], "RIGHT_VFW": cls.s3["RIGHT_VFW"],
-            "RASTER": dem, "OUTPUT": TMP,
-        })
-        s5 = processing.run(alg("extract_dvs_sinuosity"), {
-            "CENTER_POINTS": s4["OUTPUT"], "STREAM_SEGMENTS": cls.s1["OUTPUT_STREAM"],
-            "ELEVATION": dem, "OUTPUT": TMP,
-        })
-        s6 = processing.run(alg("extract_cbw"), {
-            "TRANSECTS": cls.s1["TRANSECTS"], "CENTER_POINTS": s5["OUTPUT"],
-            "CHANNEL_BELT": channel_belt_layer(), "STREAM_NETWORK": cls.s1["OUTPUT_STREAM"],
-            "LEFT_CB": TMP, "RIGHT_CB": TMP, "CENTER_OUT": TMP,
-        })
-        s7 = processing.run(alg("extract_channel_belt_sinuosity"), {
-            "CENTER_POINTS": s6["CENTER_OUT"], "CHANNEL_BELT": channel_belt_layer(), "OUTPUT": TMP,
-        })
-        cls.final = s7["OUTPUT"]
+        steps = pipelines.run_workflow(**pipelines.synthetic_inputs(cls._tmp))
+        cls.s1, cls.s3 = steps["s1"], steps["s3"]
+        cls.final = steps["s7"]["OUTPUT"]
 
     @classmethod
     def tearDownClass(cls):

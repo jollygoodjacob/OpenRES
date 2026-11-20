@@ -55,7 +55,7 @@ except AttributeError:
     LONG_LONG = QVariant.LongLong
     
 from qgis.PyQt.QtGui import QColor
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 import math
 
 
@@ -266,7 +266,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
             angle += 360
         return angle + 90
 
-    def find_intersections(self, transect_line, spatial_index, lines_layer, tolerance=1e-8):
+    def find_intersections(self, transect_line, spatial_index, lines_layer, tolerance=1e-3):
         candidate_ids = spatial_index.intersects(transect_line.boundingBox())
         intersections = []
 
@@ -299,7 +299,7 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
 
         return intersections
 
-    def extend_until_intersections(self, midpoint, angle, lines_layer, spatial_index, direction, increment, max_length):
+    def extend_until_intersections(self, midpoint, angle, lines_layer, spatial_index, direction, increment, max_length, tolerance=1e-3):
         length = 0
         intersections = []
         geom = None
@@ -313,8 +313,11 @@ class GenerateTransectsAlgorithm(QgsProcessingAlgorithm):
                 transect = QgsGeometry.fromPolylineXY([endpoint, midpoint])
             else:
                 transect = QgsGeometry.fromPolylineXY([midpoint, endpoint])
-            new_pts = self.find_intersections(transect, spatial_index, lines_layer)
-            intersections.extend([i for i in new_pts if i not in intersections])
+            # Each pass re-intersects the whole ray, so this is the complete set so far.
+            # Replace rather than accumulate: recomputed copies of one crossing drift ~1e-8 m.
+            intersections = self.find_intersections(transect, spatial_index, lines_layer, tolerance)
+            #new_pts = self.find_intersections(transect, spatial_index, lines_layer,tolerance)
+            #intersections.extend([i for i in new_pts if i not in intersections])
             geom = transect
 
         return geom, intersections

@@ -47,8 +47,8 @@ except AttributeError:
     LONG_LONG = QVariant.LongLong
     
 from qgis.PyQt.QtGui import QColor
-from ..extract_side_slopes import calculate_side_slopes_from_pairs
-from ..icon_utils import openres_icon
+from .extract_side_slopes_utils import calculate_side_slopes_from_pairs
+from .icon_utils import openres_icon
 
 class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
     CENTER = 'CENTER'
@@ -72,7 +72,7 @@ class ExtractSideSlopesAlgorithm(QgsProcessingAlgorithm):
         return "extract_side_slopes"
 
     def displayName(self):
-        return "[4] Extract LVS, RVS, and MVS"
+        return "[4] Extract Side Slopes"
 
     def group(self):
         return "Feature Extraction"

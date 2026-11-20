@@ -90,6 +90,34 @@ ALL TESTS PASSED
 
 A `FAIL` means a tool gave an unexpected value, and the message shows which feature, the value produced and the value expected. An `ERROR` means a tool crashed, and the traceback shows where.
 
+## See the results yourself
+
+The tests only report `ok` or `FAIL`; their layers are temporary and disappear. To look at the same outputs, run `inspect_results.py` from the QGIS Python Console:
+
+```python
+import runpy; _ = runpy.run_path(r"C:\Users\you\Documents\OpenRES\tests\inspect_results.py", run_name="__main__")
+```
+
+It runs exactly the same workflow on the same two datasets as the tests (both use `pipelines.py`), and then:
+
+- **adds two layer groups to your map**: *OpenRES test: synthetic valley* and *OpenRES test: Eerste sample*. Each holds the inputs, the transects, the left/right reference points from tools [3] and [6], and the final segment centres with all 15 features. The map zooms to the synthetic valley.
+- **prints a table for the synthetic valley**: each feature's OpenRES value, the expected value, and how the expected value is worked out (for example, *valley-floor lines at y = +300 and y = −100: 300 + 100 = 400 m*).
+- **prints a summary for the Eerste sample**: how many segments have each feature, its min/median/max, and the `t_ID` of any segment that breaks a physical check (e.g. VFW wider than VW).
+- **saves everything** as a GeoPackage and a CSV in `tests/output/<date_time>/`, so you can reopen it later or read the CSV in R.
+
+Then check the numbers by hand. For example, use **View → Measure → Measure Line** between the two red valley-floor points: the distance is VFW and should be 400 m. Between the dark-red valley-top points it should be 3,000 m (VW), and between the green channel-belt points 130 m (CBW).
+
+`tests/output/` is ignored by git. Delete old runs whenever QGIS is closed.
+
+## Check that the tests catch mistakes
+
+A test is only useful if it fails when the code is wrong. To see this, temporarily reintroduce the valley-floor-width bug fixed in issue #86:
+
+1. In `extract_valley_width.py`, in `find_two_intersections_by_side`, change `dist = stream_mid.distance(pt)` back to `dist = midpoint.distance(pt)`.
+2. Run the tests. `test_all_fifteen_features` fails with `VFW = 1450.0, expected 400.0` (and RAT).
+3. Run `inspect_results.py`: the table shows VFW as WRONG, and on the map the measured distance between the red points is still 400 m.
+4. Undo the change.
+
 ## Troubleshooting
 
 | Message | Fix |
@@ -105,6 +133,7 @@ A `FAIL` means a tool gave an unexpected value, and the message shows which feat
 - `run_tests.py` adds the `tests/` folder to Python's search path, which is how the test files can `import synthetic` and `import bootstrap` from each other. It then finds every `test_*.py` file and runs it with Python's built-in `unittest`.
 - `bootstrap.py` starts QGIS without a window (if it is not already running) and loads the Processing framework. It imports this repository as a package named `openres_dev`, which is what makes the plugin's internal imports (`from ..icon_utils import ...`) work outside the QGIS plugin manager. It then registers the tools under the Processing id `openres_dev`, so tests call `processing.run("openres_dev:generate_transects", ...)` (written `alg("generate_transects")` in the tests). Your installed plugin keeps the id `openres` and is not touched.
 - Files the tests create (the unzipped sample data and the synthetic rasters) go in an `openres_tests` folder in your system temp directory (on Windows, `%TEMP%\openres_tests`). The sample data is unzipped once and reused. You can delete this folder at any time when QGIS is closed.
+- `pipelines.py` holds the workflow itself (tools [1]–[7] with the parameters used in the README) and loads the two datasets. Both the tests and `inspect_results.py` call it, so they always run the same thing.
 - `synthetic.py` builds the artificial valley (river, valley lines, channel belt, geology, DEM and precipitation rasters) in memory and holds the expected values in `EXPECTED`.
 
 ### Adding a test

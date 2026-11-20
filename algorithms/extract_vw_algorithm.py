@@ -53,12 +53,12 @@ except AttributeError:
     
 from qgis.PyQt.QtGui import QColor
 
-from ..extract_valley_width import (
+from algorithms.extract_vw_utils import (
     find_two_intersections_by_side,
     add_points_in_batch,
     compute_valley_width
 )
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class ExtractVWAlgorithm(QgsProcessingAlgorithm):
     TRANSECTS = 'TRANSECTS'
@@ -87,7 +87,7 @@ class ExtractVWAlgorithm(QgsProcessingAlgorithm):
         return "extract_valley_width"
 
     def displayName(self):
-        return "[3] Extract VW, VFW, and RAT"
+        return "[3] Extract Valley Widths"
 
     def group(self):
         return "Feature Extraction"

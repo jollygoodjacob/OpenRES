@@ -26,7 +26,7 @@ from qgis.core import (
     QgsField
 )
 import processing
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class GenerateMicroshedsAlgorithm(QgsProcessingAlgorithm):
     DEM = "DEM"
@@ -48,10 +48,10 @@ class GenerateMicroshedsAlgorithm(QgsProcessingAlgorithm):
         return self.tr("Generate Microsheds")
 
     def group(self):
-        return self.tr("Geomorphology")
+        return self.tr("Utilities")
 
     def groupId(self):
-        return "geomorphology"
+        return "utilities"
 
     def icon(self):
         return openres_icon("openres_provider.png")

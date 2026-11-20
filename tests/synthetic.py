@@ -86,6 +86,27 @@ EXPECTED["MVS"] = (EXPECTED["LVS"] + EXPECTED["RVS"]) / 2.0
 EXPECTED["RCS"] = (2 * math.hypot(1000.0, 100.0) + 2 * math.hypot(800.0, 100.0) + 400.0) / 4000.0
 EXPECTED["CBS"] = (EXPECTED["LCS"] + EXPECTED["RCS"]) / 2.0
 
+# How each expected value is worked out, in words, so it can be checked by
+# hand on the map (inspect_results.py prints these next to OpenRES's values).
+# The segment centre is at (2005, 0); +y is river-left.
+EXPLAIN = {
+    "ELE": "DEM at the segment centre (2005, 0): 100 - 0.01 x (2005 - 5) = 80 m",
+    "PRE": "precipitation raster is 750 everywhere",
+    "GEO": "one geology polygon covering everything, class 'alluvial'",
+    "VFW": "valley-floor lines at y = +300 and y = -100: 300 + 100 = 400 m",
+    "VW":  "valley-top lines at y = +900 and y = -2100: 900 + 2100 = 3000 m",
+    "RAT": "VW / VFW = 3000 / 400 = 7.5",
+    "LVS": "left side rises 60 m between floor (y=300) and top (y=900) lines: 60 / 600 = 10 %",
+    "RVS": "right side rises 100 m between floor (y=-100) and top (y=-2100) lines: 100 / 2000 = 5 %",
+    "MVS": "(LVS + RVS) / 2 = (10 + 5) / 2 = 7.5 %",
+    "DVS": "river drops 40 m (100 -> 60 m) over its 4000 m length: 1 %",
+    "SIN": "river is a straight line: length / straight distance = 1",
+    "CBW": "transect meets left belt at y = +50 and right belt at y = -80: 130 m",
+    "LCS": "left belt is a straight line: 1",
+    "RCS": "right belt zig-zag length 4022.4 m / 4000 m straight distance = 1.0056",
+    "CBS": "(LCS + RCS) / 2 = 1.0028",
+}
+
 
 def elevation(x, y):
     side = 0.10 * y if y > 0 else 0.05 * -y

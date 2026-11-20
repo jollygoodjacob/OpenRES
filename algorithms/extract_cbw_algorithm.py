@@ -55,7 +55,7 @@ from ..extract_valley_width import (
     add_points_in_batch,
     compute_valley_width
 )
-from ..icon_utils import openres_icon
+from .icon_utils import openres_icon
 
 class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
     TRANSECTS = 'TRANSECTS'
@@ -81,7 +81,7 @@ class ExtractCBWAlgorithm(QgsProcessingAlgorithm):
         return "extract_cbw"
 
     def displayName(self):
-        return "[6] Extract CBW"
+        return "[6] Extract Channel Belt Width"
 
     def group(self):
         return "Feature Extraction"
